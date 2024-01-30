@@ -28,11 +28,16 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Category\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Category\Delete.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Category\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Category\Create.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Category\Delete.cshtml" />
   </ItemGroup>
 
 </Project>

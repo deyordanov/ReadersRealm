@@ -1,20 +1,20 @@
-﻿@model EditCategoryViewModel
+﻿@model DeleteCategoryViewModel
 
-<form method="post" class="w-100" style="display: flex; -o-justify-content: center; -webkit-justify-content: center; justify-content: center">
+<form method="post" class="w-100" style="display: flex; justify-content: center">
     <input asp-for="Id" hidden/>
     <div class="border p-3 mt-4 w-50 px-4 border-black">
         <div class="row pb-2">
-            <h2 class="text-primary">Edit Category</h2>
+            <h2 class="text-primary">Delete Category</h2>
             <hr/>
         </div>
         <div class="mb-3 row p-1">
             <label class="p-0" asp-for="Name"></label>
-            <input type="text" class="form-control" asp-for="Name"/>
+            <input type="text" class="form-control" asp-for="Name" disabled="disabled"/>
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="mb-3 row p-1">
             <label class="p-0" asp-for="DisplayOrder"></label>
-            <input type="text" class="form-control" asp-for="DisplayOrder"/>
+            <input type="text" class="form-control" asp-for="DisplayOrder" disabled="disabled"/>
             <span asp-validation-for="DisplayOrder" class="text-danger"></span>
         </div>
         <div class="row">
@@ -24,15 +24,8 @@
                 </a>
             </div>
             <div class="col-6">
-                <button type="submit" class="btn btn-outline-primary bg-black text-white form-control">Update</button>
+                <button type="submit" class="btn btn-outline-primary bg-black text-white form-control">Delete</button>
             </div>
         </div>
     </div>
 </form>
-
-@section Scripts
-{
-    @{
-        <partial name="_ValidationScriptsPartial"/>
-    }
-}

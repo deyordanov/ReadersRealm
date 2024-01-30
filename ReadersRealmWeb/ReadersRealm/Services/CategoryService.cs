@@ -47,17 +47,20 @@ public class CategoryService : ICategoryService
         await this.dbContext.SaveChangesAsync();
     }
 
-    public async Task<Category> GetCategoryById(int id)
+    public async Task<Category?> GetCategoryById(int? id)
     {
         return await this
             .dbContext
             .Categories
-            .FirstAsync(c => c.Id == id);
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task EditCategory(EditCategoryViewModel categoryModel)
     {
-        Category categoryToEdit = await this.GetCategoryById(categoryModel.Id);
+        Category categoryToEdit = await this
+            .dbContext
+            .Categories
+            .FirstAsync(c => c.Id == categoryModel.Id);
 
         categoryToEdit.Name = categoryModel.Name;
         categoryToEdit.DisplayOrder = categoryModel.DisplayOrder;
@@ -65,5 +68,20 @@ public class CategoryService : ICategoryService
         await this
             .dbContext
             .SaveChangesAsync();
+    }
+
+    public async Task DeleteCategory(DeleteCategoryViewModel categoryModel)
+    {
+        Category categoryToDelete = await this
+            .dbContext
+            .Categories
+            .FirstAsync(c => c.Id == categoryModel.Id);
+
+        this
+            .dbContext
+            .Categories
+            .Remove(categoryToDelete);
+
+        await this.dbContext.SaveChangesAsync();
     }
 }
