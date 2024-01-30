@@ -1,1 +1,7 @@
-﻿<h1>Category List!</h1>
+﻿@model IEnumerable<AllCategoriesViewModel>
+
+@foreach (AllCategoriesViewModel category in @Model)
+{
+    <p>@category.Name</p>
+}
+<h1>Category List!</h1>

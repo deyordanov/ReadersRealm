@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Models;
+﻿namespace ReadersRealm.DataModels;
 
 using System.ComponentModel.DataAnnotations;
 

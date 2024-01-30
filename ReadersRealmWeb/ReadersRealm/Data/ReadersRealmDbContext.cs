@@ -2,7 +2,7 @@
 
 using Extensions.ModelBuilderExtensions;
 using Microsoft.EntityFrameworkCore;
-using Models;
+using ReadersRealm.DataModels;
 
 public class ReadersRealmDbContext : DbContext
 {

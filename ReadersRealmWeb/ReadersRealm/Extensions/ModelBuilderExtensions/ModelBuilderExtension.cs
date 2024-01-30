@@ -1,7 +1,7 @@
 ﻿namespace ReadersRealm.Extensions.ModelBuilderExtensions;
 
 using Microsoft.EntityFrameworkCore;
-using Models;
+using ReadersRealm.DataModels;
 
 public static class ModelBuilderExtension
 {

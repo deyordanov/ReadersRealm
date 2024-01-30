@@ -1,4 +1,4 @@
-namespace ReadersRealm.Models
+namespace ReadersRealm.ViewModels
 {
     public class ErrorViewModel
     {

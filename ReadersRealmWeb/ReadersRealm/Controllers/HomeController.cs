@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using ReadersRealm.Models;
 using System.Diagnostics;
 
 namespace ReadersRealm.Controllers
 {
+    using ViewModels;
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
