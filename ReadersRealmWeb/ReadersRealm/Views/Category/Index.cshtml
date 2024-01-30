@@ -1,5 +1,20 @@
 ﻿@model IEnumerable<AllCategoriesViewModel>
 
+<div class="container p-0">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">
+                Category List
+            </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Create A New Category
+            </a>
+        </div>
+    </div>
+</div>
+
 <table class="table table-hover table-striped table-bordered border-black">
     <thead>
         <tr>

@@ -1,0 +1,38 @@
+﻿@model CreateCategoryViewModel
+
+<form method="post" class="w-100" style="display: flex; justify-content: center">
+    <div class="border p-3 mt-4 w-50 px-4 border-black">
+        <div class="row pb-2">
+            <h2 class="text-primary">Create Category</h2>
+            <hr />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Name"></label>
+            <input type="text" class="form-control" asp-for="Name"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="DisplayOrder"></label>
+            <input type="text" class="form-control" asp-for="DisplayOrder" />
+            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <a asp-controller="Category" asp-action="Index" class="btn btn-outline-secondary form-control">
+                    Back To List
+                </a>
+            </div>
+            <div class="col-6">
+                <button type="submit" class="btn btn-outline-primary bg-black text-white form-control">Create</button>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

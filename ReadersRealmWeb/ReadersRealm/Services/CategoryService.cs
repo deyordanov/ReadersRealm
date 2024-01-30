@@ -2,6 +2,7 @@
 
 using Contracts;
 using Data;
+using DataModels;
 using Microsoft.EntityFrameworkCore;
 using ViewModels.Category;
 
@@ -28,5 +29,20 @@ public class CategoryService : ICategoryService
             .ToListAsync();
 
         return allCategories;
+    }
+
+    public async Task CreateCategoryAsync(CreateCategoryViewModel categoryModel)
+    {
+        Category categoryToAdd = new Category()
+        {
+            Name = categoryModel.Name,
+            DisplayOrder = categoryModel.DisplayOrder,
+        };
+
+        await this.dbContext
+            .Categories
+            .AddAsync(categoryToAdd);
+
+        await this.dbContext.SaveChangesAsync();
     }
 }
