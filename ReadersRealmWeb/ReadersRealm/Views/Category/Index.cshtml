@@ -1,7 +1,27 @@
 ﻿@model IEnumerable<AllCategoriesViewModel>
 
-@foreach (AllCategoriesViewModel category in @Model)
-{
-    <p>@category.Name</p>
-}
-<h1>Category List!</h1>
+<table class="table table-hover table-striped table-bordered border-black">
+    <thead>
+        <tr>
+            <th scope="col">
+                Category Name
+            </th>
+            <th scope="col">
+                Display Order
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (AllCategoriesViewModel categoryModel in @Model.OrderBy(c => c.DisplayOrder))
+        {
+            <tr>
+                <td>
+                    @categoryModel.Name
+                </td>
+                <td>
+                    @categoryModel.DisplayOrder
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
