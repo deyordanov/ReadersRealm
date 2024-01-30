@@ -2,6 +2,7 @@
 
 namespace ReadersRealm.Controllers;
 
+using DataModels;
 using Services.Contracts;
 using ViewModels.Category;
 using static ReadersRealm.Common.ValidationMessages.Category;
@@ -47,6 +48,33 @@ public class CategoryController : Controller
         await this
             .categoryService
             .CreateCategoryAsync(categoryModel);
+
+        return RedirectToAction("Index", "Category");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        Category category = await this
+            .categoryService
+            .GetCategoryById(id);
+
+        EditCategoryViewModel categoryModel = new EditCategoryViewModel()
+        {
+            Id = category.Id,
+            Name = category.Name,
+            DisplayOrder = category.DisplayOrder,
+        };
+
+        return View(categoryModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(EditCategoryViewModel categoryModel)
+    {
+        await this
+            .categoryService
+            .EditCategory(categoryModel);
 
         return RedirectToAction("Index", "Category");
     }

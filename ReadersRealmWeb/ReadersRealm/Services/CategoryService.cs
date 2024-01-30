@@ -39,10 +39,31 @@ public class CategoryService : ICategoryService
             DisplayOrder = categoryModel.DisplayOrder,
         };
 
-        await this.dbContext
+        await this
+            .dbContext
             .Categories
             .AddAsync(categoryToAdd);
 
         await this.dbContext.SaveChangesAsync();
+    }
+
+    public async Task<Category> GetCategoryById(int id)
+    {
+        return await this
+            .dbContext
+            .Categories
+            .FirstAsync(c => c.Id == id);
+    }
+
+    public async Task EditCategory(EditCategoryViewModel categoryModel)
+    {
+        Category categoryToEdit = await this.GetCategoryById(categoryModel.Id);
+
+        categoryToEdit.Name = categoryModel.Name;
+        categoryToEdit.DisplayOrder = categoryModel.DisplayOrder;
+
+        await this
+            .dbContext
+            .SaveChangesAsync();
     }
 }
