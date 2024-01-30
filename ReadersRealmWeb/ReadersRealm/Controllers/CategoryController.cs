@@ -5,6 +5,7 @@ namespace ReadersRealm.Controllers;
 using DataModels;
 using Services.Contracts;
 using ViewModels.Category;
+using static ReadersRealm.Common.Constants.Category;
 using static ReadersRealm.Common.ValidationMessages.Category;
 
 public class CategoryController : Controller
@@ -48,6 +49,8 @@ public class CategoryController : Controller
         await this
             .categoryService
             .CreateCategoryAsync(categoryModel);
+
+        TempData["Success"] = CategoryHasBeenSuccessfullyCreated;
 
         return RedirectToAction("Index", "Category");
     }
@@ -96,6 +99,8 @@ public class CategoryController : Controller
             .categoryService
             .EditCategory(categoryModel);
 
+        TempData["Success"] = CategoryHasBeenSuccessfullyEdited;
+
         return RedirectToAction("Index", "Category");
     }
 
@@ -132,6 +137,8 @@ public class CategoryController : Controller
         await this
             .categoryService
             .DeleteCategory(categoryModel);
+
+        TempData["Success"] = CategoryHasBeenSuccessfullyDeleted;
 
         return RedirectToAction("Index", "Category");
     }
