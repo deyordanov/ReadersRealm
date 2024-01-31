@@ -1,10 +1,13 @@
 ﻿namespace ReadersRealm.ViewModels.Category;
 
+using Microsoft.EntityFrameworkCore;
+
 /// <summary>
 /// ViewModel for deleting a category in the Readers Realm application.
 /// This model is used to represent the category that is intended to be deleted.
 /// It provides essential information to confirm the deletion action.
 /// </summary>
+[Comment("Delete Category View Model")]
 public class DeleteCategoryViewModel
 {
     /// <summary>
@@ -13,6 +16,7 @@ public class DeleteCategoryViewModel
     /// <value>
     /// The unique identifier for the category. This is used to ensure that the correct category is targeted for deletion.
     /// </value>
+    [Comment("Delete Category View Model Identifier")]
     public int Id { get; set; }
 
     /// <summary>
@@ -21,7 +25,8 @@ public class DeleteCategoryViewModel
     /// <value>
     /// The name of the category. Displaying the name helps users to confirm that they are deleting the correct category.
     /// </value>
-    public string Name { get; set; } = null!;
+    [Comment("Delete Category View Model Name")]
+    public required string Name { get; set; }
 
     /// <summary>
     /// Gets or sets the display order of the category to be deleted.
@@ -29,5 +34,6 @@ public class DeleteCategoryViewModel
     /// <value>
     /// The display order of the category. This information can be used as an additional reference to ensure the correct category is selected for deletion.
     /// </value>
+    [Comment("Delete Category View Model Display Order")]
     public int DisplayOrder { get; set; }
 }

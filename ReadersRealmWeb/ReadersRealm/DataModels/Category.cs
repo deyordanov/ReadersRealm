@@ -34,7 +34,7 @@ public class Category
     [Required]
     [StringLength(50)]
     [Comment("Category Name")]
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
 
     /// <summary>
     /// Gets or sets the display order of the Category.

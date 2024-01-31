@@ -2,6 +2,8 @@
 using System.ComponentModel;
 
 namespace ReadersRealm.ViewModels.Category;
+
+using Microsoft.EntityFrameworkCore;
 using static ReadersRealm.Common.Constants.Category;
 using static ReadersRealm.Common.ValidationMessages.Category;
 using static ReadersRealm.Common.ValidationConstants.Category;
@@ -11,6 +13,7 @@ using static ReadersRealm.Common.ValidationConstants.Category;
 /// This model is used to capture and validate user input when updating category details.
 /// It includes validation rules to ensure the updated data is valid.
 /// </summary>
+[Comment("Edit Category View Model")]
 public class EditCategoryViewModel
 {
     /// <summary>
@@ -19,6 +22,7 @@ public class EditCategoryViewModel
     /// <value>
     /// The unique identifier for the category. This is crucial for identifying which category is being updated.
     /// </value>
+    [Comment("Edit Category View Model Identifier")]
     public int Id { get; set; }
 
     /// <summary>
@@ -37,7 +41,8 @@ public class EditCategoryViewModel
     [StringLength(CategoryNameMaxLength,
         ErrorMessage = CategoryNameLengthMessage,
         MinimumLength = CategoryNameMinLength)]
-    public string Name { get; set; } = null!;
+    [Comment("Edit Category View Model Name")]
+    public required string Name { get; set; }
 
     /// <summary>
     /// Gets or sets the display order of the category being edited.
@@ -53,5 +58,6 @@ public class EditCategoryViewModel
     [Range(CategoryDisplayOrderMinRange,
         CategoryDisplayOrderMaxRange,
         ErrorMessage = CategoryDisplayOrderRangeMessage)]
+    [Comment("Edit Category View Model Display Order")]
     public int DisplayOrder { get; set; }
 }
