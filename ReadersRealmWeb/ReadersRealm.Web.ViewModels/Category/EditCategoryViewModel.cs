@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-
-namespace ReadersRealm.ViewModels.Category;
+﻿namespace ReadersRealm.Web.ViewModels.Category;
 
 using Microsoft.EntityFrameworkCore;
-using static ReadersRealm.Common.Constants.Category;
-using static ReadersRealm.Common.ValidationMessages.Category;
-using static ReadersRealm.Common.ValidationConstants.Category;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using static Common.Constants.Category;
+using static Common.ValidationConstants.Category;
+using static Common.ValidationMessages.Category;
 
 /// <summary>
 /// ViewModel for editing an existing category in the Readers Realm application.

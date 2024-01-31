@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Extensions.ModelBuilderExtensions;
+﻿namespace ReadersRealm.Common.Extensions.ModelBuilderExtensions;
 
 using Data.Models;
 using Microsoft.EntityFrameworkCore;

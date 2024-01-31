@@ -1,7 +1,7 @@
-﻿namespace ReadersRealm.DataModels;
+﻿namespace ReadersRealm.Data.Models;
 
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 /// <summary>
 /// Represents a category in Readers Realm.

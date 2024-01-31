@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ReadersRealm.Controllers
 {
-    using ViewModels;
+    using Web.ViewModels;
 
     public class HomeController : Controller
     {

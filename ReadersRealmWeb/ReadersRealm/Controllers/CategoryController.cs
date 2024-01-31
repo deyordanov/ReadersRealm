@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace ReadersRealm.Web.Controllers;
 
-namespace ReadersRealm.Controllers;
-
-using DataModels;
+using Data.Models;
+using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using ViewModels.Category;
-using static ReadersRealm.Common.Constants.Category;
-using static ReadersRealm.Common.ValidationMessages.Category;
+using static Common.Constants.Category;
+using static Common.ValidationMessages.Category;
 
 public class CategoryController : Controller
 {
@@ -30,7 +29,7 @@ public class CategoryController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new CreateCategoryViewModel());
+        return View();
     }
 
     [HttpPost]
@@ -65,7 +64,7 @@ public class CategoryController : Controller
 
         Category? category = await this
             .categoryService
-            .GetCategoryById(id);
+            .GetCategoryByIdAsync(id);
 
         if (category == null)
         {
@@ -97,7 +96,7 @@ public class CategoryController : Controller
 
         await this
             .categoryService
-            .EditCategory(categoryModel);
+            .EditCategoryAsync(categoryModel);
 
         TempData["Success"] = CategoryHasBeenSuccessfullyEdited;
 
@@ -114,7 +113,7 @@ public class CategoryController : Controller
 
         Category? category = await this
             .categoryService
-            .GetCategoryById(id);
+            .GetCategoryByIdAsync(id);
 
         if (category == null)
         {
@@ -136,7 +135,7 @@ public class CategoryController : Controller
     {
         await this
             .categoryService
-            .DeleteCategory(categoryModel);
+            .DeleteCategoryAsync(categoryModel);
 
         TempData["Success"] = CategoryHasBeenSuccessfullyDeleted;
 

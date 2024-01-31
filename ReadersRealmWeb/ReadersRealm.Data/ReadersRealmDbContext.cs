@@ -1,8 +1,8 @@
 ﻿namespace ReadersRealm.Data;
 
-using Extensions.ModelBuilderExtensions;
+using Common.Extensions.ModelBuilderExtensions;
 using Microsoft.EntityFrameworkCore;
-using ReadersRealm.DataModels;
+using Models;
 
 public class ReadersRealmDbContext : DbContext
 {

@@ -1,11 +1,11 @@
-﻿namespace ReadersRealm.ViewModels.Category;
+﻿namespace ReadersRealm.Web.ViewModels.Category;
 
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-using static ReadersRealm.Common.Constants.Category;
-using static ReadersRealm.Common.ValidationMessages.Category;
-using static ReadersRealm.Common.ValidationConstants.Category;
+using static Common.Constants.Category;
+using static Common.ValidationConstants.Category;
+using static Common.ValidationMessages.Category;
 
 /// <summary>
 /// ViewModel for creating a new category in the Readers Realm application.

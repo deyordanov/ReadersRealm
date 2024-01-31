@@ -2,9 +2,9 @@
 
 using Contracts;
 using Data;
-using DataModels;
+using Data.Models;
 using Microsoft.EntityFrameworkCore;
-using ViewModels.Category;
+using Web.ViewModels.Category;
 
 public class CategoryService : ICategoryService
 {
@@ -20,6 +20,7 @@ public class CategoryService : ICategoryService
         IEnumerable<AllCategoriesViewModel> allCategories = await this
             .dbContext
             .Categories
+            .AsNoTracking()
             .Select(c => new AllCategoriesViewModel()
             {
                 Id = c.Id,
@@ -47,15 +48,16 @@ public class CategoryService : ICategoryService
         await this.dbContext.SaveChangesAsync();
     }
 
-    public async Task<Category?> GetCategoryById(int? id)
+    public async Task<Category?> GetCategoryByIdAsync(int? id)
     {
         return await this
             .dbContext
             .Categories
+            .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task EditCategory(EditCategoryViewModel categoryModel)
+    public async Task EditCategoryAsync(EditCategoryViewModel categoryModel)
     {
         Category categoryToEdit = await this
             .dbContext
@@ -70,7 +72,7 @@ public class CategoryService : ICategoryService
             .SaveChangesAsync();
     }
 
-    public async Task DeleteCategory(DeleteCategoryViewModel categoryModel)
+    public async Task DeleteCategoryAsync(DeleteCategoryViewModel categoryModel)
     {
         Category categoryToDelete = await this
             .dbContext

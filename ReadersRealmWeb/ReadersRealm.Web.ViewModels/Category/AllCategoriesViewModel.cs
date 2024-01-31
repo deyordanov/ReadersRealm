@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace ReadersRealm.Web.ViewModels.Category;
 
-namespace ReadersRealm.ViewModels.Category;
+using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// A ViewModel representing a collection of all categories in the Readers Realm application.

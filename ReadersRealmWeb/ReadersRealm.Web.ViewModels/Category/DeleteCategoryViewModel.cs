@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.ViewModels.Category;
+﻿namespace ReadersRealm.Web.ViewModels.Category;
 
 using Microsoft.EntityFrameworkCore;
 
