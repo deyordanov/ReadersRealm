@@ -6,7 +6,7 @@ using Data.Models;
 using Data.Repositories;
 using Data.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
-using Web.ViewModels.Category;
+using ViewModels.Category;
 
 public class CategoryService : ICategoryService
 {

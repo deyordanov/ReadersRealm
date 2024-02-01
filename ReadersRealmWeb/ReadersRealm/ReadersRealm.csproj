@@ -14,31 +14,33 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Category\Index.cshtml" />
+    <UpToDateCheckInput Remove="Areas\Admin\Views\Category\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\Category\Create.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Category\Delete.cshtml" />
-    <_ContentIncludedByDefault Remove="Views\Category\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\_NotificationPartialView.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Category\Create.cshtml" />
+    <UpToDateCheckInput Remove="Areas\Admin\Views\Category\Create.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Category\Delete.cshtml" />
+    <UpToDateCheckInput Remove="Areas\Admin\Views\Category\Delete.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +51,10 @@
     <ProjectReference Include="..\ReadersRealm.Common\ReadersRealm.Common.csproj" />
     <ProjectReference Include="..\ReadersRealm.Services\ReadersRealm.Services.csproj" />
     <ProjectReference Include="..\ReadersRealm.Web.ViewModels\ReadersRealm.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

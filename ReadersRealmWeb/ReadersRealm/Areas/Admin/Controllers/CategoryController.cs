@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Web.Controllers;
+﻿namespace ReadersRealm.Areas.Admin.Controllers;
 
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +7,7 @@ using ViewModels.Category;
 using static Common.Constants.Category;
 using static Common.ValidationMessages.Category;
 
+[Area("Admin")]
 public class CategoryController : Controller
 {
     private ICategoryService categoryService;
@@ -19,8 +20,8 @@ public class CategoryController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        IEnumerable<AllCategoriesViewModel> allCategories = await this
-            .categoryService
+        IEnumerable<AllCategoriesViewModel> allCategories = await 
+            categoryService
             .GetAllAsync();
 
         return View(allCategories);
@@ -45,8 +46,8 @@ public class CategoryController : Controller
             return View(categoryModel);
         }
 
-        await this
-            .categoryService
+        await 
+            categoryService
             .CreateCategoryAsync(categoryModel);
 
         TempData["Success"] = CategoryHasBeenSuccessfullyCreated;
@@ -62,8 +63,8 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? category = await this
-            .categoryService
+        Category? category = await 
+            categoryService
             .GetCategoryByIdAsync((int)id);
 
         if (category == null)
@@ -94,8 +95,8 @@ public class CategoryController : Controller
             return View(categoryModel);
         }
 
-        await this
-            .categoryService
+        await 
+            categoryService
             .EditCategoryAsync(categoryModel);
 
         TempData["Success"] = CategoryHasBeenSuccessfullyEdited;
@@ -111,8 +112,8 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? category = await this
-            .categoryService
+        Category? category = await 
+            categoryService
             .GetCategoryByIdAsync((int)id);
 
         if (category == null)
@@ -133,8 +134,8 @@ public class CategoryController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(DeleteCategoryViewModel categoryModel)
     {
-        await this
-            .categoryService
+        await 
+            categoryService
             .DeleteCategoryAsync(categoryModel);
 
         TempData["Success"] = CategoryHasBeenSuccessfullyDeleted;

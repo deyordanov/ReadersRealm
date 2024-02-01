@@ -1,8 +1,8 @@
-﻿namespace ReadersRealm.Web.ViewModels.Category;
+﻿namespace ReadersRealm.ViewModels.Category;
 
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using static Common.Constants.Category;
 using static Common.ValidationConstants.Category;
 using static Common.ValidationMessages.Category;
