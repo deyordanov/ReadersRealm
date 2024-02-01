@@ -14,4 +14,8 @@
     <Folder Include="Contracts\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ReadersRealm.Common\ReadersRealm.Common.csproj" />
+  </ItemGroup>
+
 </Project>

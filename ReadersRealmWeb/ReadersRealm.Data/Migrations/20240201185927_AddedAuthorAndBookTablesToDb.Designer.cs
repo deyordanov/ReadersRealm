@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadersRealm.Data;
 
@@ -11,9 +12,11 @@ using ReadersRealm.Data;
 namespace ReadersRealm.Migrations
 {
     [DbContext(typeof(ReadersRealmDbContext))]
-    partial class ReadersRealmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240201185927_AddedAuthorAndBookTablesToDb")]
+    partial class AddedAuthorAndBookTablesToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,30 +76,6 @@ namespace ReadersRealm.Migrations
                         {
                             t.HasComment("Readers Realm Author");
                         });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("f92e09e6-9709-44e8-abe0-d203801a25af"),
-                            Age = 45,
-                            Email = "johnsmith@example.com",
-                            FirstName = "John",
-                            Gender = 0,
-                            LastName = "Smith",
-                            MiddleName = "",
-                            PhoneNumber = "123-456-7890"
-                        },
-                        new
-                        {
-                            Id = new Guid("2c179598-dab8-444f-ab43-053752577ed7"),
-                            Age = 38,
-                            Email = "emilyjohnson@example.com",
-                            FirstName = "Emily",
-                            Gender = 1,
-                            LastName = "Johnson",
-                            MiddleName = "",
-                            PhoneNumber = "098-765-4321"
-                        });
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.Book", b =>
@@ -151,32 +130,6 @@ namespace ReadersRealm.Migrations
                     b.ToTable("Books", t =>
                         {
                             t.HasComment("Readers Realm Book");
-                        });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("af609722-7e21-4c39-9780-7bb0dcaac117"),
-                            AuthorId = new Guid("f92e09e6-9709-44e8-abe0-d203801a25af"),
-                            BookCover = 1,
-                            Description = "An exciting journey through uncharted lands.",
-                            ISBN = "1234567890123",
-                            Pages = 320,
-                            Price = 19.99m,
-                            Title = "The Great Adventure",
-                            Used = false
-                        },
-                        new
-                        {
-                            Id = new Guid("d17d806c-8a12-443f-861c-8b650f3bd058"),
-                            AuthorId = new Guid("2c179598-dab8-444f-ab43-053752577ed7"),
-                            BookCover = 0,
-                            Description = "Exploring the wonders of science in everyday life.",
-                            ISBN = "9876543210987",
-                            Pages = 220,
-                            Price = 25.99m,
-                            Title = "Science and You",
-                            Used = true
                         });
                 });
 

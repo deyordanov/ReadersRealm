@@ -1,8 +1,9 @@
 ﻿namespace ReadersRealm.Data.Models;
 
+using Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using Contracts;
+using static Common.ValidationConstants.Category;
 
 /// <summary>
 /// Represents a category in Readers Realm.
@@ -33,7 +34,7 @@ public class Category : IReadersRealmDbContextBaseEntityModel<int>
     /// </summary>
     /// <value>The name of the Category.</value>
     [Required]
-    [StringLength(50)]
+    [StringLength(CategoryNameMaxLength)]
     [Comment("Category Name")]
     public required string Name { get; set; }
 
@@ -42,7 +43,7 @@ public class Category : IReadersRealmDbContextBaseEntityModel<int>
     /// Categories with lower display orders are shown first.
     /// </summary>
     /// <value>The display order of the Category.</value>
-    [Range(1, 100)]
+    [Range(CategoryDisplayOrderMinRange, CategoryDisplayOrderMaxRange)]
     [Comment("Category Display Order")]
     public int DisplayOrder { get; set; }
 }

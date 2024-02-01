@@ -10,8 +10,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ReadersRealm.Data.Models\ReadersRealm.Data.Models.csproj" />
-  </ItemGroup>
-
 </Project>
