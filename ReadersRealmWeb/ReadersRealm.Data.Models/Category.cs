@@ -2,6 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Contracts;
 
 /// <summary>
 /// Represents a category in Readers Realm.
@@ -16,7 +17,7 @@ using System.ComponentModel.DataAnnotations;
 /// Category fictionCategory = new Category { Name = "Fiction", DisplayOrder = 1 };
 /// </example>
 [Comment("Readers Realm Category")]
-public class Category
+public class Category : IReadersRealmDbContextBaseEntityModel<int>
 {
     /// <summary>
     /// Gets or sets the unique identifier for the Category.
