@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ReadersRealm.Data;
+using ReadersRealm.Data.Repositories;
+using ReadersRealm.Data.Repositories.Contracts;
 using ReadersRealm.Services;
 using ReadersRealm.Services.Contracts;
 
@@ -8,6 +10,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //Adding the db context to the container.
 builder.Services.AddDbContext<ReadersRealmDbContext>(options =>

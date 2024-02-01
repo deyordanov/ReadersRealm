@@ -9,7 +9,7 @@ public interface ICategoryService
 
     Task CreateCategoryAsync(CreateCategoryViewModel categoryModel);
 
-    Task<Category?> GetCategoryByIdAsync(int? id);
+    Task<Category?> GetCategoryByIdAsync(int id);
 
     Task EditCategoryAsync(EditCategoryViewModel categoryModel);
 

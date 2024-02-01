@@ -64,7 +64,7 @@ public class CategoryController : Controller
 
         Category? category = await this
             .categoryService
-            .GetCategoryByIdAsync(id);
+            .GetCategoryByIdAsync((int)id);
 
         if (category == null)
         {
@@ -106,14 +106,14 @@ public class CategoryController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null || id == 0)
+        if (id == null || id <= 0)
         {
             return NotFound();
         }
 
         Category? category = await this
             .categoryService
-            .GetCategoryByIdAsync(id);
+            .GetCategoryByIdAsync((int)id);
 
         if (category == null)
         {
