@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadersRealm.Data;
 
@@ -11,9 +12,11 @@ using ReadersRealm.Data;
 namespace ReadersRealm.Migrations
 {
     [DbContext(typeof(ReadersRealmDbContext))]
-    partial class ReadersRealmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240202063239_ChangedTableConstraints")]
+    partial class ChangedTableConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace ReadersRealm.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BookCategory", b =>
-                {
-                    b.Property<Guid>("BooksId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BooksId", "CategoriesId");
-
-                    b.HasIndex("CategoriesId");
-
-                    b.ToTable("BookCategory");
-                });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.Author", b =>
                 {
@@ -91,7 +79,7 @@ namespace ReadersRealm.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
+                            Id = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
                             Age = 45,
                             Email = "johnsmith@example.com",
                             FirstName = "John",
@@ -101,7 +89,7 @@ namespace ReadersRealm.Migrations
                         },
                         new
                         {
-                            Id = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
+                            Id = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             Age = 38,
                             Email = "emilyjohnson@example.com",
                             FirstName = "Emily",
@@ -135,14 +123,14 @@ namespace ReadersRealm.Migrations
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)")
-                        .HasComment("Book's International Standard Book Number");
+                        .HasComment("Book ISBN");
 
                     b.Property<int?>("Pages")
                         .HasColumnType("int")
                         .HasComment("Book Page Count");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)")
+                        .HasColumnType("decimal(18,2)")
                         .HasComment("Book Price");
 
                     b.Property<string>("Title")
@@ -167,8 +155,8 @@ namespace ReadersRealm.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f8f6e08b-6876-4a58-ae56-3c5bcac927a7"),
-                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
+                            Id = new Guid("426998a2-eaca-42e5-ae61-ad3adacd3e97"),
+                            AuthorId = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
                             BookCover = 1,
                             Description = "An exciting journey through uncharted lands.",
                             ISBN = "1234567890123",
@@ -179,8 +167,8 @@ namespace ReadersRealm.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2cec3ffc-2206-446b-874d-0bf1551ea88e"),
-                            AuthorId = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
+                            Id = new Guid("2eedac4e-da96-4138-b455-94352227de62"),
+                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 0,
                             Description = "Exploring the wonders of science in everyday life.",
                             ISBN = "9876543210987",
@@ -200,6 +188,9 @@ namespace ReadersRealm.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<Guid?>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int")
                         .HasComment("Category Display Order");
@@ -211,6 +202,8 @@ namespace ReadersRealm.Migrations
                         .HasComment("Category Name");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("Categories", t =>
                         {
@@ -238,21 +231,6 @@ namespace ReadersRealm.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BookCategory", b =>
-                {
-                    b.HasOne("ReadersRealm.Data.Models.Book", null)
-                        .WithMany()
-                        .HasForeignKey("BooksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReadersRealm.Data.Models.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ReadersRealm.Data.Models.Book", b =>
                 {
                     b.HasOne("ReadersRealm.Data.Models.Author", "Author")
@@ -264,9 +242,21 @@ namespace ReadersRealm.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("ReadersRealm.Data.Models.Category", b =>
+                {
+                    b.HasOne("ReadersRealm.Data.Models.Book", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("BookId");
+                });
+
             modelBuilder.Entity("ReadersRealm.Data.Models.Author", b =>
                 {
                     b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("ReadersRealm.Data.Models.Book", b =>
+                {
+                    b.Navigation("Categories");
                 });
 #pragma warning restore 612, 618
         }
