@@ -14,9 +14,18 @@ public class UnitOfWork : IUnitOfWork
         this.dbContext = dbContext;
 
         this.CategoryRepository = new CategoryRepository(dbContext);
+        this.BookRepository = new BookRepository(dbContext);
+        this.AuthorRepository = new AuthorRepository(dbContext);
+        this.AuthorBookRepository = new AuthorBookRepository(dbContext);
     }
 
-    public CategoryRepository CategoryRepository { get; private set; }
+    public ICategoryRepository CategoryRepository { get; private set; }
+
+    public IBookRepository BookRepository { get; private set; }
+
+    public IAuthorRepository AuthorRepository { get; private set; }
+
+    public IAuthorBookRepository AuthorBookRepository { get; private set; }
 
     public async Task SaveAsync()
     {

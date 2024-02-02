@@ -4,21 +4,21 @@ using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-public class CategoryRepository : Repository<Category>, ICategoryRepository
+public class BookRepository : Repository<Book>, IBookRepository
 {
     private readonly ReadersRealmDbContext dbContext;
 
-    public CategoryRepository(ReadersRealmDbContext dbContext)
+    public BookRepository(ReadersRealmDbContext dbContext)
         : base(dbContext)
     {
         this.dbContext = dbContext;
     }
 
-    public async Task<Category> GetByIdAsync(int id)
+    public async Task<Book> GetByIdAsync(Guid id)
     {
         return await this
             .dbContext
-            .Categories
-            .FirstAsync(category => category.Id == id);
+            .Books
+            .FirstAsync(book => book.Id == id);
     }
 }
