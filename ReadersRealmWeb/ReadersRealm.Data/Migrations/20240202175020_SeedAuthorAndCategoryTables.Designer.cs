@@ -9,11 +9,11 @@ using ReadersRealm.Data;
 
 #nullable disable
 
-namespace ReadersRealm.Migrations
+namespace ReadersRealm.Data.Migrations
 {
     [DbContext(typeof(ReadersRealmDbContext))]
-    [Migration("20240201190034_SeedAuthorAndBookTables")]
-    partial class SeedAuthorAndBookTables
+    [Migration("20240202175020_SeedAuthorAndCategoryTables")]
+    partial class SeedAuthorAndCategoryTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,7 +59,6 @@ namespace ReadersRealm.Migrations
                         .HasComment("Author Last Name");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)")
                         .HasComment("Author Middle Name");
@@ -80,24 +79,22 @@ namespace ReadersRealm.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f92e09e6-9709-44e8-abe0-d203801a25af"),
+                            Id = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             Age = 45,
                             Email = "johnsmith@example.com",
                             FirstName = "John",
                             Gender = 0,
                             LastName = "Smith",
-                            MiddleName = "",
                             PhoneNumber = "123-456-7890"
                         },
                         new
                         {
-                            Id = new Guid("2c179598-dab8-444f-ab43-053752577ed7"),
+                            Id = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
                             Age = 38,
                             Email = "emilyjohnson@example.com",
                             FirstName = "Emily",
                             Gender = 1,
                             LastName = "Johnson",
-                            MiddleName = "",
                             PhoneNumber = "098-765-4321"
                         });
                 });
@@ -117,8 +114,11 @@ namespace ReadersRealm.Migrations
                         .HasColumnType("int")
                         .HasComment("Book Cover Type");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int")
+                        .HasComment("Category Identifier");
+
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)")
                         .HasComment("Book Description");
@@ -127,14 +127,14 @@ namespace ReadersRealm.Migrations
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)")
-                        .HasComment("Book ISBN");
+                        .HasComment("Book's International Standard Book Number");
 
                     b.Property<int?>("Pages")
                         .HasColumnType("int")
                         .HasComment("Book Page Count");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("decimal(18, 2)")
                         .HasComment("Book Price");
 
                     b.Property<string>("Title")
@@ -143,7 +143,7 @@ namespace ReadersRealm.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasComment("Book Title");
 
-                    b.Property<bool?>("Used")
+                    b.Property<bool>("Used")
                         .HasColumnType("bit")
                         .HasComment("Book Condition");
 
@@ -151,35 +151,11 @@ namespace ReadersRealm.Migrations
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Books", t =>
                         {
                             t.HasComment("Readers Realm Book");
-                        });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("af609722-7e21-4c39-9780-7bb0dcaac117"),
-                            AuthorId = new Guid("f92e09e6-9709-44e8-abe0-d203801a25af"),
-                            BookCover = 1,
-                            Description = "An exciting journey through uncharted lands.",
-                            ISBN = "1234567890123",
-                            Pages = 320,
-                            Price = 19.99m,
-                            Title = "The Great Adventure",
-                            Used = false
-                        },
-                        new
-                        {
-                            Id = new Guid("d17d806c-8a12-443f-861c-8b650f3bd058"),
-                            AuthorId = new Guid("2c179598-dab8-444f-ab43-053752577ed7"),
-                            BookCover = 0,
-                            Description = "Exploring the wonders of science in everyday life.",
-                            ISBN = "9876543210987",
-                            Pages = 220,
-                            Price = 25.99m,
-                            Title = "Science and You",
-                            Used = true
                         });
                 });
 
@@ -192,9 +168,6 @@ namespace ReadersRealm.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid?>("BookId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int")
                         .HasComment("Category Display Order");
@@ -206,8 +179,6 @@ namespace ReadersRealm.Migrations
                         .HasComment("Category Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
 
                     b.ToTable("Categories", t =>
                         {
@@ -243,14 +214,15 @@ namespace ReadersRealm.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
-                });
+                    b.HasOne("ReadersRealm.Data.Models.Category", "Category")
+                        .WithMany("Books")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("ReadersRealm.Data.Models.Category", b =>
-                {
-                    b.HasOne("ReadersRealm.Data.Models.Book", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("BookId");
+                    b.Navigation("Author");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.Author", b =>
@@ -258,9 +230,9 @@ namespace ReadersRealm.Migrations
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("ReadersRealm.Data.Models.Book", b =>
+            modelBuilder.Entity("ReadersRealm.Data.Models.Category", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

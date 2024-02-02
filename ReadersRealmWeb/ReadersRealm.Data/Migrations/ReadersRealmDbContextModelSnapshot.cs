@@ -8,7 +8,7 @@ using ReadersRealm.Data;
 
 #nullable disable
 
-namespace ReadersRealm.Migrations
+namespace ReadersRealm.Data.Migrations
 {
     [DbContext(typeof(ReadersRealmDbContext))]
     partial class ReadersRealmDbContextModelSnapshot : ModelSnapshot
@@ -21,21 +21,6 @@ namespace ReadersRealm.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BookCategory", b =>
-                {
-                    b.Property<Guid>("BooksId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BooksId", "CategoriesId");
-
-                    b.HasIndex("CategoriesId");
-
-                    b.ToTable("BookCategory");
-                });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.Author", b =>
                 {
@@ -126,6 +111,10 @@ namespace ReadersRealm.Migrations
                         .HasColumnType("int")
                         .HasComment("Book Cover Type");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int")
+                        .HasComment("Category Identifier");
+
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)")
@@ -151,13 +140,15 @@ namespace ReadersRealm.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasComment("Book Title");
 
-                    b.Property<bool?>("Used")
+                    b.Property<bool>("Used")
                         .HasColumnType("bit")
                         .HasComment("Book Condition");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Books", t =>
                         {
@@ -167,9 +158,10 @@ namespace ReadersRealm.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f8f6e08b-6876-4a58-ae56-3c5bcac927a7"),
+                            Id = new Guid("e74704c4-7d6d-48ff-a101-ef414bc756f8"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
+                            CategoryId = 1,
                             Description = "An exciting journey through uncharted lands.",
                             ISBN = "1234567890123",
                             Pages = 320,
@@ -179,9 +171,10 @@ namespace ReadersRealm.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2cec3ffc-2206-446b-874d-0bf1551ea88e"),
+                            Id = new Guid("17358943-a431-4fcf-810f-b02d16a2da83"),
                             AuthorId = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
                             BookCover = 0,
+                            CategoryId = 2,
                             Description = "Exploring the wonders of science in everyday life.",
                             ISBN = "9876543210987",
                             Pages = 220,
@@ -238,21 +231,6 @@ namespace ReadersRealm.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BookCategory", b =>
-                {
-                    b.HasOne("ReadersRealm.Data.Models.Book", null)
-                        .WithMany()
-                        .HasForeignKey("BooksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReadersRealm.Data.Models.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ReadersRealm.Data.Models.Book", b =>
                 {
                     b.HasOne("ReadersRealm.Data.Models.Author", "Author")
@@ -261,10 +239,23 @@ namespace ReadersRealm.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ReadersRealm.Data.Models.Category", "Category")
+                        .WithMany("Books")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Author");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.Author", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("ReadersRealm.Data.Models.Category", b =>
                 {
                     b.Navigation("Books");
                 });
