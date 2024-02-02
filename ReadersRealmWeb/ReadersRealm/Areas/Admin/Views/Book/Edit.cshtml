@@ -1,0 +1,130 @@
+﻿@using ReadersRealm.Data.Models.Enums
+@using ReadersRealm.ViewModels.Category
+@using ReadersRealm.Web.ViewModels.Author
+@model EditBookViewModel
+
+<form method="post" class="w-100" style="display: flex; -o-justify-content: center; -webkit-justify-content: center; justify-content: center">
+    <input asp-for="Id" hidden/>
+    <div class="border p-3 mt-4 w-50 px-4 border-black">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Book</h2>
+            <hr/>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Title"></label>
+            <input type="text" class="form-control" asp-for="Title" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Description"></label>
+            <textarea type="text" class="form-control" asp-for="Description" style="max-height: 200px;"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="ISBN"></label>
+            <input type="text" class="form-control" asp-for="ISBN">
+            <span asp-validation-for="ISBN" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0 text-dark" asp-for="Price"></label>
+            <input type="number" class="form-control" asp-for="Price">
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Pages"></label>
+            <input type="number" class="form-control" asp-for="Pages">
+            <span asp-validation-for="Pages" class="text-danger"></span>
+        </div>
+        <select name="BookCover" class="mb-3 row p-1">
+            <label class="p-0" asp-for="BookCover"></label>
+            <option value="">Select a cover type</option>
+            @foreach (BookCover coverType in Enum.GetValues(typeof(BookCover)))
+            {
+                if(Model.BookCover == coverType)
+                {
+                    <option value="@coverType" selected>@coverType</option>
+                }
+                else
+                {
+                    <option value="@coverType">@coverType</option>
+                }
+            }
+        </select>
+        <div class="mb-3 row p-1">
+            <div style="display: flex; gap: 0.4rem">
+                <div class="form-check">
+                    @if (Model.Used)
+                    {
+                        <input class="form-check-input" type="radio" name="Used" asp-for="Used" value="true" checked="checked">
+                    }
+                    else
+                    {
+                        <input class="form-check-input" type="radio" name="Used" asp-for="Used" value="true">
+                    }
+                    <label class="form-check-label" asp-for="Used">
+                        Yes
+                    </label>
+                </div>
+                <div class="form-check">
+                    @if (!Model.Used)
+                    {
+                        <input class="form-check-input" type="radio" name="Used" asp-for="Used" value="false" checked="checked">
+                    }
+                    else
+                    {
+                        <input class="form-check-input" type="radio" name="Used" asp-for="Used" value="false">
+                    }
+                    <label class="form-check-label" asp-for="Used">
+                        No
+                    </label>
+                </div>
+            </div>
+            <span asp-validation-for="Used" class="text-danger"></span>
+        </div>
+        <select name="AuthorId" class="mb-3 row p-1">
+            <label class="p-0" asp-for="AuthorId"></label>
+            @foreach (AllAuthorsListViewModel authorModel in Model.AuthorsList!)
+            {
+                if(Model.AuthorId == authorModel.Id)
+                {
+                    <option value="@authorModel.Id" selected>@($"{authorModel.FirstName} {authorModel.LastName}")</option>
+                }
+                else
+                {
+                    <option value="@authorModel.Id">@($"{authorModel.FirstName} {authorModel.LastName}")</option>
+                }
+            }
+        </select>
+        <select name="CategoryId" class="mb-3 row p-1">
+            <label class="p-0" asp-for="AuthorId"></label>
+            @foreach (AllCategoriesListViewModel categoryModel in Model.CategoriesList!)
+            {
+                if(Model.CategoryId == categoryModel.Id)
+                {
+                    <option value="@categoryModel.Id" selected>@categoryModel.Name</option>
+                }
+                else
+                {
+                    <option value="@categoryModel.Id">@categoryModel.Name</option>
+                }
+            }
+        </select>
+        <div class="row">
+            <div class="col-6">
+                <a asp-controller="Book" asp-action="Index" class="btn btn-outline-secondary form-control">
+                    Back To List
+                </a>
+            </div>
+            <div class="col-6">
+                <button type="submit" class="btn btn-outline-primary bg-black text-white form-control">Update</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

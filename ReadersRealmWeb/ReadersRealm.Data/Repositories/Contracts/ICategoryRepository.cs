@@ -4,5 +4,5 @@ using Models;
 
 public interface ICategoryRepository : IRepository<Category>
 {
-    Task<Category> GetByIdAsync(int id);
+    Task<Category?> GetByIdAsync(int id);
 }

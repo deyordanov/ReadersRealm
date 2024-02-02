@@ -28,7 +28,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
             query = query.Where(filter);
         }
 
-        string[] propertiesToAdd = properties.Split(',', StringSplitOptions.RemoveEmptyEntries);
+        string[] propertiesToAdd = properties.Split(", ", StringSplitOptions.RemoveEmptyEntries);
 
         if (!this.ArePropertiesPresentInEntity(propertiesToAdd))
         {
@@ -77,7 +77,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
     /// <param name="propertiesToAdd">An array of property names intended for eager loading.</param>
     /// <returns>True if all specified properties exist on TEntity; otherwise, false. 
     /// This boolean value helps in determining if the GetAsync method can proceed with including these properties in the query.</returns>
-    private bool ArePropertiesPresentInEntity(string[] propertiesToAdd)
+    protected bool ArePropertiesPresentInEntity(string[] propertiesToAdd)
     {
         Type entityType = typeof(TEntity);
         List<string> entityProperties = entityType
@@ -95,5 +95,4 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
 
         return true;
     }
-
 }

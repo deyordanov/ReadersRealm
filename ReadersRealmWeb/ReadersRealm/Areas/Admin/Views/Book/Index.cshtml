@@ -1,12 +1,12 @@
 ﻿@using ReadersRealm.ViewModels.Category
-@model IEnumerable<AllCategoriesViewModel>
+@model IEnumerable<AllBooksViewModel>
 
 <partial name="_NotificationPartialView" />
 <div class="container p-0">
     <div class="row pt-4">
         <div class="col-12 text-end">
-            <a asp-controller="Category" asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-lg"></i> Create A New Category
+            <a asp-controller="Book" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Create A New Book
             </a>
         </div>
     </div>
@@ -16,10 +16,10 @@
     <thead>
     <tr>
         <th>
-            Category Name
+            Title
         </th>
         <th>
-            Display Order
+            Price
         </th>
         <th>
             Actions
@@ -27,21 +27,27 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (AllCategoriesViewModel categoryModel in @Model.OrderBy(c => c.DisplayOrder))
+    @foreach (AllBooksViewModel bookModel in @Model)
     {
         <tr>
             <td>
-                @categoryModel.Name
+                @bookModel.Title
             </td>
             <td>
-                @categoryModel.DisplayOrder
+                @bookModel.Price
+            </td>
+            <td>
+                @bookModel.Description
+            </td>
+            <td>
+                @(bookModel.Author.FirstName + " " + bookModel.Author.LastName)
             </td>
             <td>
                 <div class="w-100">
-                    <a asp-controller="Category" asp-action="Edit" asp-route-id="@categoryModel.Id" class="btn btn-primary btn-sm" style="font-size: 13px">
+                    <a asp-controller="Book" asp-action="Edit" asp-route-id="@bookModel.Id" class="btn btn-primary btn-sm" style="font-size: 13px">
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
-                    <a asp-controller="Category" asp-action="Delete" asp-route-id="@categoryModel.Id" class="btn btn-danger btn-sm" style="font-size: 13px">
+                    <a asp-controller="Book" asp-action="Delete" asp-route-id="@bookModel.Id" class="btn btn-danger btn-sm" style="font-size: 13px">
                         <i class="bi bi-trash"></i> Delete
                     </a>
                 </div>

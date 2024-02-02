@@ -21,6 +21,12 @@ public static class ValidationConstants
 
         public const int BookIsbnMaxLength = 13;
         public const int BookIsbnMinLength = 13;
+
+        public const double BookPriceMaxRange = 1000.0;
+        public const double BookPriceMinRange = 0.99;
+
+        public const int BookPagesMaxRange = 2000;
+        public const int BookPagesMinRange = 15;
     }
 
     public static class Author

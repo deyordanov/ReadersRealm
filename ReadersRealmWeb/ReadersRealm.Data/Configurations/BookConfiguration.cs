@@ -26,6 +26,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
                 Used = false,
                 Description = "An exciting journey through uncharted lands.",
                 AuthorId = Guid.Parse("A5E87971-53AD-40DF-97FF-79DCAEF4520A"),
+                CategoryId = 1
             },
             new Book
             {
@@ -37,6 +38,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
                 Used = true,
                 Description = "Exploring the wonders of science in everyday life.",
                 AuthorId = Guid.Parse("72FC4A67-9B6D-44E0-A21A-CC78BA323DEA"),
+                CategoryId = 2
             }
         };
 

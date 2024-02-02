@@ -4,5 +4,5 @@ using Models;
 
 public interface IAuthorRepository : IRepository<Author>
 {
-    Task<Author> GetByIdAsync(Guid id);
+    Task<Author?> GetByIdAsync(Guid id);
 }

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReadersRealm.Common\ReadersRealm.Common.csproj" />
+    <ProjectReference Include="..\ReadersRealm.Data.Models\ReadersRealm.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

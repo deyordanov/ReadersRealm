@@ -100,7 +100,7 @@ public class Author
     [Required]
     [StringLength(AuthorEmailMaxLength)]
     [Comment("Author Email")]
-    public string Email { get; set; } = string.Empty;
+    public required string Email { get; set; }
 
     /// <summary>
     /// Gets or sets the phone number of the Author.

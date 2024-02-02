@@ -12,11 +12,11 @@ public class AuthorBookRepository : Repository<AuthorBook>, IAuthorBookRepositor
         this.dbContext = dbContext;
     }
 
-    public async Task<AuthorBook> GetByIdsAsync(Guid authorId, Guid bookId)
-    {
-        return await this
-            .dbContext
-            .AuthorsBooks
-            .FirstAsync(ab => ab.AuthorId == authorId && ab.BookId == bookId);
-    }
+    // public async Task<AuthorBook> GetByIdsAsync(Guid authorId, Guid bookId)
+    // {
+    //     return await this
+    //         .dbContext
+    //         .AuthorsBooks
+    //         .FirstAsync(ab => ab.AuthorId == authorId && ab.BookId == bookId);
+    // }
 }

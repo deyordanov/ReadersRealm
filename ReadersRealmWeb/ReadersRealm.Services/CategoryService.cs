@@ -1,5 +1,6 @@
 ﻿namespace ReadersRealm.Services;
 
+using Common.Exceptions;
 using Contracts;
 using Data;
 using Data.Models;
@@ -8,12 +9,10 @@ using ViewModels.Category;
 
 public class CategoryService : ICategoryService
 {
-    private readonly ReadersRealmDbContext dbContext;
     private readonly IUnitOfWork unitOfWork;
 
-    public CategoryService(ReadersRealmDbContext dbContext, IUnitOfWork unitOfWork)
+    public CategoryService(IUnitOfWork unitOfWork)
     {
-        this.dbContext = dbContext;
         this.unitOfWork = unitOfWork;
     }
 
@@ -31,6 +30,24 @@ public class CategoryService : ICategoryService
                 Name = c.Name,
                 DisplayOrder = c.DisplayOrder,
             });
+
+        return categoriesToReturn;
+    }
+
+    public async Task<List<AllCategoriesListViewModel>> GetAllListAsync()
+    {
+        List<Category> allCategories = await this
+            .unitOfWork
+            .CategoryRepository
+            .GetAsync(null, null, "");
+
+        List<AllCategoriesListViewModel> categoriesToReturn = allCategories
+            .Select(c => new AllCategoriesListViewModel()
+            {
+                Id = c.Id,
+                Name = c.Name
+            })
+            .ToList(); ;
 
         return categoriesToReturn;
     }
@@ -61,10 +78,15 @@ public class CategoryService : ICategoryService
 
     public async Task EditCategoryAsync(EditCategoryViewModel categoryModel)
     {
-        Category categoryToEdit = await this
+        Category? categoryToEdit = await this
             .unitOfWork
             .CategoryRepository
             .GetByIdAsync(categoryModel.Id);
+
+        if (categoryToEdit == null)
+        {
+            throw new CategoryNotFoundException();
+        }
 
         categoryToEdit.Name = categoryModel.Name;
         categoryToEdit.DisplayOrder = categoryModel.DisplayOrder;
@@ -74,14 +96,24 @@ public class CategoryService : ICategoryService
 
     public async Task DeleteCategoryAsync(DeleteCategoryViewModel categoryModel)
     {
-        Category categoryToDelete = await this
+        Category? categoryToDelete = await this
             .unitOfWork
             .CategoryRepository
             .GetByIdAsync(categoryModel.Id);
 
-        this.unitOfWork.CategoryRepository.Delete(categoryToDelete);
+        if (categoryToDelete == null)
+        {
+            throw new CategoryNotFoundException();
+        }
 
-        await this.unitOfWork.SaveAsync();
+        this
+            .unitOfWork
+            .CategoryRepository
+            .Delete(categoryToDelete);
+
+        await this
+            .unitOfWork
+            .SaveAsync();
     }
 
 }

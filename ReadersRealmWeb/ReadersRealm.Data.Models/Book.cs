@@ -21,14 +21,9 @@ using static Common.ValidationConstants.Book;
 [Comment("Readers Realm Book")]
 public class Book
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Book"/> class.
-    /// Sets the Id property to a new GUID.
-    /// </summary>
     public Book()
     {
         this.Id = Guid.NewGuid();
-        this.Categories = new HashSet<Category>();
     }
 
     /// <summary>
@@ -96,7 +91,7 @@ public class Book
     /// </summary>
     /// <value><c>true</c> if the Book is used; otherwise, <c>false</c>.</value>
     [Comment("Book Condition")]
-    public bool? Used { get; set; }
+    public bool Used { get; set; }
 
     /// <summary>
     /// Gets or sets the unique identifier for the Author of the Book.
@@ -117,12 +112,22 @@ public class Book
     public Author Author { get; set; }
 
     /// <summary>
-    /// Gets or sets the collection of categories associated with the Book.
-    /// This property represents the many-to-many relationship between books and categories,
-    /// allowing a book to be classified under multiple categories for better organization and discovery.
+    /// Gets or sets the unique identifier for the Category of the Book.
+    /// This property represents the foreign key in the database that links the book to its category,
+    /// enabling a hierarchical organization of books by their subject matter or genre.
     /// </summary>
-    /// <value>The collection of categories the Book belongs to.</value>
-    [Comment("Book's Categories")]
-    public HashSet<Category> Categories { get; set; }
+    /// <value>The Category's unique identifier.</value>
+    [Required]
+    [Comment("Category Identifier")]
+    public int CategoryId { get; set; }
 
+    /// <summary>
+    /// Gets or sets the Category of the Book.
+    /// This is a navigation property that allows for the direct access to the Category entity
+    /// associated with this book, facilitating queries that involve book categorization.
+    /// </summary>
+    /// <value>The Category to which the Book belongs.</value>
+    [ForeignKey(nameof(CategoryId))]
+    [Comment("Book's Category")]
+    public Category Category { get; set; }
 }
