@@ -12,7 +12,6 @@ using static Common.ValidationMessages.Category;
 /// This model is used to capture and validate user input when updating category details.
 /// It includes validation rules to ensure the updated data is valid.
 /// </summary>
-[Comment("Edit Category View Model")]
 public class EditCategoryViewModel
 {
     /// <summary>
@@ -21,7 +20,6 @@ public class EditCategoryViewModel
     /// <value>
     /// The unique identifier for the category. This is crucial for identifying which category is being updated.
     /// </value>
-    [Comment("Edit Category View Model Identifier")]
     public int Id { get; set; }
 
     /// <summary>
@@ -40,7 +38,6 @@ public class EditCategoryViewModel
     [StringLength(CategoryNameMaxLength,
         ErrorMessage = CategoryNameLengthMessage,
         MinimumLength = CategoryNameMinLength)]
-    [Comment("Edit Category View Model Name")]
     public required string Name { get; set; }
 
     /// <summary>
@@ -57,6 +54,5 @@ public class EditCategoryViewModel
     [Range(CategoryDisplayOrderMinRange,
         CategoryDisplayOrderMaxRange,
         ErrorMessage = CategoryDisplayOrderRangeMessage)]
-    [Comment("Edit Category View Model Display Order")]
     public int DisplayOrder { get; set; }
 }

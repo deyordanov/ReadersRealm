@@ -1,6 +1,5 @@
 ﻿namespace ReadersRealm.Data.Models;
 
-using Contracts;
 using Enums;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -20,7 +19,7 @@ using static Common.ValidationConstants.Book;
 /// Book sampleBook = new Book { Title = "Sample Title", ISBN = "1234567890", AuthorId = Guid.NewGuid() };
 /// </example>
 [Comment("Readers Realm Book")]
-public class Book : IReadersRealmDbContextBaseEntityModel<Guid>
+public class Book
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Book"/> class.
@@ -57,7 +56,7 @@ public class Book : IReadersRealmDbContextBaseEntityModel<Guid>
     /// <value>The description of the Book.</value>
     [StringLength(BookDescriptionMaxLength)]
     [Comment("Book Description")]
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
     /// <summary>
     /// Gets or sets the ISBN of the Book.
@@ -66,7 +65,7 @@ public class Book : IReadersRealmDbContextBaseEntityModel<Guid>
     /// <value>The ISBN of the Book.</value>
     [Required]
     [StringLength(BookIsbnMaxLength)]
-    [Comment("Book ISBN")]
+    [Comment("Book's International Standard Book Number")]
     public required string ISBN { get; set; }
 
     /// <summary>
@@ -74,6 +73,7 @@ public class Book : IReadersRealmDbContextBaseEntityModel<Guid>
     /// </summary>
     /// <value>The price of the Book.</value>
     [Required]
+    [Column(TypeName = "decimal(18, 2)")]
     [Comment("Book Price")]
     public decimal Price { get; set; }
 
@@ -102,6 +102,7 @@ public class Book : IReadersRealmDbContextBaseEntityModel<Guid>
     /// Gets or sets the unique identifier for the Author of the Book.
     /// </summary>
     /// <value>The Author's unique identifier.</value>
+    [Required]
     [Comment("Author Identifier")]
     public Guid AuthorId { get; set; }
 

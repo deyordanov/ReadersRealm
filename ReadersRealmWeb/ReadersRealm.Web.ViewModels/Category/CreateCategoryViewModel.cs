@@ -12,7 +12,6 @@ using static Common.ValidationMessages.Category;
 /// This model is used to gather information from the user necessary to create a new category.
 /// It includes validation rules to ensure the data received is valid.
 /// </summary>
-[Comment("Create Category View Model")]
 public class CreateCategoryViewModel
 {
     /// <summary>
@@ -31,7 +30,6 @@ public class CreateCategoryViewModel
     [StringLength(CategoryNameMaxLength,
         ErrorMessage = CategoryNameLengthMessage,
         MinimumLength = CategoryNameMinLength)]
-    [Comment("Create Category View Model Name")]
     public required string Name { get; set; }
 
     /// <summary>
@@ -49,6 +47,5 @@ public class CreateCategoryViewModel
     [Range(CategoryDisplayOrderMinRange,
         CategoryDisplayOrderMaxRange,
         ErrorMessage = CategoryDisplayOrderRangeMessage)]
-    [Comment("Create Category View Model Display Order")]
     public int DisplayOrder { get; set; }
 }

@@ -14,6 +14,8 @@ public class ReadersRealmDbContext : DbContext
     public required DbSet<Author> Authors { get; set; }
 
     public required DbSet<Book> Books { get; set; }
+
+    public required DbSet<AuthorBook> AuthorsBooks { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Seed();

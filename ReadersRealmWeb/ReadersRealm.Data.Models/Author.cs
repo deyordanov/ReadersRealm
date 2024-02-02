@@ -1,6 +1,5 @@
 ﻿namespace ReadersRealm.Data.Models;
 
-using Contracts;
 using Enums;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -28,7 +27,7 @@ using static Common.ValidationConstants.Author;
 /// };
 /// </example>
 [Comment("Readers Realm Author")]
-public class Author : IReadersRealmDbContextBaseEntityModel<Guid>
+public class Author
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Author"/> class.
@@ -65,13 +64,14 @@ public class Author : IReadersRealmDbContextBaseEntityModel<Guid>
     /// <value>The middle name of the Author.</value>
     [StringLength(AuthorMiddleNameMaxLength)]
     [Comment("Author Middle Name")]
-    public string MiddleName { get; set; } = string.Empty;
+    public string? MiddleName { get; set; }
 
     /// <summary>
     /// Gets or sets the last name of the Author.
     /// The last name is a required field and has a maximum length defined in AuthorLastNameMaxLength.
     /// </summary>
     /// <value>The last name of the Author.</value>
+    [Required]
     [StringLength(AuthorLastNameMaxLength)]
     [Comment("Author Last Name")]
     public required string LastName { get; set; }
@@ -88,6 +88,7 @@ public class Author : IReadersRealmDbContextBaseEntityModel<Guid>
     /// Gets or sets the gender of the Author, represented by the Gender enum.
     /// </summary>
     /// <value>The gender of the Author.</value>
+    [Required]
     [Comment("Author Gender")]
     public Gender Gender { get; set; }
 
@@ -96,6 +97,7 @@ public class Author : IReadersRealmDbContextBaseEntityModel<Guid>
     /// The email is optional and has a maximum length defined in AuthorEmailMaxLength.
     /// </summary>
     /// <value>The email address of the Author.</value>
+    [Required]
     [StringLength(AuthorEmailMaxLength)]
     [Comment("Author Email")]
     public string Email { get; set; } = string.Empty;
@@ -105,6 +107,7 @@ public class Author : IReadersRealmDbContextBaseEntityModel<Guid>
     /// The phone number is a required field and has a maximum length defined in AuthorPhoneNumberMaxLength.
     /// </summary>
     /// <value>The phone number of the Author.</value>
+    [Required]
     [StringLength(AuthorPhoneNumberMaxLength)]
     [Comment("Author Phone Number")]
     public required string PhoneNumber { get; set; }

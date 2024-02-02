@@ -1,6 +1,5 @@
 ﻿namespace ReadersRealm.Data.Models;
 
-using Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using static Common.ValidationConstants.Category;
@@ -18,8 +17,13 @@ using static Common.ValidationConstants.Category;
 /// Category fictionCategory = new Category { Name = "Fiction", DisplayOrder = 1 };
 /// </example>
 [Comment("Readers Realm Category")]
-public class Category : IReadersRealmDbContextBaseEntityModel<int>
+public class Category
 {
+    public Category()
+    {
+        this.Books = new HashSet<Book>();
+    }
+
     /// <summary>
     /// Gets or sets the unique identifier for the Category.
     /// </summary>
@@ -43,7 +47,16 @@ public class Category : IReadersRealmDbContextBaseEntityModel<int>
     /// Categories with lower display orders are shown first.
     /// </summary>
     /// <value>The display order of the Category.</value>
+    [Required]
     [Range(CategoryDisplayOrderMinRange, CategoryDisplayOrderMaxRange)]
     [Comment("Category Display Order")]
     public int DisplayOrder { get; set; }
+
+    /// <summary>
+    /// Gets or sets the collection of Books associated with this Category.
+    /// Each book in this collection is classified under the Category based on its genre or topic.
+    /// </summary>
+    /// <value>A collection of Books that are classified under this Category.</value>
+    [Comment("Associated Books")]
+    public HashSet<Book> Books { get; set; }
 }

@@ -3,9 +3,7 @@
 using Contracts;
 using Data;
 using Data.Models;
-using Data.Repositories;
 using Data.Repositories.Contracts;
-using Microsoft.EntityFrameworkCore;
 using ViewModels.Category;
 
 public class CategoryService : ICategoryService
@@ -21,18 +19,6 @@ public class CategoryService : ICategoryService
 
     public async Task<IEnumerable<AllCategoriesViewModel>> GetAllAsync()
     {
-        // IEnumerable<AllCategoriesViewModel> allCategories = await this
-        //     .dbContext
-        //     .Categories
-        //     .AsNoTracking()
-        //     .Select(c => new AllCategoriesViewModel()
-        //     {
-        //         Id = c.Id,
-        //         Name = c.Name,
-        //         DisplayOrder = c.DisplayOrder,
-        //     })
-        //     .ToListAsync();
-
         List<Category> allCategories = await this
             .unitOfWork
             .CategoryRepository
@@ -57,28 +43,16 @@ public class CategoryService : ICategoryService
             DisplayOrder = categoryModel.DisplayOrder,
         };
 
-        // await this
-        //     .dbContext
-        //     .Categories
-        //     .AddAsync(categoryToAdd);
-
         await this
             .unitOfWork
             .CategoryRepository
             .AddAsync(categoryToAdd);
 
-        // await this.dbContext.SaveChangesAsync();
         await this.unitOfWork.SaveAsync();
     }
 
     public async Task<Category?> GetCategoryByIdAsync(int id)
     {
-        // return await this
-        //     .dbContext
-        //     .Categories
-        //     .AsNoTracking()
-        //     .FirstOrDefaultAsync(c => c.Id == id);
-
         return await this
             .unitOfWork
             .CategoryRepository
@@ -87,11 +61,6 @@ public class CategoryService : ICategoryService
 
     public async Task EditCategoryAsync(EditCategoryViewModel categoryModel)
     {
-        // Category categoryToEdit = await this
-        //     .dbContext
-        //     .Categories
-        //     .FirstAsync(c => c.Id == categoryModel.Id);
-
         Category categoryToEdit = await this
             .unitOfWork
             .CategoryRepository
@@ -100,33 +69,17 @@ public class CategoryService : ICategoryService
         categoryToEdit.Name = categoryModel.Name;
         categoryToEdit.DisplayOrder = categoryModel.DisplayOrder;
 
-        // await this
-        //     .dbContext
-        //     .SaveChangesAsync();
-
         await this.unitOfWork.SaveAsync();
     }
 
     public async Task DeleteCategoryAsync(DeleteCategoryViewModel categoryModel)
     {
-        // Category categoryToDelete = await this
-        //     .dbContext
-        //     .Categories
-        //     .FirstAsync(c => c.Id == categoryModel.Id);
-
         Category categoryToDelete = await this
             .unitOfWork
             .CategoryRepository
             .GetByIdAsync(categoryModel.Id);
 
         this.unitOfWork.CategoryRepository.Delete(categoryToDelete);
-
-        // this
-        //     .dbContext
-        //     .Categories
-        //     .Remove(categoryToDelete);
-
-        // await this.dbContext.SaveChangesAsync();
 
         await this.unitOfWork.SaveAsync();
     }
