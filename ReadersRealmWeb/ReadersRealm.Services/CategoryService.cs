@@ -52,6 +52,60 @@ public class CategoryService : ICategoryService
         return categoriesToReturn;
     }
 
+    public async Task<EditCategoryViewModel> GetCategoryForEditAsync(int id)
+    {
+        Category? category = await this
+            .unitOfWork
+            .CategoryRepository
+            .GetByIdAsync(id);
+
+        if (category == null)
+        {
+            throw new CategoryNotFoundException();
+        }
+
+        EditCategoryViewModel categoryModel = new EditCategoryViewModel()
+        {
+            Id = category.Id,
+            Name = category.Name,
+            DisplayOrder = category.DisplayOrder,
+        };
+        
+        return categoryModel;
+    }
+
+    public async Task<DeleteCategoryViewModel> GetCategoryForDeleteAsync(int id)
+    {
+        Category? category = await this
+            .unitOfWork
+            .CategoryRepository
+            .GetByIdAsync(id);
+
+        if (category == null)
+        {
+            throw new CategoryNotFoundException();
+        }
+
+        DeleteCategoryViewModel categoryModel = new DeleteCategoryViewModel()
+        {
+            Id = category.Id,
+            Name = category.Name,
+            DisplayOrder = category.DisplayOrder,
+        };
+
+        return categoryModel;
+    }
+
+    public CreateCategoryViewModel GetCategoryForCreate()
+    {
+        CreateCategoryViewModel categoryModel = new CreateCategoryViewModel()
+        {
+            Name = ""
+        };
+
+        return categoryModel;
+    }
+
     public async Task CreateCategoryAsync(CreateCategoryViewModel categoryModel)
     {
         Category categoryToAdd = new Category()

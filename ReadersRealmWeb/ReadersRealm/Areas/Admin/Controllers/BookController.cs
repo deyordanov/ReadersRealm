@@ -5,24 +5,25 @@ namespace ReadersRealm.Areas.Admin.Controllers;
 using Data.Models;
 using Services.Contracts;
 using ViewModels.Book;
-using ViewModels.Category;
-using Web.ViewModels.Author;
 using Web.ViewModels.Book;
+using static Common.Constants.Book;
+using static Common.Constants.Shared;
 
 [Area("Admin")]
 public class BookController : Controller
 {
-    private IBookService bookService;
-    private IAuthorService authorService;
-    private ICategoryService categoryService;
+    private readonly IBookService bookService;
+    private readonly ICategoryService categoryService;
+    private readonly IAuthorService authorService;
 
-    public BookController(IBookService bookService, 
-        IAuthorService authorService,
-        ICategoryService categoryService)
+    public BookController(
+        IBookService bookService, 
+        ICategoryService categoryService, 
+        IAuthorService authorService)
     {
         this.bookService = bookService;
-        this.authorService = authorService;
         this.categoryService = categoryService;
+        this.authorService = authorService;
     }
 
     [HttpGet]
@@ -38,21 +39,9 @@ public class BookController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        List<AllAuthorsListViewModel> authorsList = await this
-            .authorService
-            .GetAllListAsync();
-
-        List<AllCategoriesListViewModel> categoriesList = await this
-            .categoryService
-            .GetAllListAsync();
-
-        CreateBookViewModel bookModel = new CreateBookViewModel()
-        {
-            Title = "",
-            ISBN = "",
-            AuthorsList = authorsList,
-            CategoriesList = categoriesList
-        };
+        CreateBookViewModel bookModel = await this
+            .bookService
+            .GetBookForCreateAsync();
 
         return View(bookModel);
     }
@@ -60,8 +49,26 @@ public class BookController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateBookViewModel bookModel)
     {
+        if (bookModel.AuthorId == Guid.Empty)
+        {
+            ModelState.AddModelError("AuthorId", "Author is required!");
+        }
+
+        if (bookModel.CategoryId == 0)
+        {
+            ModelState.AddModelError("CategoryId", "Category is required!");
+        }
+
         if (!ModelState.IsValid)
         {
+            bookModel.AuthorsList = await this
+                .authorService
+                .GetAllListAsync();
+
+            bookModel.CategoriesList = await this
+                .categoryService
+                .GetAllListAsync();
+
             return View(bookModel);
         }
 
@@ -69,7 +76,7 @@ public class BookController : Controller
             bookService
                 .CreateBookAsync(bookModel);
 
-        TempData["Success"] = "Successfully created a new book!";
+        TempData[Success] = BookHasBeenSuccessfullyCreated;
 
         return RedirectToAction(nameof(Index), nameof(Book));
     }
@@ -82,48 +89,26 @@ public class BookController : Controller
             return NotFound();
         }
 
-        Book? book = await this
+        EditBookViewModel bookModel = await this
             .bookService
-            .GetBookByIdWithNavPropertiesAsync((Guid)id);
-
-        if (book == null)
-        {
-            return NotFound();
-        }
-
-        List<AllAuthorsListViewModel> authorsList = await this
-            .authorService
-            .GetAllListAsync();
-
-        List<AllCategoriesListViewModel> categoriesList = await this
-            .categoryService
-            .GetAllListAsync();
-
-        EditBookViewModel bookModel = new EditBookViewModel()
-        {
-            Id = book.Id,
-            ISBN = book.ISBN,
-            Title = book.Title,
-            BookCover = book.BookCover,
-            Description = book.Description,
-            Pages = book.Pages,
-            Price = book.Price,
-            Used = book.Used,
-            Author = book.Author,
-            AuthorId = book.AuthorId,
-            Category = book.Category,
-            CategoryId = book.CategoryId,
-            AuthorsList = authorsList,
-            CategoriesList = categoriesList
-        };
+            .GetBookForEditAsync((Guid)id);
 
         return View(bookModel);
     }
 
+    [HttpPost]
     public async Task<IActionResult> Edit(EditBookViewModel bookModel)
     {
         if (!ModelState.IsValid)
         {
+            bookModel.AuthorsList = await this
+                .authorService
+                .GetAllListAsync();
+
+            bookModel.CategoriesList = await this
+                .categoryService
+                .GetAllListAsync();
+
             return View(bookModel);
         }
 
@@ -131,7 +116,7 @@ public class BookController : Controller
             .bookService
             .EditBookAsync(bookModel);
 
-        TempData["Success"] = "Book has been edited successfully!";
+        TempData[Success] = BookHasBeenSuccessfullyEdited;
 
         return RedirectToAction(nameof(Index), nameof(Book));
     }
@@ -144,33 +129,14 @@ public class BookController : Controller
             return NotFound();
         }
 
-        Book? book = await this
+        DeleteBookViewModel bookModel = await this
             .bookService
-                .GetBookByIdWithNavPropertiesAsync((Guid)id);
-
-        if (book == null)
-        {
-            return NotFound();
-        }
-
-        DeleteBookViewModel bookModel = new DeleteBookViewModel()
-        {
-            Id = book.Id,
-            ISBN = book.ISBN,
-            Title = book.Title,
-            BookCover = book.BookCover,
-            Description = book.Description,
-            Pages = book.Pages,
-            Price = book.Price,
-            Used = book.Used,
-            Author = book.Author,
-            AuthorId = book.AuthorId,
-            Category = book.Category,
-            CategoryId = book.CategoryId,
-        };
+            .GetBookForDeleteAsync((Guid)id);
 
         return View(bookModel);
     }
+
+    [HttpPost]
 
     public async Task<IActionResult> Delete(DeleteBookViewModel bookModel)
     {
@@ -178,7 +144,7 @@ public class BookController : Controller
             .bookService
             .DeleteBookAsync(bookModel);
 
-        TempData["Success"] = "Book has been deleted successfully!";
+        TempData[Success] = BookHasBeenSuccessfullyDeleted;
 
         return RedirectToAction(nameof(Index), nameof(Book));
     }

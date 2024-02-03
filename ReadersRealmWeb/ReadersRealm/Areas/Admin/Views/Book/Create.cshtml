@@ -59,22 +59,28 @@
             </div>
             <span asp-validation-for="Used" class="text-danger"></span>
         </div>
-        <select name="AuthorId" class="mb-3 row p-1">
-            <label class="p-0" asp-for="AuthorId"></label>
-            <option value="">Select book author</option>
-            @foreach (AllAuthorsListViewModel authorModel in Model.AuthorsList!)
-            {
-                <option value="@authorModel.Id">@($"{authorModel.FirstName} {authorModel.LastName}")</option>
-            }
-        </select>
-        <select name="CategoryId" class="mb-3 row p-1">
-            <label class="p-0" asp-for="AuthorId"></label>
-            <option value="">Select book category</option>
-            @foreach (AllCategoriesListViewModel categoryModel in Model.CategoriesList!)
-            {
-                <option value="@categoryModel.Id">@categoryModel.Name</option>
-            }
-        </select>
+        <div class=" mb-3">
+            <select name="AuthorId" class="row p-1">
+                <label class="p-0" asp-for="AuthorId"></label>
+                <option value=@Guid.Empty>Select book author</option>
+                @foreach (AllAuthorsListViewModel authorModel in Model.AuthorsList!)
+                {
+                    <option value="@authorModel.Id">@($"{authorModel.FirstName} {authorModel.LastName}")</option>
+                }
+            </select>
+            <span asp-validation-for="AuthorId" class="text-danger mb-2"></span>
+        </div>
+        <div class="mb-3">
+            <select name="CategoryId" class="row p-1">
+                <label class="p-0" asp-for="AuthorId"></label>
+                <option value=0>Select book category</option>
+                @foreach (AllCategoriesListViewModel categoryModel in Model.CategoriesList!)
+                {
+                    <option value="@categoryModel.Id">@categoryModel.Name</option>
+                }
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
         <div class="row">
             <div class="col-6">
                 <a asp-controller="Book" asp-action="Index" class="btn btn-outline-secondary form-control">

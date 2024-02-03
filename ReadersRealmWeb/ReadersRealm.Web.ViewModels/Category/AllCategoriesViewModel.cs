@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// A ViewModel representing a collection of all categories in the Readers Realm application.
-/// This model is typically used for displaying categories in user interfaces where
+/// This model is used for displaying categories in user interfaces where
 /// a list of categories is required.
 /// </summary>
 public class AllCategoriesViewModel

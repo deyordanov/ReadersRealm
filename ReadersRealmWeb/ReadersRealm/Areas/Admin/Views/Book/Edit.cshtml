@@ -81,34 +81,40 @@
             </div>
             <span asp-validation-for="Used" class="text-danger"></span>
         </div>
-        <select name="AuthorId" class="mb-3 row p-1">
-            <label class="p-0" asp-for="AuthorId"></label>
-            @foreach (AllAuthorsListViewModel authorModel in Model.AuthorsList!)
-            {
-                if(Model.AuthorId == authorModel.Id)
+        <div class="mb-3">
+            <select name="AuthorId" class="mb-3 row p-1">
+                <label class="p-0" asp-for="AuthorId"></label>
+                @foreach (AllAuthorsListViewModel authorModel in Model.AuthorsList!)
                 {
-                    <option value="@authorModel.Id" selected>@($"{authorModel.FirstName} {authorModel.LastName}")</option>
+                    if(Model.AuthorId == authorModel.Id)
+                    {
+                        <option value="@authorModel.Id" selected>@($"{authorModel.FirstName} {authorModel.LastName}")</option>
+                    }
+                    else
+                    {
+                        <option value="@authorModel.Id">@($"{authorModel.FirstName} {authorModel.LastName}")</option>
+                    }
                 }
-                else
+            </select> 
+            <span asp-validation-for="AuthorId" class="text-danger mb-2"></span>
+        </div>
+        <div class="mb-3">
+            <select name="CategoryId" class="mb-3 row p-1">
+                <label class="p-0" asp-for="AuthorId"></label>
+                @foreach (AllCategoriesListViewModel categoryModel in Model.CategoriesList!)
                 {
-                    <option value="@authorModel.Id">@($"{authorModel.FirstName} {authorModel.LastName}")</option>
+                    if(Model.CategoryId == categoryModel.Id)
+                    {
+                        <option value="@categoryModel.Id" selected>@categoryModel.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@categoryModel.Id">@categoryModel.Name</option>
+                    }
                 }
-            }
-        </select>
-        <select name="CategoryId" class="mb-3 row p-1">
-            <label class="p-0" asp-for="AuthorId"></label>
-            @foreach (AllCategoriesListViewModel categoryModel in Model.CategoriesList!)
-            {
-                if(Model.CategoryId == categoryModel.Id)
-                {
-                    <option value="@categoryModel.Id" selected>@categoryModel.Name</option>
-                }
-                else
-                {
-                    <option value="@categoryModel.Id">@categoryModel.Name</option>
-                }
-            }
-        </select>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
         <div class="row">
             <div class="col-6">
                 <a asp-controller="Book" asp-action="Index" class="btn btn-outline-secondary form-control">

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using ViewModels.Category;
 using static Common.Constants.Category;
+using static Common.Constants.Shared;
 using static Common.ValidationMessages.Category;
 
 [Area("Admin")]
@@ -30,7 +31,11 @@ public class CategoryController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        return View();
+        CreateCategoryViewModel categoryModel = this
+            .categoryService
+            .GetCategoryForCreate();
+
+        return View(categoryModel);
     }
 
     [HttpPost]
@@ -50,34 +55,22 @@ public class CategoryController : Controller
             categoryService
             .CreateCategoryAsync(categoryModel);
 
-        TempData["Success"] = CategoryHasBeenSuccessfullyCreated;
+        TempData[Success] = CategoryHasBeenSuccessfullyCreated;
 
-        return RedirectToAction("Index", "Category");
+        return RedirectToAction(nameof(Index), nameof(Category));
     }
 
     [HttpGet]
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null || id == 0)
+        if (id == null || id <= 0)
         {
             return NotFound();
         }
 
-        Category? category = await 
-            categoryService
-            .GetCategoryByIdAsync((int)id);
-
-        if (category == null)
-        {
-            return NotFound();
-        }
-
-        EditCategoryViewModel categoryModel = new EditCategoryViewModel()
-        {
-            Id = category.Id,
-            Name = category.Name,
-            DisplayOrder = category.DisplayOrder,
-        };
+        EditCategoryViewModel categoryModel = await this
+            .categoryService
+            .GetCategoryForEditAsync((int)id);
 
         return View(categoryModel);
     }
@@ -99,9 +92,9 @@ public class CategoryController : Controller
             categoryService
             .EditCategoryAsync(categoryModel);
 
-        TempData["Success"] = CategoryHasBeenSuccessfullyEdited;
+        TempData[Success] = CategoryHasBeenSuccessfullyEdited;
 
-        return RedirectToAction("Index", "Category");
+        return RedirectToAction(nameof(Index), nameof(Category));
     }
 
     [HttpGet]
@@ -112,21 +105,9 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? category = await 
-            categoryService
-            .GetCategoryByIdAsync((int)id);
-
-        if (category == null)
-        {
-            return NotFound();
-        }
-
-        DeleteCategoryViewModel categoryModel = new DeleteCategoryViewModel()
-        {
-            Id = category.Id,
-            Name = category.Name,
-            DisplayOrder = category.DisplayOrder,
-        };
+        DeleteCategoryViewModel categoryModel = await this
+            .categoryService
+            .GetCategoryForDeleteAsync((int)id);
 
         return View(categoryModel);
     }
@@ -138,8 +119,8 @@ public class CategoryController : Controller
             categoryService
             .DeleteCategoryAsync(categoryModel);
 
-        TempData["Success"] = CategoryHasBeenSuccessfullyDeleted;
+        TempData[Success] = CategoryHasBeenSuccessfullyDeleted;
 
-        return RedirectToAction("Index", "Category");
+        return RedirectToAction(nameof(Index), nameof(Category));
     }
 }
