@@ -21,7 +21,7 @@ public class AllBooksViewModel
 
     public bool Used { get; set; }
 
-    public required string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
     public Guid AuthorId { get; set; }
 

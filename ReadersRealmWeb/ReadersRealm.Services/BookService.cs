@@ -157,7 +157,6 @@ public class BookService : IBookService
         {
             Title = "",
             ISBN = "",
-            ImageUrl = "",
             AuthorsList = authorsList,
             CategoriesList = categoriesList
         };

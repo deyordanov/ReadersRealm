@@ -94,7 +94,7 @@ public class Book
     public bool Used { get; set; }
 
     [Comment("Book Image Url")]
-    public required string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
     /// <summary>
     /// Gets or sets the unique identifier for the Author of the Book.

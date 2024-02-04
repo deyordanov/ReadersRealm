@@ -47,7 +47,7 @@ public class CreateBookViewModel
     public bool Used { get; set; }
 
     [Display(Name = "Image")]
-    public required string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
     [Display(Name = "Author")]
     public Guid AuthorId { get; set; }

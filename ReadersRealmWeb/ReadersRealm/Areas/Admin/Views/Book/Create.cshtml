@@ -87,9 +87,7 @@
         <div class="mb-3 row p-1">
             <label asp-for="ImageUrl" class="row"></label>
             <input type="file" name="file" class="form-control" value="">
-            <span asp-validation-for="ImageUrl" class="text-danger"></span>
         </div>
-        <input asp-for="ImageUrl" value="dummy" hidden/>
         <div class="row">
             <div class="col-6">
                 <a asp-controller="Book" asp-action="Index" class="btn btn-outline-secondary form-control">

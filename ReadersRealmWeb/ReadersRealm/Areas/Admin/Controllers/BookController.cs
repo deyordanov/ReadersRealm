@@ -50,7 +50,7 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateBookViewModel bookModel, IFormFile file)
+    public async Task<IActionResult> Create(CreateBookViewModel bookModel, IFormFile? file)
     {
         if (bookModel.AuthorId == Guid.Empty)
         {
@@ -75,16 +75,12 @@ public class BookController : Controller
             return View(bookModel);
         }
 
-        string wwwRootPath = webHost.WebRootPath;
-        string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-        string bookPath = Path.Combine(wwwRootPath, @"images\book");
-
-        await using (FileStream stream = new FileStream(Path.Combine(bookPath, fileName), FileMode.Create))
+        if (file != null)
         {
-            await file.CopyToAsync(stream);
-        }
+            string fileName = await this.UploadImageAsync(file, bookModel.ImageUrl);
 
-        bookModel.ImageUrl = @"\images\book\" + fileName;
+            bookModel.ImageUrl = @"\images\book\" + fileName;
+        }
 
         await
             bookService
@@ -111,7 +107,7 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(EditBookViewModel bookModel)
+    public async Task<IActionResult> Edit(EditBookViewModel bookModel, IFormFile? file)
     {
         if (!ModelState.IsValid)
         {
@@ -124,6 +120,13 @@ public class BookController : Controller
                 .GetAllListAsync();
 
             return View(bookModel);
+        }
+
+        if (file != null)
+        {
+            string fileName = await this.UploadImageAsync(file, bookModel.ImageUrl);
+
+            bookModel.ImageUrl = @"\images\book\" + fileName;
         }
 
         await this
@@ -151,7 +154,6 @@ public class BookController : Controller
     }
 
     [HttpPost]
-
     public async Task<IActionResult> Delete(DeleteBookViewModel bookModel)
     {
         await this
@@ -161,5 +163,29 @@ public class BookController : Controller
         TempData[Success] = BookHasBeenSuccessfullyDeleted;
 
         return RedirectToAction(nameof(Index), nameof(Book));
+    }
+
+    private async Task<string> UploadImageAsync(IFormFile file, string? imageUrl)
+    {
+        string wwwRootPath = webHost.WebRootPath;
+        string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+        string bookPath = Path.Combine(wwwRootPath, @"images\book");
+
+        if (!string.IsNullOrWhiteSpace(imageUrl))
+        {
+            string oldImagePath = Path.Combine(wwwRootPath, imageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+        }
+
+        await using (FileStream stream = new FileStream(Path.Combine(bookPath, fileName), FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        return fileName;
     }
 }
