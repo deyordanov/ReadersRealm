@@ -1,6 +1,6 @@
 ﻿namespace ReadersRealm.Common.Exceptions;
 
-public class BookNotFoundException : Exception
+public class BookNotFoundException : ApplicationException
 {
     private const string DefaultMessage = "Such a book was not found!";
 

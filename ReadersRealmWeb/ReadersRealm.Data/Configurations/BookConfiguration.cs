@@ -24,6 +24,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
                 Pages = 320,
                 BookCover = BookCover.Softcover,
                 Used = false,
+                ImageUrl = "",
                 Description = "An exciting journey through uncharted lands.",
                 AuthorId = Guid.Parse("A5E87971-53AD-40DF-97FF-79DCAEF4520A"),
                 CategoryId = 1
@@ -36,6 +37,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
                 Pages = 220,
                 BookCover = BookCover.Hardcover,
                 Used = true,
+                ImageUrl = "",
                 Description = "Exploring the wonders of science in everyday life.",
                 AuthorId = Guid.Parse("72FC4A67-9B6D-44E0-A21A-CC78BA323DEA"),
                 CategoryId = 2
