@@ -1,5 +1,6 @@
 ﻿namespace ReadersRealm.Services;
 
+using Common;
 using Common.Exceptions;
 using Contracts;
 using Data.Models;
@@ -25,14 +26,14 @@ public class BookService : IBookService
         this.authorService = authorService;
     }
 
-    public async Task<IEnumerable<AllBooksViewModel>> GetAllAsync()
+    public async Task<PaginatedList<AllBooksViewModel>> GetAllAsync(int pageIndex, int pageSize)
     {
         List<Book> allBooks = await this
             .unitOfWork
             .BookRepository
             .GetAsync(null, null, "Author, Category");
 
-        IEnumerable<AllBooksViewModel> booksToReturn = allBooks
+        return PaginatedList<AllBooksViewModel>.Create(allBooks
             .Select(b => new AllBooksViewModel()
             {
                 Id = b.Id,
@@ -48,9 +49,8 @@ public class BookService : IBookService
                 Price = b.Price,
                 Used = b.Used,
                 ImageUrl = b.ImageUrl,
-            });
-
-        return booksToReturn;
+            })
+            .ToList(), pageIndex, pageSize); ;
     }
 
     public async Task<Book?> GetBookByIdAsync(Guid id)

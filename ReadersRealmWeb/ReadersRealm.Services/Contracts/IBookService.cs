@@ -1,12 +1,13 @@
 ﻿namespace ReadersRealm.Services.Contracts;
 
+using Common;
 using Data.Models;
 using ViewModels.Book;
 using Web.ViewModels.Book;
 
 public interface IBookService
 {
-    Task<IEnumerable<AllBooksViewModel>> GetAllAsync();
+    Task<PaginatedList<AllBooksViewModel>> GetAllAsync(int pageIndex, int pageSize);
     Task<Book?> GetBookByIdAsync(Guid id);
     Task<Book?> GetBookByIdWithNavPropertiesAsync(Guid id);
     Task<CreateBookViewModel> GetBookForCreateAsync();

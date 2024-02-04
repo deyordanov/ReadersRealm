@@ -1,5 +1,5 @@
 ﻿@using ReadersRealm.ViewModels.Category
-@model IEnumerable<AllBooksViewModel>
+@model ReadersRealm.Common.PaginatedList<AllBooksViewModel>
 
 <partial name="_NotificationPartialView" />
 <div class="container p-0">
@@ -12,18 +12,15 @@
     </div>
 </div>
 
-<table class="table table-hover table-striped table-bordered border-black">
+<table class="table table-bordered table-striped border-black" style="width:100%">
     <thead>
     <tr>
-        <th>
-            Title
-        </th>
-        <th>
-            Price
-        </th>
-        <th>
-            Actions
-        </th>
+        <th>Title</th>
+        <th>ISBN</th>
+        <th>Price</th>
+        <th>Author</th>
+        <th>Category</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -43,8 +40,11 @@
                 @(bookModel.Author.FirstName + " " + bookModel.Author.LastName)
             </td>
             <td>
+                @bookModel.Category.Name
+            </td>
+            <td>
                 <div class="w-100">
-                    <a asp-controller="Book" asp-action="Edit" asp-route-id="@bookModel.Id" class="btn btn-primary btn-sm" style="font-size: 13px">
+                    <a asp-controller="Book" asp-action="Edit" asp-route-id="@bookModel.Id" asp-route-pageIndex=@Model.PageIndex class="btn btn-primary btn-sm" style="font-size: 13px">
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
                     <a asp-controller="Book" asp-action="Delete" asp-route-id="@bookModel.Id" class="btn btn-danger btn-sm" style="font-size: 13px">
@@ -56,3 +56,27 @@
     }
     </tbody>
 </table>
+
+@{
+    bool prevDisabled = !Model.HasPreviousPage ? true : false;
+    bool nextDisabled = !Model.HasNextPage ? true : false;
+}
+
+@if (prevDisabled)
+{
+    <button asp-controller="Book" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex - 1) class="btn btn-primary" disabled="">Previous</button>
+}
+else
+{
+    <a asp-controller="Book" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex - 1) class="btn btn-primary">Previous</a>
+
+}
+
+@if (nextDisabled)
+{
+    <button asp-controller="Book" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex + 1) class="btn btn-primary" disabled>Next</button>
+}
+else
+{
+    <a asp-controller="Book" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex + 1) class="btn btn-primary">Next</a>
+}

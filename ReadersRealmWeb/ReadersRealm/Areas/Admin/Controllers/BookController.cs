@@ -2,12 +2,15 @@
 
 namespace ReadersRealm.Areas.Admin.Controllers;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Common;
 using Data.Models;
 using Services.Contracts;
 using ViewModels.Book;
 using Web.ViewModels.Book;
-using static Common.Constants.Book;
-using static Common.Constants.Shared;
+using static ReadersRealm.Common.Constants.Constants.Book;
+using static ReadersRealm.Common.Constants.Constants.Shared;
 
 [Area("Admin")]
 public class BookController : Controller
@@ -30,11 +33,11 @@ public class BookController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int pageIndex)
     {
-        IEnumerable<AllBooksViewModel> allBooks = await this
+        PaginatedList<AllBooksViewModel> allBooks = await this
             .bookService
-            .GetAllAsync();
+            .GetAllAsync(pageIndex ,5);
 
         return View(allBooks);
     }
@@ -92,7 +95,7 @@ public class BookController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(Guid? id)
+    public async Task<IActionResult> Edit(Guid? id, int pageIndex)
     {
         if (id == null)
         {
@@ -103,11 +106,13 @@ public class BookController : Controller
             .bookService
             .GetBookForEditAsync((Guid)id);
 
+        ViewBag.PageIndex = pageIndex;
+
         return View(bookModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(EditBookViewModel bookModel, IFormFile? file)
+    public async Task<IActionResult> Edit(EditBookViewModel bookModel, IFormFile? file, int pageIndex)
     {
         if (!ModelState.IsValid)
         {
@@ -135,7 +140,7 @@ public class BookController : Controller
 
         TempData[Success] = BookHasBeenSuccessfullyEdited;
 
-        return RedirectToAction(nameof(Index), nameof(Book));
+        return RedirectToAction(nameof(Index), nameof(Book), new { pageIndex = pageIndex });
     }
 
     [HttpGet]
