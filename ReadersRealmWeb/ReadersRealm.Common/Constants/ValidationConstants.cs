@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Common;
+﻿namespace ReadersRealm.Common.Constants;
 
 public static class ValidationConstants
 {

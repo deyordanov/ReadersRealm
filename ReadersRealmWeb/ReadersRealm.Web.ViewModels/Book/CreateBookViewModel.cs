@@ -5,8 +5,8 @@ using Data.Models;
 using ReadersRealm.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using Web.ViewModels.Author;
-using static Common.ValidationConstants.Book;
-using static Common.ValidationMessages.Book;
+using static ReadersRealm.Common.Constants.ValidationConstants.Book;
+using static ReadersRealm.Common.Constants.ValidationMessageConstants.Book;
 
 public class CreateBookViewModel
 {

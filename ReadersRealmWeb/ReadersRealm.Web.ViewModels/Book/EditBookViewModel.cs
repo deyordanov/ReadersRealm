@@ -6,8 +6,8 @@ using Data.Models;
 using ReadersRealm.ViewModels.Category;
 using ReadersRealm.Web.ViewModels.Author;
 using System.ComponentModel.DataAnnotations;
-using static Common.ValidationConstants.Book;
-using static Common.ValidationMessages.Book;
+using static ReadersRealm.Common.Constants.ValidationConstants.Book;
+using static ReadersRealm.Common.Constants.ValidationMessageConstants.Book;
 
 public class EditBookViewModel
 {

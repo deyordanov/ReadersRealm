@@ -2,9 +2,9 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using static Common.Constants.Category;
-using static Common.ValidationConstants.Category;
-using static Common.ValidationMessages.Category;
+using static ReadersRealm.Common.Constants.Constants.Category;
+using static ReadersRealm.Common.Constants.ValidationConstants.Category;
+using static ReadersRealm.Common.Constants.ValidationMessageConstants.Category;
 
 /// <summary>
 /// ViewModel for editing an existing category in the Readers Realm application.

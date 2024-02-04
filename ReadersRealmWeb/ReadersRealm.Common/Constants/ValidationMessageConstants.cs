@@ -1,6 +1,6 @@
-﻿namespace ReadersRealm.Common;
+﻿namespace ReadersRealm.Common.Constants;
 
-public static class ValidationMessages
+public static class ValidationMessageConstants
 {
     public static class Category
     {

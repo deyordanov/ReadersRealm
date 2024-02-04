@@ -3,7 +3,7 @@
 using Enums;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using static Common.ValidationConstants.Author;
+using static ReadersRealm.Common.Constants.ValidationConstants.Author;
 
 /// <summary>
 /// Represents an author in Readers Realm.

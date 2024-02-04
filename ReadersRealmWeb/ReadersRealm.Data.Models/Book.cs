@@ -4,7 +4,7 @@ using Enums;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Common.ValidationConstants.Book;
+using static ReadersRealm.Common.Constants.ValidationConstants.Book;
 
 /// <summary>
 /// Represents a book in Readers Realm.

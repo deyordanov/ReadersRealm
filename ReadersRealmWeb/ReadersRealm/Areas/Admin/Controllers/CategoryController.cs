@@ -4,9 +4,9 @@ using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using ViewModels.Category;
-using static Common.Constants.Category;
-using static Common.Constants.Shared;
-using static Common.ValidationMessages.Category;
+using static ReadersRealm.Common.Constants.Constants.Category;
+using static ReadersRealm.Common.Constants.Constants.Shared;
+using static ReadersRealm.Common.Constants.ValidationMessageConstants.Category;
 
 [Area("Admin")]
 public class CategoryController : Controller
