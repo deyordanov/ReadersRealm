@@ -15,15 +15,18 @@ public class BookController : Controller
     private readonly IBookService bookService;
     private readonly ICategoryService categoryService;
     private readonly IAuthorService authorService;
+    private readonly IWebHostEnvironment webHost;
 
     public BookController(
         IBookService bookService, 
         ICategoryService categoryService, 
-        IAuthorService authorService)
+        IAuthorService authorService,
+        IWebHostEnvironment webHost)
     {
         this.bookService = bookService;
         this.categoryService = categoryService;
         this.authorService = authorService;
+        this.webHost = webHost; 
     }
 
     [HttpGet]
@@ -47,7 +50,7 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateBookViewModel bookModel)
+    public async Task<IActionResult> Create(CreateBookViewModel bookModel, IFormFile file)
     {
         if (bookModel.AuthorId == Guid.Empty)
         {
@@ -71,6 +74,17 @@ public class BookController : Controller
 
             return View(bookModel);
         }
+
+        string wwwRootPath = webHost.WebRootPath;
+        string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+        string bookPath = Path.Combine(wwwRootPath, @"images\book");
+
+        await using (FileStream stream = new FileStream(Path.Combine(bookPath, fileName), FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        bookModel.ImageUrl = @"\images\book\" + fileName;
 
         await
             bookService
