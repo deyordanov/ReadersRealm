@@ -33,11 +33,13 @@ public class BookController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(int pageIndex)
+    public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
         PaginatedList<AllBooksViewModel> allBooks = await this
             .bookService
-            .GetAllAsync(pageIndex ,5);
+            .GetAllAsync(pageIndex ,5, searchTerm);
+
+        ViewBag.SearchTerm = searchTerm;
 
         return View(allBooks);
     }
@@ -95,7 +97,7 @@ public class BookController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(Guid? id, int pageIndex)
+    public async Task<IActionResult> Edit(Guid? id, int pageIndex, string? searchTerm)
     {
         if (id == null)
         {
@@ -107,12 +109,13 @@ public class BookController : Controller
             .GetBookForEditAsync((Guid)id);
 
         ViewBag.PageIndex = pageIndex;
+        ViewBag.SearchTerm = searchTerm;
 
         return View(bookModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(EditBookViewModel bookModel, IFormFile? file, int pageIndex)
+    public async Task<IActionResult> Edit(EditBookViewModel bookModel, IFormFile? file, int pageIndex, string? searchTerm)
     {
         if (!ModelState.IsValid)
         {
@@ -140,7 +143,7 @@ public class BookController : Controller
 
         TempData[Success] = BookHasBeenSuccessfullyEdited;
 
-        return RedirectToAction(nameof(Index), nameof(Book), new { pageIndex = pageIndex });
+        return RedirectToAction(nameof(Index), nameof(Book), new { pageIndex = pageIndex, searchTerm = searchTerm });
     }
 
     [HttpGet]

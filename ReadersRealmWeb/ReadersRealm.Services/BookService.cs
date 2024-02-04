@@ -26,12 +26,17 @@ public class BookService : IBookService
         this.authorService = authorService;
     }
 
-    public async Task<PaginatedList<AllBooksViewModel>> GetAllAsync(int pageIndex, int pageSize)
+    public async Task<PaginatedList<AllBooksViewModel>> GetAllAsync(int pageIndex, int pageSize, string? searchTerm)
     {
         List<Book> allBooks = await this
             .unitOfWork
             .BookRepository
             .GetAsync(null, null, "Author, Category");
+
+        if (searchTerm != null)
+        {
+            allBooks = allBooks.Where(b => b.Title.StartsWith(searchTerm)).ToList();
+        }
 
         return PaginatedList<AllBooksViewModel>.Create(allBooks
             .Select(b => new AllBooksViewModel()
