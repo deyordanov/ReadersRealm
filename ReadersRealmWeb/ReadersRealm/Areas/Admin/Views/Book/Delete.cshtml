@@ -27,11 +27,14 @@
             <label class="p-0" asp-for="Pages"></label>
             <input type="number" class="form-control" asp-for="Pages" disabled>
         </div>
-        <select name="BookCover" class="mb-3 row p-1" disabled>
-            <label class="p-0" asp-for="BookCover"></label>
-            <option value="@Model.BookCover">@Model.BookCover</option>
-        </select>
         <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="BookCover"></label>
+            <select asp-for="BookCover" name="BookCover" disabled>
+                <option value="@Model.BookCover">@(Model.BookCover == null ? "No Book Cover Selected" : Model.BookCover)</option>
+            </select>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Used"></label>
             <div style="display: flex; gap: 0.4rem">
                 <div class="form-check">
                     @if (Model.Used)
@@ -62,14 +65,22 @@
             </div>
             <span asp-validation-for="Used" class="text-danger"></span>
         </div>
-        <select name="AuthorId" class="mb-3 row p-1" disabled>
+        <div class="mb-3 row p-1">
             <label class="p-0" asp-for="AuthorId"></label>
-            <option value="@Model.AuthorId">@($"{Model.Author.FirstName} {Model.Author.LastName}")</option>
-        </select>
-        <select name="CategoryId" class="mb-3 row p-1" disabled>
-            <label class="p-0" asp-for="AuthorId"></label>
-            <option value="@Model.CategoryId">@Model.Category.Name</option>
-        </select>
+            <select asp-for="AuthorId" name="AuthorId" disabled>
+                <option value="@Model.AuthorId">@($"{Model.Author.FirstName} {Model.Author.LastName}")</option>
+            </select>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="CategoryId"></label>
+            <select asp-for="CategoryId" name="CategoryId" disabled>
+                <option value="@Model.CategoryId">@Model.Category.Name</option>
+            </select>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="ImageUrl" class="row"></label>
+            <img src=@(Model.ImageUrl) width="100%" class="col-4" style="-ms-border-radius: 5px; border-radius: 5px; border: 1px solid #bbb9b9" />
+        </div>
         <div class="row">
             <div class="col-6">
                 <a asp-controller="Book" asp-action="Index" class="btn btn-outline-secondary form-control">

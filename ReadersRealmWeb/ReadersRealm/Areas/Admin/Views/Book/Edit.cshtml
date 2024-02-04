@@ -35,22 +35,25 @@
             <input type="number" class="form-control" asp-for="Pages">
             <span asp-validation-for="Pages" class="text-danger"></span>
         </div>
-        <select name="BookCover" class="mb-3 row p-1">
-            <label class="p-0" asp-for="BookCover"></label>
-            <option value="">Select a cover type</option>
-            @foreach (BookCover coverType in Enum.GetValues(typeof(BookCover)))
-            {
-                if(Model.BookCover == coverType)
-                {
-                    <option value="@coverType" selected>@coverType</option>
-                }
-                else
-                {
-                    <option value="@coverType">@coverType</option>
-                }
-            }
-        </select>
         <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="BookCover"></label>
+            <select asp-for="BookCover" name="BookCover">
+                <option value="">Select a cover type</option>
+                @foreach (BookCover coverType in Enum.GetValues(typeof(BookCover)))
+                {
+                    if (Model.BookCover == coverType)
+                    {
+                        <option value="@coverType" selected>@coverType</option>
+                    }
+                    else
+                    {
+                        <option value="@coverType">@coverType</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Used"></label>
             <div style="display: flex; gap: 0.4rem">
                 <div class="form-check">
                     @if (Model.Used)
@@ -81,12 +84,12 @@
             </div>
             <span asp-validation-for="Used" class="text-danger"></span>
         </div>
-        <div class="mb-3">
-            <select name="AuthorId" class="mb-3 row p-1">
-                <label class="p-0" asp-for="AuthorId"></label>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="AuthorId"></label>
+            <select asp-for="AuthorId" name="AuthorId">
                 @foreach (AllAuthorsListViewModel authorModel in Model.AuthorsList!)
                 {
-                    if(Model.AuthorId == authorModel.Id)
+                    if (Model.AuthorId == authorModel.Id)
                     {
                         <option value="@authorModel.Id" selected>@($"{authorModel.FirstName} {authorModel.LastName}")</option>
                     }
@@ -95,15 +98,15 @@
                         <option value="@authorModel.Id">@($"{authorModel.FirstName} {authorModel.LastName}")</option>
                     }
                 }
-            </select> 
+            </select>
             <span asp-validation-for="AuthorId" class="text-danger mb-2"></span>
         </div>
-        <div class="mb-3">
-            <select name="CategoryId" class="mb-3 row p-1">
-                <label class="p-0" asp-for="AuthorId"></label>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="AuthorId"></label>
+            <select asp-for="CategoryId" name="CategoryId">
                 @foreach (AllCategoriesListViewModel categoryModel in Model.CategoriesList!)
                 {
-                    if(Model.CategoryId == categoryModel.Id)
+                    if (Model.CategoryId == categoryModel.Id)
                     {
                         <option value="@categoryModel.Id" selected>@categoryModel.Name</option>
                     }
@@ -115,6 +118,13 @@
             </select>
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="ImageUrl" class="row"></label>
+            <input type="file" name="file" class="form-control" value="">
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            <img src=@(Model.ImageUrl) width="100%" class="col-4 mt-3" style="-ms-border-radius: 5px; border-radius: 5px; border: 1px solid #bbb9b9" />
+        </div>
+        <input asp-for="ImageUrl" value="dummy" hidden/>    
         <div class="row">
             <div class="col-6">
                 <a asp-controller="Book" asp-action="Index" class="btn btn-outline-secondary form-control">
@@ -130,6 +140,21 @@
 
 @section Scripts
 {
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+        });
+    </script>   
+
     @{
         <partial name="_ValidationScriptsPartial"/>
     }

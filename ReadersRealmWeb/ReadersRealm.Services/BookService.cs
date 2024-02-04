@@ -47,6 +47,7 @@ public class BookService : IBookService
                 Pages = b.Pages,
                 Price = b.Price,
                 Used = b.Used,
+                ImageUrl = b.ImageUrl,
             });
 
         return booksToReturn;
@@ -98,6 +99,7 @@ public class BookService : IBookService
             Pages = book.Pages,
             Price = book.Price,
             Used = book.Used,
+            ImageUrl = book.ImageUrl,
             Author = book.Author,
             AuthorId = book.AuthorId,
             Category = book.Category,
@@ -114,7 +116,7 @@ public class BookService : IBookService
         Book? book = await this
             .unitOfWork
             .BookRepository
-            .GetByIdAsync(id);
+            .GetByIdWithNavPropertiesAsync(id, "Author, Category");
 
         if (book == null)
         {
@@ -131,6 +133,7 @@ public class BookService : IBookService
             Pages = book.Pages,
             Price = book.Price,
             Used = book.Used,
+            ImageUrl = book.ImageUrl,
             Author = book.Author,
             AuthorId = book.AuthorId,
             Category = book.Category,
@@ -154,6 +157,7 @@ public class BookService : IBookService
         {
             Title = "",
             ISBN = "",
+            ImageUrl = "",
             AuthorsList = authorsList,
             CategoriesList = categoriesList
         };
@@ -175,6 +179,7 @@ public class BookService : IBookService
             Pages = bookModel.Pages,
             Price = bookModel.Price,
             Used = bookModel.Used,
+            ImageUrl = bookModel.ImageUrl,
         };
 
         await this
@@ -209,6 +214,7 @@ public class BookService : IBookService
         bookToEdit.Pages = bookModel.Pages;
         bookToEdit.Price = bookModel.Price;
         bookToEdit.Used = bookModel.Used;
+        bookToEdit.ImageUrl = bookModel.ImageUrl;
 
         await this.unitOfWork.SaveAsync();
     }

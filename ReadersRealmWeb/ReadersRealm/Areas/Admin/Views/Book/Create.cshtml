@@ -3,7 +3,7 @@
 @using ReadersRealm.Web.ViewModels.Author
 @model CreateBookViewModel
 
-<form method="post" class="w-100" style="display: flex; -o-justify-content: center; -webkit-justify-content: center; justify-content: center;">
+<form method="post" enctype="multipart/form-data" class="w-100" style="display: flex; -o-justify-content: center; -webkit-justify-content: center; justify-content: center;">
     <div class="border p-3 mt-4 w-50 px-4 border-black">
         <div class="row pb-2">
             <h2 class="text-primary">Create Book</h2>
@@ -34,15 +34,18 @@
             <input type="number" class="form-control" asp-for="Pages">
             <span asp-validation-for="Pages" class="text-danger"></span>
         </div>
-        <select name="BookCover" class="mb-3 row p-1">
-            <label class="p-0" asp-for="BookCover"></label>
-            <option value="">Select a cover type</option>
-            @foreach (BookCover coverType in Enum.GetValues(typeof(BookCover)))
-            {
-                <option value="@coverType">@coverType</option>
-            }
-        </select>
         <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="BookCover"></label>
+            <select asp-for="BookCover" name="BookCover">
+                <option value="" disabled selected>Select book cover</option>
+                @foreach (BookCover coverType in Enum.GetValues(typeof(BookCover)))
+                {
+                    <option value="@coverType">@coverType</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Used"></label>
             <div style="display: flex; gap: 0.4rem">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="Used" asp-for="Used" value="true">
@@ -59,10 +62,10 @@
             </div>
             <span asp-validation-for="Used" class="text-danger"></span>
         </div>
-        <div class=" mb-3">
-            <select name="AuthorId" class="row p-1">
-                <label class="p-0" asp-for="AuthorId"></label>
-                <option value=@Guid.Empty>Select book author</option>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="AuthorId"></label>
+            <select asp-for="AuthorId" name="AuthorId">
+                <option value=@Guid.Empty disabled selected>Select book author</option>
                 @foreach (AllAuthorsListViewModel authorModel in Model.AuthorsList!)
                 {
                     <option value="@authorModel.Id">@($"{authorModel.FirstName} {authorModel.LastName}")</option>
@@ -70,10 +73,10 @@
             </select>
             <span asp-validation-for="AuthorId" class="text-danger mb-2"></span>
         </div>
-        <div class="mb-3">
-            <select name="CategoryId" class="row p-1">
-                <label class="p-0" asp-for="AuthorId"></label>
-                <option value=0>Select book category</option>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="CategoryId"></label>
+            <select asp-for="CategoryId" name="CategoryId">
+                <option value=0 disabled selected>Select book category</option>
                 @foreach (AllCategoriesListViewModel categoryModel in Model.CategoriesList!)
                 {
                     <option value="@categoryModel.Id">@categoryModel.Name</option>
@@ -81,6 +84,12 @@
             </select>
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="ImageUrl" class="row"></label>
+            <input type="file" name="file" class="form-control" value="">
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+        <input asp-for="ImageUrl" value="dummy" hidden/>
         <div class="row">
             <div class="col-6">
                 <a asp-controller="Book" asp-action="Index" class="btn btn-outline-secondary form-control">
@@ -96,6 +105,20 @@
 
 @section Scripts
 {
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+        });
+    </script>
     @{
         <partial name="_ValidationScriptsPartial" />
     }

@@ -40,15 +40,21 @@ public class CreateBookViewModel
         ErrorMessage = BookPagesRangeMessage)]
     public int? Pages { get; set; }
 
+    [Display(Name = "Book Cover")]
     public BookCover? BookCover { get; set; }
 
     [Required(ErrorMessage = BookUsedRequiredMessage)]
     public bool Used { get; set; }
 
+    [Display(Name = "Image")]
+    public required string ImageUrl { get; set; }
+
+    [Display(Name = "Author")]
     public Guid AuthorId { get; set; }
 
     public Author? Author { get; set; }
 
+    [Display(Name = "Category")]
     public int CategoryId { get; set; }
 
     public Category? Category { get; set; }
