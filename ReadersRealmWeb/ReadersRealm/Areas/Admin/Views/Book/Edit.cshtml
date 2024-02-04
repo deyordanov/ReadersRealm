@@ -3,7 +3,7 @@
 @using ReadersRealm.Web.ViewModels.Author
 @model EditBookViewModel
 
-<form method="post" class="w-100" style="display: flex; -o-justify-content: center; -webkit-justify-content: center; justify-content: center">
+<form method="post" enctype="multipart/form-data" class="w-100" style="display: flex; -o-justify-content: center; -webkit-justify-content: center; justify-content: center">
     <input asp-for="Id" hidden/>
     <div class="border p-3 mt-4 w-50 px-4 border-black">
         <div class="row pb-2">
@@ -121,7 +121,10 @@
         <div class="mb-3 row p-1">
             <label asp-for="ImageUrl" class="row"></label>
             <input type="file" name="file" class="form-control" value=@Model.ImageUrl>
-            <img src=@(Model.ImageUrl) width="100%" class="col-4 mt-3" style="-ms-border-radius: 5px; border-radius: 5px; border: 1px solid #bbb9b9" />
+            @if (Model.ImageUrl != null)
+            {
+                <img src=@(Model.ImageUrl) width="100%" class="col-4 mt-3" style="-ms-border-radius: 5px; border-radius: 5px; border: 1px solid #bbb9b9" />
+            }
         </div>
         <input asp-for="ImageUrl" value=@Model.ImageUrl hidden/>    
         <div class="row">

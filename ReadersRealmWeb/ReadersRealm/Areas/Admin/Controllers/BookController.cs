@@ -156,6 +156,8 @@ public class BookController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(DeleteBookViewModel bookModel)
     {
+        this.DeleteImageIfPresent(bookModel.ImageUrl, webHost.WebRootPath);
+
         await this
             .bookService
             .DeleteBookAsync(bookModel);
@@ -171,6 +173,16 @@ public class BookController : Controller
         string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
         string bookPath = Path.Combine(wwwRootPath, @"images\book");
 
+        this.DeleteImageIfPresent(imageUrl, wwwRootPath);
+
+        await using FileStream stream = new FileStream(Path.Combine(bookPath, fileName), FileMode.Create);
+        await file.CopyToAsync(stream);
+
+        return fileName;
+    }
+
+    private void DeleteImageIfPresent(string? imageUrl, string wwwRootPath)
+    {
         if (!string.IsNullOrWhiteSpace(imageUrl))
         {
             string oldImagePath = Path.Combine(wwwRootPath, imageUrl.TrimStart('\\'));
@@ -180,12 +192,5 @@ public class BookController : Controller
                 System.IO.File.Delete(oldImagePath);
             }
         }
-
-        await using (FileStream stream = new FileStream(Path.Combine(bookPath, fileName), FileMode.Create))
-        {
-            await file.CopyToAsync(stream);
-        }
-
-        return fileName;
     }
 }
