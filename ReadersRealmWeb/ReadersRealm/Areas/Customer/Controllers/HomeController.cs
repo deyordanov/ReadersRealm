@@ -3,21 +3,44 @@ using System.Diagnostics;
 
 namespace ReadersRealm.Areas.Customer.Controllers;
 
+using Services.Contracts;
+using ViewModels.Book;
 using Web.ViewModels;
+using Web.ViewModels.Book;
 
 [Area("Customer")]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private IBookService bookService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(IBookService bookService)
     {
-        _logger = logger;
+        this.bookService = bookService;
     }
 
-    public IActionResult Index()
+    [HttpGet]
+    public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
-        return View();
+        IEnumerable<AllBooksViewModel> allBooks = await this
+            .bookService
+            .GetAllAsync(pageIndex, 8, searchTerm);
+
+        return View(allBooks);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(Guid? id)
+    {
+        if (id == null || id == Guid.Empty)
+        {
+            return NotFound();
+        }
+    
+        DetailsBookViewModel bookModel = await this
+            .bookService
+            .GetBookForDetailsAsync((Guid)id);
+
+        return View(bookModel);
     }
 
     public IActionResult Privacy()

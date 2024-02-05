@@ -13,6 +13,7 @@ public interface IBookService
     Task<CreateBookViewModel> GetBookForCreateAsync();
     Task<EditBookViewModel> GetBookForEditAsync(Guid id);
     Task<DeleteBookViewModel> GetBookForDeleteAsync(Guid id);
+    Task<DetailsBookViewModel> GetBookForDetailsAsync(Guid id);
     Task CreateBookAsync(CreateBookViewModel bookModel);
     Task EditBookAsync(EditBookViewModel bookModel);
     Task DeleteBookAsync(DeleteBookViewModel bookModel);

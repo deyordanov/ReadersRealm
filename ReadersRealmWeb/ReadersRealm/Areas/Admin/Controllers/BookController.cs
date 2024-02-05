@@ -99,7 +99,7 @@ public class BookController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(Guid? id, int pageIndex, string? searchTerm)
     {
-        if (id == null)
+        if (id == null || id == Guid.Empty)
         {
             return NotFound();
         }
@@ -149,7 +149,7 @@ public class BookController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(Guid? id)
     {
-        if (id == null)
+        if (id == null || id == Guid.Empty)
         {
             return NotFound();
         }

@@ -16,7 +16,7 @@ public static class ValidationConstants
         public const int BookTitleMaxLength = 100;
         public const int BookTitleMinLength = 3;
 
-        public const int BookDescriptionMaxLength = 500;
+        public const int BookDescriptionMaxLength = 5000;
         public const int BookDescriptionMinLength = 80;
 
         public const int BookIsbnMaxLength = 13;

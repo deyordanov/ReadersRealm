@@ -1,5 +1,6 @@
 ﻿namespace ReadersRealm.Services;
 
+using System.Reflection;
 using Common;
 using Common.Exceptions;
 using Contracts;
@@ -129,6 +130,38 @@ public class BookService : IBookService
         }
 
         DeleteBookViewModel bookModel = new DeleteBookViewModel()
+        {
+            Id = book.Id,
+            ISBN = book.ISBN,
+            Title = book.Title,
+            BookCover = book.BookCover,
+            Description = book.Description,
+            Pages = book.Pages,
+            Price = book.Price,
+            Used = book.Used,
+            ImageUrl = book.ImageUrl,
+            Author = book.Author,
+            AuthorId = book.AuthorId,
+            Category = book.Category,
+            CategoryId = book.CategoryId,
+        };
+
+        return bookModel;
+    }
+
+    public async Task<DetailsBookViewModel> GetBookForDetailsAsync(Guid id)
+    {
+        Book? book = await this
+            .unitOfWork
+            .BookRepository
+            .GetByIdWithNavPropertiesAsync(id, "Author, Category");
+
+        if (book == null)
+        {
+            throw new BookNotFoundException();
+        }
+
+        DetailsBookViewModel bookModel = new DetailsBookViewModel()
         {
             Id = book.Id,
             ISBN = book.ISBN,

@@ -1,13 +1,13 @@
 ﻿@model ReadersRealm.Common.PaginatedList<AllBooksViewModel>
 
 <partial name="_NotificationPartialView" />
-<div class="row">
+<div class="row mb-2">
     <form asp-controller="Book" asp-action="Index" method="get" class="col-8" style="display: flex">
         <div class="col-3 px-0">
             <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="searchTerm" value=@ViewBag.SearchTerm>
         </div>
         <div class="col-3 px-0">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-success" type="submit">Search</button>
         </div>
     </form>
     <div class="col-4" style="display: flex; justify-content: end">
@@ -37,10 +37,10 @@
                     @bookModel.Title
                 </td>
                 <td>
-                    @bookModel.Price
+                    @bookModel.ISBN
                 </td>
                 <td>
-                    @bookModel.Description
+                    @bookModel.Price
                 </td>
                 <td>
                     @(bookModel.Author.FirstName + " " + bookModel.Author.LastName)
@@ -73,21 +73,35 @@ else
     bool nextDisabled = !Model.HasNextPage ? true : false;
 }
 
-@if (prevDisabled)
-{
-    <button asp-controller="Book" asp-action="Index" class="btn btn-primary" disabled="">Previous</button>
-}
-else
-{
-    <a asp-controller="Book" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex - 1) asp-route-searchTerm=@ViewBag.SearchTerm class="btn btn-primary">Previous</a>
-
-}
-
-@if (nextDisabled)
-{
-    <button asp-controller="Book" asp-action="Index" class="btn btn-primary" disabled>Next</button>
-}
-else
-{
-    <a asp-controller="Book" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex + 1) asp-route-searchTerm=@ViewBag.SearchTerm class="btn btn-primary">Next</a>
-}
+<nav>
+    <ul class="row p-0">
+        <li class="page-item col-6" style="display: flex; justify-content: start">
+            @if (prevDisabled)
+            {
+                <button asp-controller="Book" asp-action="Index" class="page-link" disabled>
+                    <span style="font-size: 1rem" class="btn btn-outline-danger">Previous</span>
+                </button>
+            }
+            else
+            {
+                <a asp-controller="Book" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex - 1) asp-route-searchTerm=@ViewBag.SearchTerm class="page-link">
+                    <span style="font-size: 1rem" class="btn btn-outline-dark">Previous</span>
+                </a>
+            }
+        </li>
+        <li class="page-item col-6" style="display: flex; justify-content: end">
+            @if (nextDisabled)
+            {
+                <button asp-controller="Book" asp-action="Index" class="page-link" disabled>
+                    <span style="font-size: 1rem" class="btn btn-outline-danger">Next</span>
+                </button>
+            }
+            else
+            {
+                <a asp-controller="Book" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex + 1) asp-route-searchTerm=@ViewBag.SearchTerm class="page-link">
+                    <span style="font-size: 1rem" class="btn btn-outline-dark">Next</span>
+                </a>
+            }
+        </li>
+    </ul>
+</nav>
