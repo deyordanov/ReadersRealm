@@ -52,8 +52,11 @@ public static class ValidationConstants
 
     public static class ApplicationUser
     {
-        public const int ApplicationUserFullNameMaxLength = 120;
-        public const int ApplicationUserFullNameMinLength = 2;
+        public const int ApplicationUserFirstNameMaxLength = 40;
+        public const int ApplicationUserFirstNameMinLength = 1;
+
+        public const int ApplicationUserLastNameMaxLength = 40;
+        public const int ApplicationUserLastNameMinLength = 1;
 
         public const int ApplicationUserStreetAddressMaxLength = 255;
         public const int ApplicationUserStreetAddressMinLength = 5;
@@ -66,5 +69,29 @@ public static class ValidationConstants
 
         public const int ApplicationUserPostalCodeMaxLength = 12;
         public const int ApplicationUserPostalCodeMinLength = 4;
+    }
+
+    public static class RegisterModel
+    {
+        public const int RegisterModelFirstNameMaxLength = 40;
+        public const int RegisterModelFirstNameMinLength = 1;
+
+        public const int RegisterModelLastNameMaxLength = 40;
+        public const int RegisterModelLastNameMinLength = 1;
+
+        public const int RegisterModelStreetAddressMaxLength = 255;
+        public const int RegisterModelStreetAddressMinLength = 5;
+                 
+        public const int RegisterModelCityMaxLength = 50;
+        public const int RegisterModelCityMinLength = 2;
+              
+        public const int RegisterModelStateMaxLength = 50;
+        public const int RegisterModelStateMinLength = 2;
+          
+        public const int RegisterModelPostalCodeMaxLength = 12;
+        public const int RegisterModelPostalCodeMinLength = 4;
+         
+        public const int RegisterModelPhoneNumberMaxLength = 20;
+        public const int RegisterModelPhoneNumberMinLength = 7;
     }
 }

@@ -176,12 +176,10 @@ namespace ReadersRealm.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -218,12 +216,10 @@ namespace ReadersRealm.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -373,7 +369,7 @@ namespace ReadersRealm.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("bfab91b1-2778-4eb4-bc9e-3d52d43c2f9a"),
+                            Id = new Guid("71ecde8f-d95b-47d8-b768-57067f22f4de"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
@@ -387,7 +383,7 @@ namespace ReadersRealm.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("632f83ff-04a9-4850-a826-b18749a3d5be"),
+                            Id = new Guid("d1d13c9b-fbd0-4a9c-a38c-366f08a5ca78"),
                             AuthorId = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
                             BookCover = 0,
                             CategoryId = 2,
@@ -456,10 +452,15 @@ namespace ReadersRealm.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("PostalCode")
                         .HasMaxLength(12)

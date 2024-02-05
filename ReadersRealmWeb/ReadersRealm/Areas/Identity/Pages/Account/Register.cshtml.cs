@@ -12,10 +12,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using static ReadersRealm.Common.Constants.Constants.Roles;
+using static ReadersRealm.Common.Constants.ValidationConstants.RegisterModel;
+using static ReadersRealm.Common.Constants.ValidationMessageConstants.RegisterModel;
 
 namespace ReadersRealm.Areas.Identity.Pages.Account
 {
     using Common;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class RegisterModel : PageModel
     {
@@ -96,12 +100,67 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "First Name")]
+            [StringLength(RegisterModelFirstNameMaxLength,
+                MinimumLength = RegisterModelFirstNameMinLength,
+                ErrorMessage = RegisterModelFirstNameLengthMessage)]
+            public required string FirstName { get; set; }
+
+            [Required]
+            [Display(Name  = "Last Name")]
+            [StringLength(RegisterModelLastNameMaxLength,
+                MinimumLength = RegisterModelLastNameMinLength,
+                ErrorMessage = RegisterModelLastNameLengthMessage)]
+            public required string LastName { get; set; }
+
+            [Display(Name = "Street Address")]
+            [StringLength(RegisterModelStreetAddressMaxLength, 
+                MinimumLength = RegisterModelStreetAddressMinLength,
+                ErrorMessage = RegisterModelStreetAddressLengthMessage)]
+            public string? StreetAddress { get; set; }
+
+            [StringLength(RegisterModelCityMaxLength,
+                MinimumLength = RegisterModelCityMinLength,
+                ErrorMessage = RegisterModelCityLengthMessage)]
+            public string? City { get; set; }
+
+            [StringLength(RegisterModelStateMaxLength,
+                MinimumLength = RegisterModelStateMinLength,
+                ErrorMessage = RegisterModelStateLengthMessage)]
+            public string? State { get; set; }
+
+            [Display(Name = "Postal Code")]
+            [StringLength(RegisterModelPostalCodeMaxLength,
+                MinimumLength = RegisterModelPostalCodeMinLength,
+                ErrorMessage = RegisterModelPostalCodeLengthMessage)]
+            public string? PostalCode { get; set; }
+
+            [Display(Name = "Phone Number")]
+            [StringLength(RegisterModelPhoneNumberMaxLength,
+                MinimumLength = RegisterModelPhoneNumberMinLength,
+                ErrorMessage = RegisterModelPhoneNumberLengthMessage)]
+            public string? PhoneNumber { get; set; }
+
+            [Required]
+            public string? Role { get; set; }
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> Roles { get; set; }
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             await this.EnsureRolesAreCreatedAsync();
+
+            Input = new()
+            {
+                FirstName = "",
+                LastName = "",
+                Roles = this._roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
+            };
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -117,23 +176,41 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.StreetAddress = Input.StreetAddress;
+                user.City = Input.City;
+                user.State = Input.State;
+                user.PostalCode = Input.PostalCode;
+                user.PhoneNumber = Input.PhoneNumber;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    if (!string.IsNullOrWhiteSpace(Input.Role))
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Role);
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, CustomerRole);
+                    }
+
                     string userId = await _userManager.GetUserIdAsync(user);
-                    // string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    // code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    // string callbackUrl = Url.Page(
-                    //     "/Account/ConfirmEmail",
-                    //     pageHandler: null,
-                    //     values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                    //     protocol: Request.Scheme);
-                    //
-                    // await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    string callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                        protocol: Request.Scheme);
+                    
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

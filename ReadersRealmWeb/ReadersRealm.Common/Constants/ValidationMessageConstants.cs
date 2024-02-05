@@ -31,4 +31,20 @@ public static class ValidationMessageConstants
         public const string BookUsedRequiredMessage = "{0} is required!";
     }
 
+    public static class RegisterModel
+    {
+        public const string RegisterModelFirstNameLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string RegisterModelLastNameLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string RegisterModelStreetAddressLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string RegisterModelCityLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string RegisterModelStateLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string RegisterModelPostalCodeLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string RegisterModelPhoneNumberLengthMessage = "{0} must be between {2} and {1} characters!";
+    }
 }
