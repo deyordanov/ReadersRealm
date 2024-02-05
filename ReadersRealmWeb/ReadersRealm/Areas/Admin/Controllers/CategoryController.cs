@@ -1,14 +1,17 @@
 ﻿namespace ReadersRealm.Areas.Admin.Controllers;
 
 using Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using ViewModels.Category;
-using static ReadersRealm.Common.Constants.Constants.Category;
-using static ReadersRealm.Common.Constants.Constants.Shared;
-using static ReadersRealm.Common.Constants.ValidationMessageConstants.Category;
+using static Common.Constants.Constants.Category;
+using static Common.Constants.Constants.Roles;
+using static Common.Constants.Constants.Shared;
+using static Common.Constants.ValidationMessageConstants.Category;
 
 [Area("Admin")]
+[Authorize(Roles = AdminRole)]
 public class CategoryController : Controller
 {
     private ICategoryService categoryService;

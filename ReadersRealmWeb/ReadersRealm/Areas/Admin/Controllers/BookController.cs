@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace ReadersRealm.Areas.Admin.Controllers;
 
-namespace ReadersRealm.Areas.Admin.Controllers;
-
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Common;
 using Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using ViewModels.Book;
 using Web.ViewModels.Book;
-using static ReadersRealm.Common.Constants.Constants.Book;
-using static ReadersRealm.Common.Constants.Constants.Shared;
+using static Common.Constants.Constants.Book;
+using static Common.Constants.Constants.Shared;
+using static Common.Constants.Constants.Roles;
 
 [Area("Admin")]
+[Authorize(Roles = AdminRole)]
 public class BookController : Controller
 {
     private readonly IBookService bookService;
