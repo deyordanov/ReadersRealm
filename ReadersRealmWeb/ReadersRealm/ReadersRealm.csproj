@@ -57,6 +57,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReadersRealm.Common\ReadersRealm.Common.csproj" />
+    <ProjectReference Include="..\ReadersRealm.Data.Models\ReadersRealm.Data.Models.csproj" />
     <ProjectReference Include="..\ReadersRealm.Services\ReadersRealm.Services.csproj" />
     <ProjectReference Include="..\ReadersRealm.Web.ViewModels\ReadersRealm.ViewModels.csproj" />
   </ItemGroup>
