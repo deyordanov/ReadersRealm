@@ -7,7 +7,7 @@ public interface IUnitOfWork : IDisposable
     ICategoryRepository CategoryRepository { get; }
     IBookRepository BookRepository { get; }
     IAuthorRepository AuthorRepository { get; }
-    IAuthorBookRepository AuthorBookRepository { get; }
+    ICompanyRepository CompanyRepository { get; }
     Task SaveAsync();
     void Dispose(bool disposing);
 }

@@ -14,11 +14,11 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
         this.dbContext = dbContext;
     }
 
-    public async Task<Category> GetByIdAsync(int id)
+    public async Task<Category?> GetByIdAsync(int id)
     {
         return await this
             .dbContext
             .Categories
-            .FirstAsync(category => category.Id == id);
+            .FirstOrDefaultAsync(category => category.Id == id);
     }
 }

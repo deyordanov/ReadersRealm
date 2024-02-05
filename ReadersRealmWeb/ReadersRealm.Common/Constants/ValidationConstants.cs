@@ -94,4 +94,31 @@ public static class ValidationConstants
         public const int RegisterModelPhoneNumberMaxLength = 20;
         public const int RegisterModelPhoneNumberMinLength = 7;
     }
+
+    public static class Company
+    {
+        public const int CompanyNameMaxLength = 255;
+        public const int CompanyNameMinLength = 1;
+
+        public const int CompanyUicMaxLength = 13;
+        public const int CompanyUicMinLength = 9;
+
+        public const int CompanyEmailMaxLength = 254;
+        public const int CompanyEmailMinLength = 3;
+
+        public const int CompanyStreetAddressMaxLength = 255;
+        public const int CompanyStreetAddressMinLength = 5;
+
+        public const int CompanyCityMaxLength = 50;
+        public const int CompanyCityMinLength = 2;
+
+        public const int CompanyStateMaxLength = 50;
+        public const int CompanyStateMinLength = 2;
+
+        public const int CompanyPostalCodeMaxLength = 12;
+        public const int CompanyPostalCodeMinLength = 4;
+
+        public const int CompanyPhoneNumberMaxLength = 20;
+        public const int CompanyPhoneNumberMinLength = 7;
+    }
 }

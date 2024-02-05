@@ -21,6 +21,8 @@ public class ReadersRealmDbContext : IdentityDbContext<IdentityUser>
 
     public required DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
+    public required DbSet<Company> Companies { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Seed();
