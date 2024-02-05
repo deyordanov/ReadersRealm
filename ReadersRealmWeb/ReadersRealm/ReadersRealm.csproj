@@ -19,7 +19,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1">
       <PrivateAssets>all</PrivateAssets>
@@ -36,6 +39,7 @@
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Delete.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Customer\Views\Home\Details.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\_NotificationPartialView.cshtml" />
   </ItemGroup>
 
@@ -59,6 +63,10 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\book\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Customer\Views\Home\Details.cshtml" />
   </ItemGroup>
 
 </Project>

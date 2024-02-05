@@ -4,6 +4,7 @@ using ReadersRealm.Data.Repositories;
 using ReadersRealm.Data.Repositories.Contracts;
 using ReadersRealm.Services;
 using ReadersRealm.Services.Contracts;
+using Microsoft.AspNetCore.Identity;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ builder.Services.AddDbContext<ReadersRealmDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ReadersRealmDbContext>();
 
 WebApplication app = builder.Build();
 
