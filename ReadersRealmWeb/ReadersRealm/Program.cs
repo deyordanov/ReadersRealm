@@ -10,6 +10,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
@@ -22,7 +24,7 @@ builder.Services.AddDbContext<ReadersRealmDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ReadersRealmDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ReadersRealmDbContext>();
 
 WebApplication app = builder.Build();
 
@@ -39,8 +41,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
