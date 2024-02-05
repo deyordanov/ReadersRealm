@@ -6,9 +6,14 @@ using static Common.Constants.ValidationConstants.ApplicationUser;
 
 public class ApplicationUser : IdentityUser
 {
+
     [Required]
-    [StringLength(ApplicationUserFullNameMaxLength)]
-    public required string FullName { get; set; }
+    [StringLength(ApplicationUserFirstNameMaxLength)]
+    public required string FirstName { get; set; }
+
+    [Required]
+    [StringLength(ApplicationUserLastNameMaxLength)]
+    public required string LastName { get; set; }
 
     [StringLength(ApplicationUserStreetAddressMaxLength)]
     public string? StreetAddress { get; set; }
