@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadersRealm.Data;
 
@@ -11,9 +12,11 @@ using ReadersRealm.Data;
 namespace ReadersRealm.Data.Migrations
 {
     [DbContext(typeof(ReadersRealmDbContext))]
-    partial class ReadersRealmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240205064743_ExtendIdentityUser")]
+    partial class ExtendIdentityUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

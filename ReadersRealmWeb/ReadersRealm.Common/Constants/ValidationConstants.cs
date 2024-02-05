@@ -49,4 +49,22 @@ public static class ValidationConstants
         public const int AuthorPhoneNumberMaxLength = 20;
         public const int AuthorPhoneNumberMinLength = 7;
     }
+
+    public static class ApplicationUser
+    {
+        public const int ApplicationUserFullNameMaxLength = 120;
+        public const int ApplicationUserFullNameMinLength = 2;
+
+        public const int ApplicationUserStreetAddressMaxLength = 255;
+        public const int ApplicationUserStreetAddressMinLength = 5;
+
+        public const int ApplicationUserCityMaxLength = 50;
+        public const int ApplicationUserCityMinLength = 2;
+
+        public const int ApplicationUserStateMaxLength = 50;
+        public const int ApplicationUserStateMinLength = 2;
+
+        public const int ApplicationUserPostalCodeMaxLength = 12;
+        public const int ApplicationUserPostalCodeMinLength = 4;
+    }
 }
