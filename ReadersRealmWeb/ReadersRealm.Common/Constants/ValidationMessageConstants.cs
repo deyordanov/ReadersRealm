@@ -69,4 +69,9 @@ public static class ValidationMessageConstants
 
         public const string RegisterModelPhoneNumberLengthMessage = "{0} must be between {2} and {1} characters!";
     }
+
+    public static class ShoppingCart
+    {
+        public const string ShoppingCartCountRangeMessage = "{0} should be between {1} and {2}!";
+    }
 }

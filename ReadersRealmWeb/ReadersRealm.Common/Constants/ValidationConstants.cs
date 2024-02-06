@@ -121,4 +121,10 @@ public static class ValidationConstants
         public const int CompanyPhoneNumberMaxLength = 20;
         public const int CompanyPhoneNumberMinLength = 7;
     }
+
+    public static class ShoppingCart
+    {
+        public const int ShoppingCartCountMaxRange = 1000;
+        public const int ShoppingCartCountMinRange = 1;
+    }
 }

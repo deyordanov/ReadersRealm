@@ -3,12 +3,12 @@
     currency: 'USD'
 });
 
-var quantityInput = document.getElementById("quantity");
 document.addEventListener('input', () => {
-    var basePrice = parseFloat(document.getElementsByTagName("form")[0].getAttribute("data-base-price"));
+    var quantityInput = document.getElementById("quantity");
+    var basePrice = parseFloat(document.getElementById("details-form").getAttribute("data-price"));
 
     quantityInput.addEventListener("input", function () {
-        var quantity = this.value;
+        var quantity = parseFloat(quantityInput.value);
         var price = calculatePrice(quantity, basePrice);
 
         document.getElementById("priceBase").textContent = USDollar.format(price.basePrice);

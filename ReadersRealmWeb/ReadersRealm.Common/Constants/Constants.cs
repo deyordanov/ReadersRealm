@@ -42,6 +42,13 @@ public static class Constants
         public const string CompanyHasBeenSuccessfullyDeleted = "The company has been deleted successfully!";
     }
 
+    public static class ShoppingCart
+    {
+        //Action Results
+        public const string ShoppingCartItemsHaveBeenAddedSuccessfully =
+            "The items have been added successfully to your shopping cart!";
+    }
+
     public static class Roles
     {
         public const string CustomerRole = "Customer";

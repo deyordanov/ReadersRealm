@@ -23,6 +23,8 @@ public class ReadersRealmDbContext : IdentityDbContext<IdentityUser>
 
     public required DbSet<Company> Companies { get; set; }
 
+    public required DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Seed();

@@ -1,6 +1,8 @@
-﻿@model DetailsBookViewModel
+﻿@model ShoppingCartViewModel
 
-<form method="post" data-base-price="@Model.Price">
+<form method="post" data-price="@Model.Book.Price" id="details-form">
+    <input asp-for="Id" value="@Model.Id"  hidden/>
+    <input asp-for="BookId" value="@Model.BookId" hidden/>
     <div class="card shadow border-0 mt-4">
         <div class="card-body">
             <div class="py-3">
@@ -13,9 +15,9 @@
                 </div>
                 <div class="row">
                     <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                        @if (Model.ImageUrl != null)
+                        @if (Model.Book.ImageUrl != null)
                         {
-                            <img src="@Model.ImageUrl" width="100%" class="rounded"/>
+                            <img src="@Model.Book.ImageUrl" width="100%" class="rounded"/>
                         }
                         else
                         {
@@ -23,14 +25,14 @@
                         }
                         <div class="card-body pb-0">
                             <div>
-                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@Model.Title</p>
-                                <p class="card-title text-warning text-center">by <b>@(Model.Author.FirstName + " " + Model.Author.LastName)</b></p>
+                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@Model.Book.Title</p>
+                                <p class="card-title text-warning text-center">by <b>@(Model.Book.Author.FirstName + " " + Model.Book.Author.LastName)</b></p>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class=" pb-1">
-                                <button type="submit" disabled class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
-                                    Add to Cart (Comming Soon...)
+                                <button type="submit" class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
+                                    Add to Cart
                                 </button>
                             </div>
                         </div>
@@ -38,16 +40,16 @@
                     <div class="col-12 col-lg-6 offset-lg-1" style="display: flex; flex-direction: column; justify-content: space-between; margin: 0 0 0rem 5rem; font-size: 1.2rem; gap: 1rem">
                         <div style="display: flex; flex-direction: column; gap: 0.4rem">
                             <div class="row ps-2">
-                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Category : <b>@Model.Category.Name</b></h6>
+                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Category : <b>@Model.Book.Category.Name</b></h6>
                             </div>
                             <div class="row ps-2">
-                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">ISBN : <b>@Model.ISBN</b></h6>
+                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">ISBN : <b>@Model.Book.ISBN</b></h6>
                             </div>
                             <div class="row ps-2">
-                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Page count : <b>@Model.Pages</b></h6>
+                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Page count : <b>@Model.Book.Pages</b></h6>
                             </div>
                             <div class="row ps-2">
-                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Book cover : <b>@Model.BookCover</b></h6>
+                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Book cover : <b>@Model.Book.BookCover</b></h6>
                             </div>
                         </div>
                         <div>
@@ -85,13 +87,13 @@
                                         <div>Price</div>
                                     </div>
                                     <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                        <div id="priceBase">@Model.Price.ToString("c")</div>
+                                        <div id="priceBase">@Model.Book.Price.ToString("c")</div>
                                     </div>
                                     <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                        <div id="price50">@Model.Price.ToString("c")</div>
+                                        <div id="price50">@Model.Book.Price.ToString("c")</div>
                                     </div>
                                     <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                        <div id="price100">@Model.Price.ToString("c")</div>
+                                        <div id="price100">@Model.Book.Price.ToString("c")</div>
                                     </div>
 
                                 </div>
@@ -103,14 +105,14 @@
                                               id="inputGroup-sizing-default">
                                             Count
                                         </span>
-                                        <input type="number" min="0" value="0" class="form-control text-end" id="quantity" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                                        <input asp-for="Count" type="number" min="1" class="form-control text-end" id="quantity" aria-describedby="inputGroup-sizing-default"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <p class="text-secondary lh-sm" style="font-weight: bold">Description:</p>
-                            <p>@Html.Raw(@Model.Description)</p>
+                            <p>@Html.Raw(@Model.Book.Description)</p>
                         </div>
                     </div>
                 </div>
