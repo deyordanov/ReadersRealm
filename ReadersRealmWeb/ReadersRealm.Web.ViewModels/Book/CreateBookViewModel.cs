@@ -2,7 +2,7 @@
 
 using Category;
 using Data.Models;
-using ReadersRealm.Data.Models.Enums;
+using Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using Web.ViewModels.Author;
 using static ReadersRealm.Common.Constants.ValidationConstants.Book;
@@ -10,8 +10,6 @@ using static ReadersRealm.Common.Constants.ValidationMessageConstants.Book;
 
 public class CreateBookViewModel
 {
-    public Guid Id { get; set; }
-
     [Required(ErrorMessage = BookTitleRequiredMessage)]
     [StringLength(BookTitleMaxLength,
         MinimumLength = BookTitleMinLength,

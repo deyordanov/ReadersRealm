@@ -1,0 +1,53 @@
+﻿@model DeleteCompanyViewModel
+
+<form method="post" class="w-100" style="display: flex; -o-justify-content: center; -webkit-justify-content: center; justify-content: center">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 mt-4 w-50 px-4 border-black">
+        <div class="row pb-2">
+            <h2 class="text-primary">Delete Book</h2>
+            <hr />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Name"></label>
+            <input type="text" class="form-control" asp-for="Name" disabled />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="UIC"></label>
+            <input type="text" class="form-control" asp-for="UIC" disabled />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Email"></label>
+            <input type="text" class="form-control" asp-for="Email" disabled />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0 text-dark" asp-for="StreetAddress"></label>
+            <input type="text" class="form-control" asp-for="StreetAddress" disabled />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="City"></label>
+            <input type="text" class="form-control" asp-for="City" disabled />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="State"></label>
+            <input type="text" class="form-control" asp-for="State" disabled />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="PostalCode"></label>
+            <input type="text" class="form-control" asp-for="PostalCode" disabled />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="PhoneNumber"></label>
+            <input type="text" class="form-control" asp-for="PhoneNumber" disabled />
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <a asp-controller="Company" asp-action="Index" class="btn btn-outline-secondary form-control">
+                    Back To List
+                </a>
+            </div>
+            <div class="col-6">
+                <button type="submit" class="btn btn-outline-primary bg-black text-white form-control">Delete</button>
+            </div>
+        </div>
+    </div>
+</form>

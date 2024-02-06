@@ -4,7 +4,7 @@
 <div class="row mb-2">
     <form asp-controller="Book" asp-action="Index" method="get" class="col-8" style="display: flex">
         <div class="col-3 px-0">
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="searchTerm" value=@ViewBag.SearchTerm>
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="searchTerm" value="@ViewBag.SearchTerm">
         </div>
         <div class="col-3 px-0">
             <button class="btn btn-success" type="submit">Search</button>
@@ -50,7 +50,7 @@
                 </td>
                 <td>
                     <div class="w-100">
-                            <a asp-controller="Book" asp-action="Edit" asp-route-id="@bookModel.Id" asp-route-pageIndex=@Model.PageIndex asp-route-searchTerm=@ViewBag.SearchTerm class="btn btn-primary btn-sm" style="font-size: 13px">
+                            <a asp-controller="Book" asp-action="Edit" asp-route-id="@bookModel.Id" asp-route-pageIndex=@Model.PageIndex asp-route-searchTerm="@ViewBag.SearchTerm" class="btn btn-primary btn-sm" style="font-size: 13px">
                             <i class="bi bi-pencil-square"></i> Edit
                         </a>
                         <a asp-controller="Book" asp-action="Delete" asp-route-id="@bookModel.Id" class="btn btn-danger btn-sm" style="font-size: 13px">
@@ -84,7 +84,7 @@ else
             }
             else
             {
-                <a asp-controller="Book" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex - 1) asp-route-searchTerm=@ViewBag.SearchTerm class="page-link">
+                <a asp-controller="Book" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-searchTerm="@ViewBag.SearchTerm" class="page-link">
                     <span style="font-size: 1rem" class="btn btn-outline-dark">Previous</span>
                 </a>
             }
@@ -98,7 +98,7 @@ else
             }
             else
             {
-                <a asp-controller="Book" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex + 1) asp-route-searchTerm=@ViewBag.SearchTerm class="page-link">
+                <a asp-controller="Book" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)" asp-route-searchTerm="@ViewBag.SearchTerm" class="page-link">
                     <span style="font-size: 1rem" class="btn btn-outline-dark">Next</span>
                 </a>
             }

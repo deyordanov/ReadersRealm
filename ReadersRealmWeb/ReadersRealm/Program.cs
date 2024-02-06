@@ -17,6 +17,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

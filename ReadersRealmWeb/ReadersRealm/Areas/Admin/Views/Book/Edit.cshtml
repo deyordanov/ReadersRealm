@@ -129,12 +129,12 @@
         <input asp-for="ImageUrl" value=@Model.ImageUrl hidden/>    
         <div class="row">
             <div class="col-6">
-                <a asp-controller="Book" asp-action="Index" asp-route-pageIndex=@ViewBag.Index asp-route-searchTerm=@ViewBag.SearchTerm class="btn btn-outline-secondary form-control">
+                <a asp-controller="Book" asp-action="Index" asp-route-pageIndex="@ViewBag.Index" asp-route-searchTerm="@ViewBag.SearchTerm" class="btn btn-outline-secondary form-control">
                     Back To List
                 </a>
             </div>
             <div class="col-6">
-                <button asp-route-pageIndex=@ViewBag.PageIndex asp-route-searchTerm=@ViewBag.SearchTerm type="submit" class="btn btn-outline-primary bg-black text-white form-control">Update</button>
+                <button asp-route-pageIndex="@ViewBag.PageIndex" asp-route-searchTerm="@ViewBag.SearchTerm" type="submit" class="btn btn-outline-primary bg-black text-white form-control">Update</button>
             </div>
         </div>
     </div>

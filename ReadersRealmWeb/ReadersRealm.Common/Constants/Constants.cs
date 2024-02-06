@@ -34,6 +34,14 @@ public static class Constants
         public const string BookHasBeenSuccessfullyDeleted = "The book has been deleted successfully!";
     }
 
+    public static class Company
+    {
+        //Action Results
+        public const string CompanyHasBeenSuccessfullyCreated = "The company has been created successfully!";
+        public const string CompanyHasBeenSuccessfullyEdited = "The company has been edited successfully!";
+        public const string CompanyHasBeenSuccessfullyDeleted = "The company has been deleted successfully!";
+    }
+
     public static class Roles
     {
         public const string CustomerRole = "Customer";

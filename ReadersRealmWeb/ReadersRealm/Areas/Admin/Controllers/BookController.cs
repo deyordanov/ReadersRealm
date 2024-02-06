@@ -39,7 +39,7 @@ public class BookController : Controller
             .bookService
             .GetAllAsync(pageIndex ,5, searchTerm);
 
-        ViewBag.SearchTerm = searchTerm;
+        ViewBag.SearchTerm = searchTerm ?? "";
 
         return View(allBooks);
     }

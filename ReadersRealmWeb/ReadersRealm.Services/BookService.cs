@@ -32,12 +32,7 @@ public class BookService : IBookService
         List<Book> allBooks = await this
             .unitOfWork
             .BookRepository
-            .GetAsync(null, null, "Author, Category");
-
-        if (searchTerm != null)
-        {
-            allBooks = allBooks.Where(b => b.Title.StartsWith(searchTerm)).ToList();
-        }
+            .GetAsync(book => book.Title.ToLower().StartsWith(searchTerm != null ? searchTerm.ToLower() : ""), null, "Author, Category");
 
         return PaginatedList<AllBooksViewModel>.Create(allBooks
             .Select(b => new AllBooksViewModel()
@@ -206,7 +201,6 @@ public class BookService : IBookService
     {
         Book bookToAdd = new Book()
         {
-            Id = bookModel.Id,
             ISBN = bookModel.ISBN,
             Title = bookModel.Title,
             AuthorId = bookModel.AuthorId,

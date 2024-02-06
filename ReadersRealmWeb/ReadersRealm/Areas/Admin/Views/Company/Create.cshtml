@@ -1,0 +1,70 @@
+﻿@using ReadersRealm.Data.Models.Enums
+@using ReadersRealm.ViewModels.Category
+@using ReadersRealm.Web.ViewModels.Author
+@model CreateCompanyViewModel
+
+<form method="post" enctype="multipart/form-data" class="w-100" style="display: flex; -o-justify-content: center; -webkit-justify-content: center; justify-content: center;">
+    <div class="border p-3 mt-4 w-50 px-4 border-black">
+        <div class="row pb-2">
+            <h2 class="text-primary">Create Company</h2>
+            <hr />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Name"></label>
+            <input type="text" class="form-control" asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="UIC"></label>
+            <input type="text" class="form-control" asp-for="UIC" />
+            <span asp-validation-for="UIC" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Email"></label>
+            <input type="text" class="form-control" asp-for="Email">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0 text-dark" asp-for="StreetAddress"></label>
+            <input type="text" class="form-control" asp-for="StreetAddress">
+            <span asp-validation-for="StreetAddress" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="City"></label>
+            <input type="text" class="form-control" asp-for="City">
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="State"></label>
+            <input type="text" class="form-control" asp-for="State">
+            <span asp-validation-for="State" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="PostalCode"></label>
+            <input type="text" class="form-control" asp-for="PostalCode">
+            <span asp-validation-for="PostalCode" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="PhoneNumber"></label>
+            <input type="text" class="form-control" asp-for="PhoneNumber">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <a asp-controller="Company" asp-action="Index" class="btn btn-outline-secondary form-control">
+                    Back To List
+                </a>
+            </div>
+            <div class="col-6">
+                <button type="submit" class="btn btn-outline-primary bg-black text-white form-control">Create</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -22,7 +22,7 @@ public class CategoryController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
         IEnumerable<AllCategoriesViewModel> allCategories = await 
             categoryService
