@@ -8,6 +8,8 @@ public interface IUnitOfWork : IDisposable
     IBookRepository BookRepository { get; }
     IAuthorRepository AuthorRepository { get; }
     ICompanyRepository CompanyRepository { get; }
+    IShoppingCartRepository ShoppingCartRepository { get; }
+    IApplicationUserRepository ApplicationUserRepository { get; }
     Task SaveAsync();
     void Dispose(bool disposing);
 }

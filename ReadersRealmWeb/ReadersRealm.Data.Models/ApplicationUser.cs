@@ -1,7 +1,9 @@
-﻿namespace ReadersRealm.Common;
+﻿namespace ReadersRealm.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using static Common.Constants.ValidationConstants.ApplicationUser;
 
 public class ApplicationUser : IdentityUser
@@ -26,4 +28,10 @@ public class ApplicationUser : IdentityUser
 
     [StringLength(ApplicationUserPostalCodeMaxLength)]
     public string? PostalCode { get; set; }
+
+    public Guid? CompanyId { get; set; }
+
+    [ValidateNever]
+    [ForeignKey(nameof(CompanyId))]
+    public Company Company { get; set; }
 }
