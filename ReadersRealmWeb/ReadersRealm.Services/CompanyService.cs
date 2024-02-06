@@ -46,6 +46,23 @@ public class CompanyService : ICompanyService
             .GetByIdAsync(id);
     }
 
+    public async Task<List<AllCompaniesListViewModel>> GetAllListAsync()
+    {
+        IEnumerable<Company> allCompanies = await this
+            .unitOfWork
+            .CompanyRepository
+            .GetAsync(null, null, "");
+
+        List<AllCompaniesListViewModel> companiesToReturn = allCompanies
+            .Select(company => new AllCompaniesListViewModel()
+        {
+            Id = company.Id,
+            Name = company.Name,
+        }).ToList();
+
+        return companiesToReturn;
+    }
+
     public CreateCompanyViewModel GetCompanyForCreate()
     {
         return new CreateCompanyViewModel()

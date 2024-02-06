@@ -18,18 +18,22 @@ using static ReadersRealm.Common.Constants.ValidationMessageConstants.RegisterMo
 namespace ReadersRealm.Areas.Identity.Pages.Account
 {
     using Common;
+    using Data.Models;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Services.Contracts;
+    using ViewModels.Company;
 
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
-        private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IUserStore<IdentityUser> userStore;
+        private readonly IUserEmailStore<IdentityUser> emailStore;
+        private readonly ILogger<RegisterModel> logger;
+        private readonly IEmailSender emailSender;
+        private readonly ICompanyService companyService;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -37,16 +41,18 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, 
+            ICompanyService companyService)
         {
-            _userManager = userManager;
-            _userStore = userStore;
-            _emailStore = GetEmailStore();
-            _signInManager = signInManager;
-            _roleManager = roleManager;
-            _logger = logger;
-            _emailSender = emailSender;
-        }
+            this.userManager = userManager;
+            this.userStore = userStore;
+            this.emailStore = GetEmailStore();
+            this.signInManager = signInManager;
+            this.roleManager = roleManager;
+            this.logger = logger;
+            this.emailSender = emailSender;
+            this.companyService = companyService;
+        }   
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -143,11 +149,14 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
                 ErrorMessage = RegisterModelPhoneNumberLengthMessage)]
             public string? PhoneNumber { get; set; }
 
-            [Required]
             public string? Role { get; set; }
 
             [ValidateNever]
             public IEnumerable<SelectListItem> Roles { get; set; }
+
+            public Guid? CompanyId { get; set; }
+
+            public IEnumerable<SelectListItem> Companies { get; set; }
         }
 
 
@@ -155,27 +164,32 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
         {
             await this.EnsureRolesAreCreatedAsync();
 
+            List<AllCompaniesListViewModel> companies = await this
+                .companyService
+                .GetAllListAsync();
+
             Input = new()
             {
                 FirstName = "",
                 LastName = "",
-                Roles = this._roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
+                Roles = this.roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
+                Companies = companies.Select(c => new SelectListItem(c.Name, c.Id.ToString())),
             };
 
             ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 ApplicationUser user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
@@ -185,23 +199,28 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
 
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                if (Input.Role == CompanyRole)
+                {
+                    user.CompanyId = Input.CompanyId;
+                }
+
+                var result = await userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    logger.LogInformation("User created a new account with password.");
 
                     if (!string.IsNullOrWhiteSpace(Input.Role))
                     {
-                        await _userManager.AddToRoleAsync(user, Input.Role);
+                        await userManager.AddToRoleAsync(user, Input.Role);
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(user, CustomerRole);
+                        await userManager.AddToRoleAsync(user, CustomerRole);
                     }
 
-                    string userId = await _userManager.GetUserIdAsync(user);
-                    string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    string userId = await userManager.GetUserIdAsync(user);
+                    string code = await userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     string callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
@@ -209,16 +228,16 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
                     
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    if (userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -249,11 +268,11 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
 
         private IUserEmailStore<IdentityUser> GetEmailStore()
         {
-            if (!_userManager.SupportsUserEmail)
+            if (!userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<IdentityUser>)userStore;
         }
 
         private async Task EnsureRolesAreCreatedAsync()
@@ -268,10 +287,10 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
 
             foreach (string role in roles)
             {
-                bool roleExists = await this._roleManager.RoleExistsAsync(role);
+                bool roleExists = await this.roleManager.RoleExistsAsync(role);
                 if (!roleExists)
                 {
-                    await this._roleManager.CreateAsync(new IdentityRole(role));
+                    await this.roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
         }

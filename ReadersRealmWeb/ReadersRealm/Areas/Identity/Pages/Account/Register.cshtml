@@ -63,8 +63,13 @@
                         <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <select asp-for="Input.Role" asp-items="@Model.Input.Roles" class="form-select">
+                        <select asp-for="Input.Role" asp-items="@Model.Input.Roles" class="form-select" id="roles">
                             <option disabled selected>Select a role</option>
+                        </select>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select asp-for="Input.Role" asp-items="@Model.Input.Companies" class="form-select" id="companies">
+                            <option disabled selected>Select a company</option>
                         </select>
                     </div>
                     <div class="row" style="display: flex; justify-content: center">
@@ -109,5 +114,7 @@
 
 
 @section Scripts {
+    <script src="~/js/register.js"></script>
+
     <partial name="_ValidationScriptsPartial" />
 }
