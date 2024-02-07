@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <Folder Include="ApplicationUser\" />
-    <Folder Include="ShoppingCart\" />
   </ItemGroup>
 
 </Project>

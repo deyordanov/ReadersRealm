@@ -47,6 +47,8 @@ public static class Constants
         //Action Results
         public const string ShoppingCartItemsHaveBeenAddedSuccessfully =
             "The items have been added successfully to your shopping cart!";
+
+        public const string ShoppingCartItemHasBeenDeletedSuccessfully = "The items has been deleted successfully!";
     }
 
     public static class Roles

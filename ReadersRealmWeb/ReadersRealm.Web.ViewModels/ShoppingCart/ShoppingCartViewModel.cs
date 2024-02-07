@@ -33,4 +33,7 @@ public class ShoppingCartViewModel
     [ForeignKey(nameof(ApplicationUserId))]
     [ValidateNever]
     public ApplicationUserViewModel ApplicationUser { get; set; }
+
+    [ValidateNever]
+    public decimal TotalPrice { get; set; }
 }

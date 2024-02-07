@@ -63,6 +63,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Customer\Views\ShoppingCart\" />
     <Folder Include="wwwroot\images\book\" />
   </ItemGroup>
 

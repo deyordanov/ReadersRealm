@@ -88,6 +88,29 @@ public class ShoppingCartService : IShoppingCartService
             .SaveAsync();
     }
 
+    public async Task DeleteShoppingCartAsync(Guid id)
+    {
+        ShoppingCart? shoppingCartToDelete = await this
+            .unitOfWork
+            .ShoppingCartRepository
+            .GetByIdAsync(id);
+
+        if (shoppingCartToDelete == null)
+        {
+            throw new ShoppingCartNotFoundException();
+        }
+
+        this
+            .unitOfWork
+            .ShoppingCartRepository
+            .Delete(shoppingCartToDelete);
+
+        await this
+            .unitOfWork
+            .SaveAsync();
+
+    }
+
     public async Task<bool> ShoppingCartExistsAsync(string applicationUserId, Guid bookId)
     {
         return await this
@@ -95,5 +118,107 @@ public class ShoppingCartService : IShoppingCartService
             .ShoppingCartRepository
             .GetFirstOrDefaultWithFilterAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId &&
                                                               shoppingCart.BookId == bookId) != null;
+    }
+
+    public async Task<AllShoppingCartsListViewModel> GetAllListAsync(string applicationUserId)
+    {
+        IEnumerable<ShoppingCart> allShoppingCarts = await this
+            .unitOfWork
+            .ShoppingCartRepository
+            .GetAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId, null, "Book, ApplicationUser");
+
+        AllShoppingCartsListViewModel shoppingCartModel = new AllShoppingCartsListViewModel()
+        {
+            OrderTotal = allShoppingCarts.Sum(shoppingCart => this.CalculateShoppingCartTotal(shoppingCart.Count, shoppingCart.Book.Price)),
+            ShoppingCartsList = allShoppingCarts.Select(shoppingCart => new ShoppingCartViewModel()
+            {
+                Id = shoppingCart.Id,
+                ApplicationUserId = applicationUserId,
+                ApplicationUser = new ApplicationUserViewModel()
+                {
+                    Id = shoppingCart.ApplicationUser.Id,
+                    FirstName = shoppingCart.ApplicationUser.FirstName,
+                    LastName = shoppingCart.ApplicationUser.LastName,
+                },
+                BookId = shoppingCart.BookId,
+                Book = new DetailsBookViewModel()
+                {
+                    Id = shoppingCart.Book.Id,
+                    ISBN = shoppingCart.Book.ISBN,
+                    Title = shoppingCart.Book.Title,
+                    BookCover = shoppingCart.Book.BookCover,
+                    Description = shoppingCart.Book.Description,
+                    Pages = shoppingCart.Book.Pages,
+                    Price = shoppingCart.Book.Price,
+                    Used = shoppingCart.Book.Used,
+                    ImageUrl = shoppingCart.Book.ImageUrl,
+                    Author = shoppingCart.Book.Author,
+                    AuthorId = shoppingCart.Book.AuthorId,
+                    Category = shoppingCart.Book.Category,
+                    CategoryId = shoppingCart.Book.CategoryId,
+                },
+                Count = shoppingCart.Count,
+                TotalPrice = shoppingCart.Count * shoppingCart.Book.Price,
+            }),
+        };
+
+        return shoppingCartModel;
+    }
+
+    public async Task IncreaseQuantityForShoppingCartAsync(Guid shoppingCartId)
+    {
+        ShoppingCart? shoppingCart = await this
+            .unitOfWork
+            .ShoppingCartRepository
+            .GetByIdAsync(shoppingCartId);
+
+        if (shoppingCart == null)
+        {
+            throw new ShoppingCartNotFoundException();
+        }
+
+        shoppingCart.Count++;
+
+        await this
+            .unitOfWork
+            .SaveAsync();
+    }
+
+    public async Task DecreaseQuantityForShoppingCartAsync(Guid shoppingCartId)
+    {
+        ShoppingCart? shoppingCart = await this
+            .unitOfWork
+            .ShoppingCartRepository
+            .GetByIdAsync(shoppingCartId);
+
+        if (shoppingCart == null)
+        {
+            throw new ShoppingCartNotFoundException();
+        }
+
+        if (shoppingCart.Count > 1)
+        {
+            shoppingCart.Count--;
+
+            await this
+                .unitOfWork
+                .SaveAsync();
+        }
+        else
+        {
+            await this.DeleteShoppingCartAsync(shoppingCartId);
+        }
+    }
+
+    private decimal CalculateShoppingCartTotal(int count, decimal bookPrice)
+    {
+        decimal discount = count is >= 1 and <= 50
+            ? 0M
+            : count is >= 51 and <= 100
+                ? 0.1M
+                : 0.2M;
+
+        decimal totalWithoutDiscount = bookPrice * count;
+        return totalWithoutDiscount - (totalWithoutDiscount * discount);
     }
 }
