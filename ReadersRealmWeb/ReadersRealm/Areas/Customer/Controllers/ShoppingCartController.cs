@@ -1,28 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace ReadersRealm.Areas.Customer.Controllers;
+﻿namespace ReadersRealm.Areas.Customer.Controllers;
 
 using Data.Models;
 using Extensions.ClaimsPrincipal;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using ViewModels.ApplicationUser;
 using ViewModels.ShoppingCart;
 using Web.ViewModels.OrderDetails;
+using static Common.Constants.Constants.Areas;
+using static Common.Constants.Constants.OrderHeader;
+using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
-using static Common.Constants.Constants.Roles;
-using static Common.Constants.Constants.OrderHeader;
 
-[Area("Customer")]
-[Authorize]
-public class ShoppingCartController : Controller
+[Area(Customer)]
+public class ShoppingCartController : BaseController
 {
-    private readonly IShoppingCartService shoppingCartService;
-    private readonly IApplicationUserService applicationUserService;
-    private readonly IOrderHeaderService orderHeaderService;
-    private readonly IOrderDetailsService orderDetailsService;
+    private readonly IShoppingCartService _shoppingCartService;
+    private readonly IApplicationUserService _applicationUserService;
+    private readonly IOrderHeaderService _orderHeaderService;
+    private readonly IOrderDetailsService _orderDetailsService;
 
     public ShoppingCartController(
         IShoppingCartService shoppingCartService, 
@@ -30,10 +27,10 @@ public class ShoppingCartController : Controller
         IOrderHeaderService orderHeaderService,
         IOrderDetailsService orderDetailsService)
     {
-        this.shoppingCartService = shoppingCartService;
-        this.applicationUserService = applicationUserService;
-        this.orderHeaderService = orderHeaderService;
-        this.orderDetailsService = orderDetailsService;
+        this._shoppingCartService = shoppingCartService;
+        this._applicationUserService = applicationUserService;
+        this._orderHeaderService = orderHeaderService;
+        this._orderDetailsService = orderDetailsService;
     }
 
     [HttpGet]
@@ -42,7 +39,7 @@ public class ShoppingCartController : Controller
         string userId = User.GetId();
 
         AllShoppingCartsListViewModel shoppingCartModel = await this
-            .shoppingCartService
+            ._shoppingCartService
             .GetAllListAsync(userId);
 
         return View(shoppingCartModel);
@@ -54,7 +51,7 @@ public class ShoppingCartController : Controller
         string userId = User.GetId();
 
         AllShoppingCartsListViewModel shoppingCartModel = await this
-            .shoppingCartService
+            ._shoppingCartService
             .GetAllListAsync(userId);
 
         return View(shoppingCartModel);
@@ -64,13 +61,13 @@ public class ShoppingCartController : Controller
     public async Task<IActionResult> Summary(AllShoppingCartsListViewModel shoppingCartModel)
     {
         string userId = User.GetId();
-
-        shoppingCartModel = await this
-            .shoppingCartService
-            .GetAllListAsync(userId);
-
         if (!ModelState.IsValid)
         {
+            shoppingCartModel = await this
+                ._shoppingCartService
+                .GetAllListAsync(userId);
+
+
             return View(shoppingCartModel);
         }
     
@@ -89,8 +86,12 @@ public class ShoppingCartController : Controller
         };
 
         await this
-            .applicationUserService
+            ._applicationUserService
             .UpdateApplicationUserAsync(applicationUserModel);
+
+        shoppingCartModel = await this
+            ._shoppingCartService
+            .GetAllListAsync(userId);
 
         if (User.IsInRole(CompanyRole))
         {
@@ -106,7 +107,7 @@ public class ShoppingCartController : Controller
         }
 
         Guid orderHeaderId = await this
-            .orderHeaderService
+            ._orderHeaderService
             .CreateOrderHeaderAsync(shoppingCartModel.OrderHeader);
 
         foreach (ShoppingCartViewModel shoppingCart in shoppingCartModel.ShoppingCartsList)
@@ -120,7 +121,7 @@ public class ShoppingCartController : Controller
             };
 
             await this
-                .orderDetailsService
+                ._orderDetailsService
                 .CreateOrderDetailsAsync(orderDetailsModel);
         }
 
@@ -130,7 +131,7 @@ public class ShoppingCartController : Controller
     [HttpGet]
     public IActionResult OrderConfirmation()
     {
-        return View(12);
+        return View();
     }
 
     [HttpGet]
@@ -142,7 +143,7 @@ public class ShoppingCartController : Controller
         }
 
         await this
-            .shoppingCartService
+            ._shoppingCartService
             .IncreaseQuantityForShoppingCartAsync((Guid)id);
 
         return RedirectToAction(nameof(Index));
@@ -157,7 +158,7 @@ public class ShoppingCartController : Controller
         }
 
         await this
-            .shoppingCartService
+            ._shoppingCartService
             .DecreaseQuantityForShoppingCartAsync((Guid)id);
 
         return RedirectToAction(nameof(Index));
@@ -167,7 +168,7 @@ public class ShoppingCartController : Controller
     public async Task<IActionResult> Delete(Guid id)
     {
         await this
-            .shoppingCartService
+            ._shoppingCartService
             .DeleteShoppingCartAsync(id);
 
         TempData[Success] = ShoppingCartItemHasBeenDeletedSuccessfully;

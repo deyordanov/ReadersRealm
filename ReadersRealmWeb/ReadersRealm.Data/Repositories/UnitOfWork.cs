@@ -1,18 +1,16 @@
 ﻿namespace ReadersRealm.Data.Repositories;
 
 using Contracts;
-using Microsoft.AspNetCore.Identity;
-using Models;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private bool disposed;
-    private ReadersRealmDbContext dbContext;
+    private bool _disposed;
+    private readonly ReadersRealmDbContext _dbContext;
 
     public UnitOfWork(ReadersRealmDbContext dbContext)
     {
-        this.disposed = false;
-        this.dbContext = dbContext;
+        this._disposed = false;
+        this._dbContext = dbContext;
 
         this.CategoryRepository = new CategoryRepository(dbContext);
         this.BookRepository = new BookRepository(dbContext);
@@ -25,11 +23,8 @@ public class UnitOfWork : IUnitOfWork
     }
 
     public ICategoryRepository CategoryRepository { get; private set; }
-
     public IBookRepository BookRepository { get; private set; }
-
     public IAuthorRepository AuthorRepository { get; private set; }
-
     public ICompanyRepository CompanyRepository { get; private set; }
     public IShoppingCartRepository ShoppingCartRepository { get; private set; }
     public IApplicationUserRepository ApplicationUserRepository { get; private set; }
@@ -38,20 +33,20 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task SaveAsync()
     {
-        await this.dbContext.SaveChangesAsync();
+        await this._dbContext.SaveChangesAsync();
     }
 
     public void Dispose(bool disposing)
     {
-        if (!this.disposed)
+        if (!this._disposed)
         {
             if (disposing)
             {
-                this.dbContext.Dispose();
+                this._dbContext.Dispose();
             }
         }
 
-        this.disposed = true;
+        this._disposed = true;
     }
 
     public void Dispose()

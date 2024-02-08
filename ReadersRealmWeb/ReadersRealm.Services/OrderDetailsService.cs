@@ -7,13 +7,12 @@ using Web.ViewModels.OrderDetails;
 
 public class OrderDetailsService : IOrderDetailsService
 {
-    private readonly IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public OrderDetailsService(IUnitOfWork unitOfWork)
     {
-        this.unitOfWork = unitOfWork;
+        this._unitOfWork = unitOfWork;
     }
-
 
     public async Task CreateOrderDetailsAsync(OrderDetailsViewModel orderDetailsModel)
     {
@@ -26,12 +25,12 @@ public class OrderDetailsService : IOrderDetailsService
         };
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .OrderDetailsRepository
             .AddAsync(orderDetails);
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 }

@@ -5,21 +5,20 @@ using Contracts;
 using Data.Models;
 using Data.Repositories.Contracts;
 using ViewModels.ApplicationUser;
-using ViewModels.Book;
 
 public class ApplicationUserService : IApplicationUserService
 {
-    private readonly IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ApplicationUserService(IUnitOfWork unitOfWork)
     {
-        this.unitOfWork = unitOfWork;
+        this._unitOfWork = unitOfWork;
     }
 
     public async Task<ApplicationUserViewModel> GetByIdAsync(string id)
     {
         ApplicationUser? applicationUser = await this
-            .unitOfWork
+            ._unitOfWork
             .ApplicationUserRepository
             .GetByIdAsync(id);
 
@@ -41,7 +40,7 @@ public class ApplicationUserService : IApplicationUserService
     public async Task<OrderApplicationUserViewModel> GetApplicationUserForOrderAsync(string id)
     {
         ApplicationUser? applicationUser = await this
-            .unitOfWork
+            ._unitOfWork
             .ApplicationUserRepository
             .GetByIdAsync(id);
 
@@ -68,7 +67,7 @@ public class ApplicationUserService : IApplicationUserService
     public async Task UpdateApplicationUserAsync(OrderApplicationUserViewModel applicationUserModel)
     {
         ApplicationUser? applicationUser = await this
-            .unitOfWork
+            ._unitOfWork
             .ApplicationUserRepository
             .GetByIdAsync(applicationUserModel.Id);
 
@@ -86,7 +85,7 @@ public class ApplicationUserService : IApplicationUserService
         applicationUser.PhoneNumber = applicationUserModel.PhoneNumber;
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 }

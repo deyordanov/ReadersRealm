@@ -1,6 +1,5 @@
 ﻿namespace ReadersRealm.Services.Contracts;
 
-using ReadersRealm.ViewModels.Book;
 using ViewModels.ApplicationUser;
 
 public interface IApplicationUserService

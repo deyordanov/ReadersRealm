@@ -1,7 +1,6 @@
 ﻿namespace ReadersRealm.Services.Contracts;
 
-using ReadersRealm.ViewModels.Book;
-using ReadersRealm.Web.ViewModels.Author;
+using ViewModels.Book;
 using ViewModels.ShoppingCart;
 
 public interface IShoppingCartService

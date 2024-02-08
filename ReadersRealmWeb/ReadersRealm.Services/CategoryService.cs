@@ -9,19 +9,19 @@ using ViewModels.Category;
 
 public class CategoryService : ICategoryService
 {
-    private readonly IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CategoryService(IUnitOfWork unitOfWork)
     {
-        this.unitOfWork = unitOfWork;
+        this._unitOfWork = unitOfWork;
     }
 
     public async Task<IEnumerable<AllCategoriesViewModel>> GetAllAsync()
     {
         List<Category> allCategories = await this
-            .unitOfWork
+            ._unitOfWork
             .CategoryRepository
-            .GetAsync(null, null, "");
+            .GetAsync(null, null, string.Empty);
 
         IEnumerable<AllCategoriesViewModel> categoriesToReturn = allCategories
             .Select(c => new AllCategoriesViewModel()
@@ -37,9 +37,9 @@ public class CategoryService : ICategoryService
     public async Task<List<AllCategoriesListViewModel>> GetAllListAsync()
     {
         List<Category> allCategories = await this
-            .unitOfWork
+            ._unitOfWork
             .CategoryRepository
-            .GetAsync(null, null, "");
+            .GetAsync(null, null, string.Empty);
 
         List<AllCategoriesListViewModel> categoriesToReturn = allCategories
             .Select(c => new AllCategoriesListViewModel()
@@ -55,7 +55,7 @@ public class CategoryService : ICategoryService
     public async Task<EditCategoryViewModel> GetCategoryForEditAsync(int id)
     {
         Category? category = await this
-            .unitOfWork
+            ._unitOfWork
             .CategoryRepository
             .GetByIdAsync(id);
 
@@ -77,7 +77,7 @@ public class CategoryService : ICategoryService
     public async Task<DeleteCategoryViewModel> GetCategoryForDeleteAsync(int id)
     {
         Category? category = await this
-            .unitOfWork
+            ._unitOfWork
             .CategoryRepository
             .GetByIdAsync(id);
 
@@ -100,7 +100,7 @@ public class CategoryService : ICategoryService
     {
         CreateCategoryViewModel categoryModel = new CreateCategoryViewModel()
         {
-            Name = ""
+            Name = string.Empty
         };
 
         return categoryModel;
@@ -115,17 +115,17 @@ public class CategoryService : ICategoryService
         };
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .CategoryRepository
             .AddAsync(categoryToAdd);
 
-        await this.unitOfWork.SaveAsync();
+        await this._unitOfWork.SaveAsync();
     }
 
     public async Task<Category?> GetCategoryByIdAsync(int id)
     {
         return await this
-            .unitOfWork
+            ._unitOfWork
             .CategoryRepository
             .GetByIdAsync(id);
     }
@@ -133,7 +133,7 @@ public class CategoryService : ICategoryService
     public async Task EditCategoryAsync(EditCategoryViewModel categoryModel)
     {
         Category? categoryToEdit = await this
-            .unitOfWork
+            ._unitOfWork
             .CategoryRepository
             .GetByIdAsync(categoryModel.Id);
 
@@ -145,13 +145,13 @@ public class CategoryService : ICategoryService
         categoryToEdit.Name = categoryModel.Name;
         categoryToEdit.DisplayOrder = categoryModel.DisplayOrder;
 
-        await this.unitOfWork.SaveAsync();
+        await this._unitOfWork.SaveAsync();
     }
 
     public async Task DeleteCategoryAsync(DeleteCategoryViewModel categoryModel)
     {
         Category? categoryToDelete = await this
-            .unitOfWork
+            ._unitOfWork
             .CategoryRepository
             .GetByIdAsync(categoryModel.Id);
 
@@ -161,12 +161,12 @@ public class CategoryService : ICategoryService
         }
 
         this
-            .unitOfWork
+            ._unitOfWork
             .CategoryRepository
             .Delete(categoryToDelete);
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 

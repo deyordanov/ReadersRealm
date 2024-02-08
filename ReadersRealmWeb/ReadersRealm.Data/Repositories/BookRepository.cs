@@ -7,25 +7,25 @@ using Models;
 
 public class BookRepository : Repository<Book>, IBookRepository
 {
-    private readonly ReadersRealmDbContext dbContext;
+    private readonly ReadersRealmDbContext _dbContext;
 
     public BookRepository(ReadersRealmDbContext dbContext)
         : base(dbContext)
     {
-        this.dbContext = dbContext;
+        this._dbContext = dbContext;
     }
 
     public async Task<Book?> GetByIdAsync(Guid id)
     {
         return await this
-            .dbContext
+            ._dbContext
             .Books
             .FirstOrDefaultAsync(book => book.Id == id);
     }
 
     public Task<Book?> GetByIdWithNavPropertiesAsync(Guid id, string properties)
     {
-        IQueryable<Book> query = this.dbContext.Books.AsNoTracking();
+        IQueryable<Book> query = this._dbContext.Books.AsNoTracking();
 
         string[] propertiesToAdd = properties.Split(", ", StringSplitOptions.RemoveEmptyEntries);
 

@@ -11,21 +11,23 @@ using ViewModels.ShoppingCart;
 
 public class ShoppingCartService : IShoppingCartService
 {
-    private readonly IUnitOfWork unitOfWork;
-    private readonly IApplicationUserService applicationUserService;
+    private const string PropertiesToInclude = "Book, ApplicationUser";
+
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IApplicationUserService _applicationUserService;
 
     public ShoppingCartService(IUnitOfWork unitOfWork, IApplicationUserService applicationUserService)
     {
-        this.unitOfWork = unitOfWork;
-        this.applicationUserService = applicationUserService;
+        this._unitOfWork = unitOfWork;
+        this._applicationUserService = applicationUserService;
     }
 
     public async Task<ShoppingCartViewModel> GetShoppingCartByIdWithNavPropertiesOrCreateAsync(Guid id)
     {
         ShoppingCart? shoppingCart = await this
-            .unitOfWork
+            ._unitOfWork
             .ShoppingCartRepository
-            .GetByIdWithNavPropertiesAsync(id, "ApplicationUser, Book");
+            .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
 
         if (shoppingCart == null)
         {
@@ -63,19 +65,19 @@ public class ShoppingCartService : IShoppingCartService
         };
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .ShoppingCartRepository
             .AddAsync(shoppingCart);
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 
     public async Task UpdateShoppingCartCountAsync(ShoppingCartViewModel shoppingCartModel)
     {
         ShoppingCart? shoppingCart = await this
-            .unitOfWork
+            ._unitOfWork
             .ShoppingCartRepository
             .GetByApplicationUserIdAndBookIdAsync(shoppingCartModel.ApplicationUserId, shoppingCartModel.BookId);
 
@@ -87,14 +89,14 @@ public class ShoppingCartService : IShoppingCartService
         shoppingCart.Count = shoppingCart.Count += shoppingCartModel.Count;
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteShoppingCartAsync(Guid id)
     {
         ShoppingCart? shoppingCartToDelete = await this
-            .unitOfWork
+            ._unitOfWork
             .ShoppingCartRepository
             .GetByIdAsync(id);
 
@@ -104,19 +106,19 @@ public class ShoppingCartService : IShoppingCartService
         }
 
         this
-            .unitOfWork
+            ._unitOfWork
             .ShoppingCartRepository
             .Delete(shoppingCartToDelete);
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 
     public async Task<bool> ShoppingCartExistsAsync(string applicationUserId, Guid bookId)
     {
         return await this
-            .unitOfWork
+            ._unitOfWork
             .ShoppingCartRepository
             .GetFirstOrDefaultWithFilterAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId &&
                                                               shoppingCart.BookId == bookId) != null;
@@ -125,11 +127,11 @@ public class ShoppingCartService : IShoppingCartService
     public async Task<AllShoppingCartsListViewModel> GetAllListAsync(string applicationUserId)
     {
         IEnumerable<ShoppingCart> allShoppingCarts = await this
-            .unitOfWork
+            ._unitOfWork
             .ShoppingCartRepository
-            .GetAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId, null, "Book, ApplicationUser");
+            .GetAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId, null, PropertiesToInclude);
 
-        OrderApplicationUserViewModel applicationUser = await this.applicationUserService.GetApplicationUserForOrderAsync(applicationUserId);
+        OrderApplicationUserViewModel applicationUser = await this._applicationUserService.GetApplicationUserForOrderAsync(applicationUserId);
 
         AllShoppingCartsListViewModel shoppingCartModel = new AllShoppingCartsListViewModel()
         {
@@ -184,7 +186,7 @@ public class ShoppingCartService : IShoppingCartService
     public async Task IncreaseQuantityForShoppingCartAsync(Guid shoppingCartId)
     {
         ShoppingCart? shoppingCart = await this
-            .unitOfWork
+            ._unitOfWork
             .ShoppingCartRepository
             .GetByIdAsync(shoppingCartId);
 
@@ -196,14 +198,14 @@ public class ShoppingCartService : IShoppingCartService
         shoppingCart.Count++;
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 
     public async Task DecreaseQuantityForShoppingCartAsync(Guid shoppingCartId)
     {
         ShoppingCart? shoppingCart = await this
-            .unitOfWork
+            ._unitOfWork
             .ShoppingCartRepository
             .GetByIdAsync(shoppingCartId);
 
@@ -217,7 +219,7 @@ public class ShoppingCartService : IShoppingCartService
             shoppingCart.Count--;
 
             await this
-                .unitOfWork
+                ._unitOfWork
                 .SaveAsync();
         }
         else

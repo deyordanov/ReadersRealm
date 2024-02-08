@@ -7,19 +7,19 @@ using Web.ViewModels.Author;
 
 public class AuthorService : IAuthorService
 {
-    private IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public AuthorService(IUnitOfWork unitOfWork)
     {
-        this.unitOfWork = unitOfWork;
+        this._unitOfWork = unitOfWork;
     }
 
     public async Task<IEnumerable<AllAuthorsViewModel>> GetAllAsync()
     {
         List<Author> allAuthors = await this
-            .unitOfWork
+            ._unitOfWork
             .AuthorRepository
-            .GetAsync(null, null, "");
+            .GetAsync(null, null, string.Empty);
 
         IEnumerable<AllAuthorsViewModel> authorsToReturn = allAuthors
             .Select(a => new AllAuthorsViewModel()
@@ -41,9 +41,9 @@ public class AuthorService : IAuthorService
     public async Task<List<AllAuthorsListViewModel>> GetAllListAsync()
     {
         List<Author> allAuthors = await this
-            .unitOfWork
+            ._unitOfWork
             .AuthorRepository
-            .GetAsync(null, null, "");
+            .GetAsync(null, null, string.Empty);
 
         List<AllAuthorsListViewModel> authorsToReturn = allAuthors
             .Select(a => new AllAuthorsListViewModel()

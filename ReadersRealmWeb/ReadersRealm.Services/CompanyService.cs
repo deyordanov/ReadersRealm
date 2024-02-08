@@ -9,19 +9,19 @@ using ViewModels.Company;
 
 public class CompanyService : ICompanyService
 {
-    private readonly IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CompanyService(IUnitOfWork unitOfWork)
     {
-        this.unitOfWork = unitOfWork;
+        this._unitOfWork = unitOfWork;
     }
 
     public async Task<PaginatedList<AllCompaniesViewModel>> GetAllAsync(int pageIndex, int pageSize, string? searchTerm)
     {
         IEnumerable<Company> allCompanies = await this
-            .unitOfWork
+            ._unitOfWork
             .CompanyRepository
-            .GetAsync(company => company.Name.ToLower().StartsWith(searchTerm != null ? searchTerm.ToLower() : ""), null, "");
+            .GetAsync(company => company.Name.ToLower().StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty), null, string.Empty);
 
         return PaginatedList<AllCompaniesViewModel>.Create(allCompanies.Select(c => new AllCompaniesViewModel()
         {
@@ -41,7 +41,7 @@ public class CompanyService : ICompanyService
     public async Task<Company?> GetCompanyByIdAsync(Guid id)
     {
         return await this
-            .unitOfWork
+            ._unitOfWork
             .CompanyRepository
             .GetByIdAsync(id);
     }
@@ -49,9 +49,9 @@ public class CompanyService : ICompanyService
     public async Task<List<AllCompaniesListViewModel>> GetAllListAsync()
     {
         IEnumerable<Company> allCompanies = await this
-            .unitOfWork
+            ._unitOfWork
             .CompanyRepository
-            .GetAsync(null, null, "");
+            .GetAsync(null, null, string.Empty);
 
         List<AllCompaniesListViewModel> companiesToReturn = allCompanies
             .Select(company => new AllCompaniesListViewModel()
@@ -67,16 +67,16 @@ public class CompanyService : ICompanyService
     {
         return new CreateCompanyViewModel()
         {
-            Name = "",
-            UIC = "",
-            Email = "",
+            Name = string.Empty,
+            UIC = string.Empty,
+            Email = string.Empty,
         };
     }
 
     public async Task<EditCompanyViewModel> GetCompanyForEditAsync(Guid id)
     {
         Company? company = await this
-            .unitOfWork
+            ._unitOfWork
             .CompanyRepository
             .GetByIdAsync(id);
 
@@ -104,7 +104,7 @@ public class CompanyService : ICompanyService
     public async Task<DeleteCompanyViewModel> GetCompanyForDeleteAsync(Guid id)
     {
         Company? company = await this
-            .unitOfWork
+            ._unitOfWork
             .CompanyRepository
             .GetByIdAsync(id);
 
@@ -144,19 +144,19 @@ public class CompanyService : ICompanyService
         };
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .CompanyRepository
             .AddAsync(companyToAdd);
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 
     public async Task EditCompanyAsync(EditCompanyViewModel bookModel)
     {
         Company? companyToEdit = await this
-            .unitOfWork
+            ._unitOfWork
             .CompanyRepository
             .GetByIdAsync(bookModel.Id);
 
@@ -175,13 +175,13 @@ public class CompanyService : ICompanyService
         companyToEdit.State = bookModel.State;
         companyToEdit.PhoneNumber = bookModel.PhoneNumber;
 
-        await this.unitOfWork.SaveAsync();
+        await this._unitOfWork.SaveAsync();
     }
 
     public async Task DeleteCompanyAsync(DeleteCompanyViewModel companyModel)
     {
         Company? companyToDelete = await this
-            .unitOfWork
+            ._unitOfWork
             .CompanyRepository
             .GetByIdAsync(companyModel.Id);
 
@@ -191,12 +191,12 @@ public class CompanyService : ICompanyService
         }
 
         this
-            .unitOfWork
+            ._unitOfWork
             .CompanyRepository
             .Delete(companyToDelete);
 
         await this 
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 }

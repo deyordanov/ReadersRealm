@@ -7,18 +7,20 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using ViewModels.Book;
 using Web.ViewModels.Book;
+using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Book;
-using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.Roles;
+using static Common.Constants.Constants.Shared;
+using static Common.Constants.ValidationMessageConstants.Book;
 
-[Area("Admin")]
-[Authorize(Roles = AdminRole)]
-public class BookController : Controller
+
+[Area(Admin)]
+public class BookController : BaseController
 {
-    private readonly IBookService bookService;
-    private readonly ICategoryService categoryService;
-    private readonly IAuthorService authorService;
-    private readonly IWebHostEnvironment webHost;
+    private readonly IBookService _bookService;
+    private readonly ICategoryService _categoryService;
+    private readonly IAuthorService _authorService;
+    private readonly IWebHostEnvironment _webHost;
 
     public BookController(
         IBookService bookService, 
@@ -26,17 +28,18 @@ public class BookController : Controller
         IAuthorService authorService,
         IWebHostEnvironment webHost)
     {
-        this.bookService = bookService;
-        this.categoryService = categoryService;
-        this.authorService = authorService;
-        this.webHost = webHost; 
+        this._bookService = bookService;
+        this._categoryService = categoryService;
+        this._authorService = authorService;
+        this._webHost = webHost;
     }
 
     [HttpGet]
+    [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
         PaginatedList<AllBooksViewModel> allBooks = await this
-            .bookService
+            ._bookService
             .GetAllAsync(pageIndex ,5, searchTerm);
 
         ViewBag.SearchTerm = searchTerm ?? "";
@@ -45,36 +48,38 @@ public class BookController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Create()
     {
         CreateBookViewModel bookModel = await this
-            .bookService
+            ._bookService
             .GetBookForCreateAsync();
 
         return View(bookModel);
     }
 
     [HttpPost]
+    [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Create(CreateBookViewModel bookModel, IFormFile? file)
     {
         if (bookModel.AuthorId == Guid.Empty)
         {
-            ModelState.AddModelError("AuthorId", "Author is required!");
+            ModelState.AddModelError(AuthorId, BookAuthorRequiredMessage);
         }
 
         if (bookModel.CategoryId == 0)
         {
-            ModelState.AddModelError("CategoryId", "Category is required!");
+            ModelState.AddModelError(CategoryId, BookCategoryRequiredMessage);
         }
 
         if (!ModelState.IsValid)
         {
             bookModel.AuthorsList = await this
-                .authorService
+                ._authorService
                 .GetAllListAsync();
 
             bookModel.CategoriesList = await this
-                .categoryService
+                ._categoryService
                 .GetAllListAsync();
 
             return View(bookModel);
@@ -84,11 +89,11 @@ public class BookController : Controller
         {
             string fileName = await this.UploadImageAsync(file, bookModel.ImageUrl);
 
-            bookModel.ImageUrl = @"\images\book\" + fileName;
+            bookModel.ImageUrl = PathToSaveImage + fileName;
         }
 
         await
-            bookService
+            _bookService
                 .CreateBookAsync(bookModel);
 
         TempData[Success] = BookHasBeenSuccessfullyCreated;
@@ -97,6 +102,7 @@ public class BookController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Edit(Guid? id, int pageIndex, string? searchTerm)
     {
         if (id == null || id == Guid.Empty)
@@ -105,7 +111,7 @@ public class BookController : Controller
         }
 
         EditBookViewModel bookModel = await this
-            .bookService
+            ._bookService
             .GetBookForEditAsync((Guid)id);
 
         ViewBag.PageIndex = pageIndex;
@@ -115,16 +121,17 @@ public class BookController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Edit(EditBookViewModel bookModel, IFormFile? file, int pageIndex, string? searchTerm)
     {
         if (!ModelState.IsValid)
         {
             bookModel.AuthorsList = await this
-                .authorService
+                ._authorService
                 .GetAllListAsync();
 
             bookModel.CategoriesList = await this
-                .categoryService
+                ._categoryService
                 .GetAllListAsync();
 
             return View(bookModel);
@@ -134,11 +141,11 @@ public class BookController : Controller
         {
             string fileName = await this.UploadImageAsync(file, bookModel.ImageUrl);
 
-            bookModel.ImageUrl = @"\images\book\" + fileName;
+            bookModel.ImageUrl = PathToSaveImage + fileName;
         }
 
         await this
-            .bookService
+            ._bookService
             .EditBookAsync(bookModel);
 
         TempData[Success] = BookHasBeenSuccessfullyEdited;
@@ -147,6 +154,7 @@ public class BookController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null || id == Guid.Empty)
@@ -155,19 +163,20 @@ public class BookController : Controller
         }
 
         DeleteBookViewModel bookModel = await this
-            .bookService
+            ._bookService
             .GetBookForDeleteAsync((Guid)id);
 
         return View(bookModel);
     }
 
     [HttpPost]
+    [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(DeleteBookViewModel bookModel)
     {
-        this.DeleteImageIfPresent(bookModel.ImageUrl, webHost.WebRootPath);
+        this.DeleteImageIfPresent(bookModel.ImageUrl, _webHost.WebRootPath);
 
         await this
-            .bookService
+            ._bookService
             .DeleteBookAsync(bookModel);
 
         TempData[Success] = BookHasBeenSuccessfullyDeleted;
@@ -177,9 +186,9 @@ public class BookController : Controller
 
     private async Task<string> UploadImageAsync(IFormFile file, string? imageUrl)
     {
-        string wwwRootPath = webHost.WebRootPath;
+        string wwwRootPath = _webHost.WebRootPath;
         string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-        string bookPath = Path.Combine(wwwRootPath, @"images\book");
+        string bookPath = Path.Combine(wwwRootPath, PathToSaveImage);
 
         this.DeleteImageIfPresent(imageUrl, wwwRootPath);
 

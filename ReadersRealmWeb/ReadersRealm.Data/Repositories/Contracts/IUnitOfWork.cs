@@ -1,7 +1,4 @@
 ﻿namespace ReadersRealm.Data.Repositories.Contracts;
-
-using Models;
-
 public interface IUnitOfWork : IDisposable
 {
     ICategoryRepository CategoryRepository { get; }

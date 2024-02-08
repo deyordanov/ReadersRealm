@@ -1,38 +1,39 @@
 ﻿namespace ReadersRealm.Services;
 
-using System.Reflection;
 using Common;
 using Common.Exceptions;
 using Contracts;
 using Data.Models;
 using Data.Repositories.Contracts;
-using ReadersRealm.ViewModels.Category;
 using ReadersRealm.Web.ViewModels.Author;
 using ViewModels.Book;
+using ViewModels.Category;
 using Web.ViewModels.Book;
 
 public class BookService : IBookService
 {
-    private ICategoryService categoryService;
-    private IAuthorService authorService;
-    private readonly IUnitOfWork unitOfWork;
+    private const string PropertiesToInclude = "Author, Category";
+
+    private readonly ICategoryService _categoryService;
+    private readonly IAuthorService _authorService;
+    private readonly IUnitOfWork _unitOfWork;
 
     public BookService(
         IUnitOfWork unitOfWork, 
         ICategoryService categoryService, 
         IAuthorService authorService)
     {
-        this.unitOfWork = unitOfWork;
-        this.categoryService = categoryService;
-        this.authorService = authorService;
+        this._unitOfWork = unitOfWork;
+        this._categoryService = categoryService;
+        this._authorService = authorService;
     }
 
     public async Task<PaginatedList<AllBooksViewModel>> GetAllAsync(int pageIndex, int pageSize, string? searchTerm)
     {
         List<Book> allBooks = await this
-            .unitOfWork
+            ._unitOfWork
             .BookRepository
-            .GetAsync(book => book.Title.ToLower().StartsWith(searchTerm != null ? searchTerm.ToLower() : ""), null, "Author, Category");
+            .GetAsync(book => book.Title.ToLower().StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty), null, PropertiesToInclude);
 
         return PaginatedList<AllBooksViewModel>.Create(allBooks
             .Select(b => new AllBooksViewModel()
@@ -57,7 +58,7 @@ public class BookService : IBookService
     public async Task<Book?> GetBookByIdAsync(Guid id)
     {
         return await this
-            .unitOfWork
+            ._unitOfWork
             .BookRepository
             .GetByIdAsync(id);
     }
@@ -65,15 +66,15 @@ public class BookService : IBookService
     public async Task<Book?> GetBookByIdWithNavPropertiesAsync(Guid id)
     {
         return await this
-            .unitOfWork
+            ._unitOfWork
             .BookRepository
-            .GetByIdWithNavPropertiesAsync(id, "Author, Category");
+            .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
     }
 
     public async Task<EditBookViewModel> GetBookForEditAsync(Guid id)
     {
         Book? book =  await this
-            .unitOfWork
+            ._unitOfWork
             .BookRepository
             .GetByIdAsync(id);
 
@@ -83,11 +84,11 @@ public class BookService : IBookService
         }
 
         List<AllAuthorsListViewModel> authorsList = await this
-            .authorService
+            ._authorService
             .GetAllListAsync();
 
         List<AllCategoriesListViewModel> categoriesList = await this
-            .categoryService
+            ._categoryService
             .GetAllListAsync();
 
         EditBookViewModel bookModel = new EditBookViewModel()
@@ -115,9 +116,9 @@ public class BookService : IBookService
     public async Task<DeleteBookViewModel> GetBookForDeleteAsync(Guid id)
     {
         Book? book = await this
-            .unitOfWork
+            ._unitOfWork
             .BookRepository
-            .GetByIdWithNavPropertiesAsync(id, "Author, Category");
+            .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
 
         if (book == null)
         {
@@ -147,9 +148,9 @@ public class BookService : IBookService
     public async Task<DetailsBookViewModel> GetBookForDetailsAsync(Guid id)
     {
         Book? book = await this
-            .unitOfWork
+            ._unitOfWork
             .BookRepository
-            .GetByIdWithNavPropertiesAsync(id, "Author, Category");
+            .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
 
         if (book == null)
         {
@@ -179,17 +180,17 @@ public class BookService : IBookService
     public async Task<CreateBookViewModel> GetBookForCreateAsync()
     {
         List<AllAuthorsListViewModel> authorsList = await this
-            .authorService
+            ._authorService
             .GetAllListAsync();
 
         List<AllCategoriesListViewModel> categoriesList = await this
-            .categoryService
+            ._categoryService
             .GetAllListAsync();
 
         CreateBookViewModel bookModel = new CreateBookViewModel()
         {
-            Title = "",
-            ISBN = "",
+            Title = string.Empty,
+            ISBN = string.Empty,
             AuthorsList = authorsList,
             CategoriesList = categoriesList
         };
@@ -214,19 +215,19 @@ public class BookService : IBookService
         };
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .BookRepository
             .AddAsync(bookToAdd);
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 
     public async Task EditBookAsync(EditBookViewModel bookModel)
     {
         Book? bookToEdit = await this
-            .unitOfWork
+            ._unitOfWork
             .BookRepository
             .GetByIdAsync(bookModel.Id);
 
@@ -248,14 +249,14 @@ public class BookService : IBookService
         bookToEdit.ImageUrl = bookModel.ImageUrl;
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteBookAsync(DeleteBookViewModel bookModel)
     {
         Book? bookToDelete = await this
-            .unitOfWork
+            ._unitOfWork
             .BookRepository
             .GetByIdAsync(bookModel.Id);
 
@@ -264,12 +265,12 @@ public class BookService : IBookService
             throw new BookNotFoundException();
         }
 
-        this.unitOfWork
+        this._unitOfWork
             .BookRepository
             .Delete(bookToDelete);
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
     }
 }

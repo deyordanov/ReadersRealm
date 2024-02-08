@@ -3,25 +3,24 @@
 using Common.Exceptions;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
 using System.Linq.Expressions;
 
 public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
-    private ReadersRealmDbContext dbContext;
-    private DbSet<TEntity> dbSet;
+    private readonly ReadersRealmDbContext _dbContext;
+    private readonly DbSet<TEntity> _dbSet;
 
     protected Repository(ReadersRealmDbContext dbContext)
     {
-        this.dbContext = dbContext;
-        this.dbSet = this.dbContext.Set<TEntity>();
+        this._dbContext = dbContext;
+        this._dbSet = this._dbContext.Set<TEntity>();
     }
 
     public Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter, 
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy, 
         string properties)
     {
-        IQueryable<TEntity> query = this.dbSet.AsNoTracking();
+        IQueryable<TEntity> query = this._dbSet.AsNoTracking();
 
         if (filter != null)
         {
@@ -50,23 +49,23 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
 
     public async Task AddAsync(TEntity entity)
     {
-        await this.dbSet.AddAsync(entity);
+        await this._dbSet.AddAsync(entity);
     }
 
     public void Update(TEntity entity)
     {
-        this.dbSet.Attach(entity);
-        this.dbContext.Entry(entity).State = EntityState.Modified;
+        this._dbSet.Attach(entity);
+        this._dbContext.Entry(entity).State = EntityState.Modified;
     }
 
     public void Delete(TEntity entity)
     {
-        this.dbSet.Remove(entity);
+        this._dbSet.Remove(entity);
     }
 
     public void DeleteRange(IEnumerable<TEntity> entities)
     {
-        this.dbSet.RemoveRange(entities);
+        this._dbSet.RemoveRange(entities);
     }
 
     /// <summary>

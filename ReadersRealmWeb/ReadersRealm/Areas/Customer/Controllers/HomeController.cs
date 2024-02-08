@@ -1,42 +1,43 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-
 namespace ReadersRealm.Areas.Customer.Controllers;
 
-using Data.Models;
 using Extensions.ClaimsPrincipal;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
+using System.Diagnostics;
 using ViewModels.Book;
 using ViewModels.ShoppingCart;
 using Web.ViewModels;
 using Web.ViewModels.Book;
+using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
 
-[Area("Customer")]
-public class HomeController : Controller
+[Area(Customer)]
+public class HomeController : BaseController
 {
-    private readonly IBookService bookService;
-    private readonly IShoppingCartService shoppingCartService;
+    private readonly IBookService _bookService;
+    private readonly IShoppingCartService _shoppingCartService;
 
     public HomeController(IBookService bookService, IShoppingCartService shoppingCartService)
     {
-        this.bookService = bookService;
-        this.shoppingCartService = shoppingCartService;
+        this._bookService = bookService;
+        this._shoppingCartService = shoppingCartService;
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
         IEnumerable<AllBooksViewModel> allBooks = await this
-            .bookService
+            ._bookService
             .GetAllAsync(pageIndex, 8, searchTerm);
 
         return View(allBooks);
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null || id == Guid.Empty)
@@ -45,24 +46,23 @@ public class HomeController : Controller
         }
 
         DetailsBookViewModel bookModel = await this
-            .bookService
+            ._bookService
             .GetBookForDetailsAsync((Guid)id);
 
         ShoppingCartViewModel shoppingCartModel = this
-            .shoppingCartService
+            ._shoppingCartService
             .GetShoppingCart(bookModel);
 
         return View(shoppingCartModel);
     }
 
     [HttpPost]
-    [Authorize]
     public async Task<IActionResult> Details(ShoppingCartViewModel shoppingCartModel)
     {
         if (!ModelState.IsValid)
         {
             DetailsBookViewModel bookModel = await this
-                .bookService
+                ._bookService
                 .GetBookForDetailsAsync(shoppingCartModel.BookId);
 
             shoppingCartModel.Book = bookModel;
@@ -73,17 +73,17 @@ public class HomeController : Controller
         string userId = User.GetId();
         shoppingCartModel.ApplicationUserId = userId;
 
-        bool shoppingCartExists = await this.shoppingCartService.ShoppingCartExistsAsync(userId, shoppingCartModel.BookId);
+        bool shoppingCartExists = await this._shoppingCartService.ShoppingCartExistsAsync(userId, shoppingCartModel.BookId);
         if (!shoppingCartExists)
         {
             await this
-                .shoppingCartService
+                ._shoppingCartService
                 .CreateShoppingCartAsync(shoppingCartModel);
         }
         else
         {
             await this
-                .shoppingCartService
+                ._shoppingCartService
                 .UpdateShoppingCartCountAsync(shoppingCartModel);
         }
 
@@ -92,12 +92,14 @@ public class HomeController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [AllowAnonymous]
     public IActionResult Privacy()
     {
         return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    [AllowAnonymous]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

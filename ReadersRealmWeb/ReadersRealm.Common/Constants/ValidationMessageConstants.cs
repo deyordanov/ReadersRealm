@@ -29,6 +29,9 @@ public static class ValidationMessageConstants
         public const string BookPagesRangeMessage = "{0} must be between {2} and {1}!";
 
         public const string BookUsedRequiredMessage = "{0} is required!";
+
+        public const string BookAuthorRequiredMessage = "Author is required!";
+        public const string BookCategoryRequiredMessage = "Category is required!";
     }
 
     public static class Company

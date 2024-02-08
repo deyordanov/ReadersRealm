@@ -24,6 +24,9 @@ public static class Constants
         public const string CategoryHasBeenSuccessfullyCreated = "The category has been created successfully!";
         public const string CategoryHasBeenSuccessfullyEdited = "The category has been edited successfully!";
         public const string CategoryHasBeenSuccessfullyDeleted = "The category has been deleted successfully!";
+
+        //Model Errors
+        public const string Name = "Name";
     }
 
     public static class Book
@@ -32,6 +35,13 @@ public static class Constants
         public const string BookHasBeenSuccessfullyCreated = "The book has been created successfully!";
         public const string BookHasBeenSuccessfullyEdited = "The book has been edited successfully!";
         public const string BookHasBeenSuccessfullyDeleted = "The book has been deleted successfully!";
+
+        //Model Errors
+        public const string AuthorId = "AuthorId";
+        public const string CategoryId = "CategoryId";
+
+        //Path To Save Images
+        public const string PathToSaveImage = @"\images\book\";
     }
 
     public static class Company
@@ -72,5 +82,11 @@ public static class Constants
         public const string AdminRole = "Admin";
         public const string CompanyRole = "Company";
         public const string EmployeeRole = "Employee";
+    }
+
+    public static class Areas
+    {
+        public const string Admin = "Admin";
+        public const string Customer = "Customer";
     }
 }

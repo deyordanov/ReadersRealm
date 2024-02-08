@@ -1,7 +1,6 @@
-﻿
+﻿using ReadersRealm.Data.Models;
 
-using ReadersRealm.Data.Models;
-using ReadersRealm.Data.Repositories.Contracts;
+namespace ReadersRealm.Data.Repositories.Contracts;
 
 public interface IApplicationUserRepository : IRepository<ApplicationUser>
 {

@@ -6,16 +6,16 @@ using Models;
 
 public class AuthorRepository : Repository<Author>, IAuthorRepository
 {
-    private readonly ReadersRealmDbContext dbContext;
+    private readonly ReadersRealmDbContext _dbContext;
     public AuthorRepository(ReadersRealmDbContext dbContext) : base(dbContext)
     {
-        this.dbContext = dbContext;
+        this._dbContext = dbContext;
     }
 
-    public async Task<Author> GetByIdAsync(Guid id)
+    public async Task<Author?> GetByIdAsync(Guid id)
     {
         return await this
-            .dbContext
+            ._dbContext
             .Authors
             .FirstAsync(author => author.Id == id);
     }

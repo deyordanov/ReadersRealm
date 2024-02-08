@@ -9,18 +9,18 @@ using ViewModels.OrderHeader;
 
 public class OrderHeaderService : IOrderHeaderService
 {
-    private readonly IUnitOfWork unitOfWork;
-    private readonly IApplicationUserService applicationUserService;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IApplicationUserService _applicationUserService;
 
     public OrderHeaderService(IUnitOfWork unitOfWork, IApplicationUserService applicationUserService)
     {
-        this.unitOfWork = unitOfWork;
-        this.applicationUserService = applicationUserService;
+        this._unitOfWork = unitOfWork;
+        this._applicationUserService = applicationUserService;
     }
     public async Task<OrderHeaderViewModel> GetByIdAsyncWithNavPropertiesAsync(Guid id)
     {
         OrderHeader? orderHeader = await this
-            .unitOfWork
+            ._unitOfWork
             .OrderHeaderRepository
             .GetByIdAsync(id);
 
@@ -30,7 +30,7 @@ public class OrderHeaderService : IOrderHeaderService
         }
 
         OrderApplicationUserViewModel applicationUser = await this
-            .applicationUserService
+            ._applicationUserService
             .GetApplicationUserForOrderAsync(orderHeader.ApplicationUserId);
 
         OrderHeaderViewModel orderHeaderModel = new OrderHeaderViewModel()
@@ -78,12 +78,12 @@ public class OrderHeaderService : IOrderHeaderService
         };
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .OrderHeaderRepository
             .AddAsync(orderHeader);
 
         await this
-            .unitOfWork
+            ._unitOfWork
             .SaveAsync();
 
         return orderHeader.Id;

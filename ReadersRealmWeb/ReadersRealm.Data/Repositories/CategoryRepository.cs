@@ -6,18 +6,18 @@ using Models;
 
 public class CategoryRepository : Repository<Category>, ICategoryRepository
 {
-    private readonly ReadersRealmDbContext dbContext;
+    private readonly ReadersRealmDbContext _dbContext;
 
     public CategoryRepository(ReadersRealmDbContext dbContext)
         : base(dbContext)
     {
-        this.dbContext = dbContext;
+        this._dbContext = dbContext;
     }
 
     public async Task<Category?> GetByIdAsync(int id)
     {
         return await this
-            .dbContext
+            ._dbContext
             .Categories
             .FirstOrDefaultAsync(category => category.Id == id);
     }

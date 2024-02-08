@@ -1,9 +1,8 @@
 ﻿namespace ReadersRealm.Services.Contracts;
 
-using Data.Models;
 using Common;
+using Data.Models;
 using ViewModels.Company;
-using ReadersRealm.ViewModels.Category;
 
 public interface ICompanyService
 {

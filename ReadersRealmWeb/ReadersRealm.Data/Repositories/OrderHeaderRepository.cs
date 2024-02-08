@@ -6,16 +6,16 @@ using Models;
 
 public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderRepository
 {
-    private readonly ReadersRealmDbContext dbContext;
+    private readonly ReadersRealmDbContext _dbContext;
     public OrderHeaderRepository(ReadersRealmDbContext dbContext) : base(dbContext)
     {
-        this.dbContext = dbContext;
+        this._dbContext = dbContext;
     }
 
     public async Task<OrderHeader?> GetByIdAsync(Guid id)
     {
         return await this
-            .dbContext
+            ._dbContext
             .OrderHeaders
             .FirstOrDefaultAsync(orderHeader => orderHeader.Id == id);
     }

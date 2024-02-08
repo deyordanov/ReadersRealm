@@ -1,30 +1,30 @@
 ﻿namespace ReadersRealm.Data.Repositories;
 
-using System.Linq.Expressions;
 using Common.Exceptions;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using System.Linq.Expressions;
 
 public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRepository
 {
-    private readonly ReadersRealmDbContext dbContext;
+    private readonly ReadersRealmDbContext _dbContext;
     public ShoppingCartRepository(ReadersRealmDbContext dbContext) : base(dbContext)
     {
-        this.dbContext = dbContext;
+        this._dbContext = dbContext;
     }
 
     public async Task<ShoppingCart?> GetByIdAsync(Guid id)
     {
         return await this
-            .dbContext
+            ._dbContext
             .ShoppingCarts
             .FirstOrDefaultAsync(shoppingCart => shoppingCart.Id == id);
     }
 
     public Task<ShoppingCart?> GetByIdWithNavPropertiesAsync(Guid id, string properties)
     {
-        IQueryable<ShoppingCart> query = this.dbContext.ShoppingCarts;
+        IQueryable<ShoppingCart> query = this._dbContext.ShoppingCarts;
 
         string[] propertiesToAdd = properties.Split(", ", StringSplitOptions.RemoveEmptyEntries);
 
@@ -44,7 +44,7 @@ public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRep
     public Task<ShoppingCart?> GetFirstOrDefaultWithFilterAsync(Expression<Func<ShoppingCart, bool>> filter)
     {
         return this
-            .dbContext
+            ._dbContext
             .ShoppingCarts
             .AsNoTracking()
             .FirstOrDefaultAsync(filter);
@@ -53,7 +53,7 @@ public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRep
     public Task<ShoppingCart?> GetByApplicationUserIdAndBookIdAsync(string applicationUserId, Guid bookId)
     {
         return this
-            .dbContext
+            ._dbContext
             .ShoppingCarts
             .FirstOrDefaultAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId &&
                                                  shoppingCart.BookId == bookId);
