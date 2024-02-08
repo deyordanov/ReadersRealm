@@ -7,6 +7,7 @@ using ReadersRealm.Data.Repositories;
 using ReadersRealm.Data.Repositories.Contracts;
 using ReadersRealm.Services;
 using ReadersRealm.Services.Contracts;
+using Stripe;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,8 @@ builder.Services.AddScoped<IOrderHeaderService, OrderHeaderService>();
 builder.Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+builder.Services.AddHttpContextAccessor();
 
 //Adding the db context to the container.
 builder.Services.AddDbContext<ReadersRealmDbContext>(options =>
@@ -52,6 +55,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 app.UseRouting();
 

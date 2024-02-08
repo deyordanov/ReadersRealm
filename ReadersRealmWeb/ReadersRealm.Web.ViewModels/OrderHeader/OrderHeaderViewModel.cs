@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace ReadersRealm.ViewModels.OrderHeader;
+﻿namespace ReadersRealm.ViewModels.OrderHeader;
 
 using ApplicationUser;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static Common.Constants.ValidationConstants.ApplicationUser;
 using static Common.Constants.ValidationMessageConstants.ApplicationUser;
 
@@ -37,6 +36,9 @@ public class OrderHeaderViewModel
     public DateOnly PaymentDueDate { get; set; }
 
     public string? PaymentIntentId { get; set; }
+
+    public string? SessionId { get; set; }
+
     [StringLength(ApplicationUserFirstNameMaxLength,
         MinimumLength = ApplicationUserFirstNameMinLength,
         ErrorMessage = ApplicationUserFirstNameLengthMessage)]

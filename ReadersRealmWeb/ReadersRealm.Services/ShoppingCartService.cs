@@ -115,6 +115,23 @@ public class ShoppingCartService : IShoppingCartService
             .SaveAsync();
     }
 
+    public async Task DeleteAllShoppingCartsApplicationUserIdAsync(string applicationUserId)
+    {
+        List<ShoppingCart> shoppingCartsToDelete = await this
+            ._unitOfWork
+            .ShoppingCartRepository
+            .GetAllByApplicationUserIdAsync(applicationUserId);
+
+        this
+            ._unitOfWork
+            .ShoppingCartRepository
+            .DeleteRange(shoppingCartsToDelete);
+
+        await this
+            ._unitOfWork
+            .SaveAsync();
+    }
+
     public async Task<bool> ShoppingCartExistsAsync(string applicationUserId, Guid bookId)
     {
         return await this

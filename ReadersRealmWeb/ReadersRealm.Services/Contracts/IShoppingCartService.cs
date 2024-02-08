@@ -14,4 +14,5 @@ public interface IShoppingCartService
     Task CreateShoppingCartAsync(ShoppingCartViewModel shoppingCartModel);
     Task UpdateShoppingCartCountAsync(ShoppingCartViewModel shoppingCartModel);
     Task DeleteShoppingCartAsync(Guid id);
+    Task DeleteAllShoppingCartsApplicationUserIdAsync(string applicationUserId);
 }

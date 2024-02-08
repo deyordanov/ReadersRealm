@@ -149,6 +149,9 @@ public static class ValidationConstants
 
         public const int OrderHeaderPaymentIntentIdMaxLength = 40;
         public const int OrderHeaderPaymentIntentIdMinLength = 4;
+
+        public const int OrderHeaderSessionIdMaxLength = 256;
+        public const int OrderHeaderSessionIdMinLength = 16;
     }
 
     public static class OrderDetails

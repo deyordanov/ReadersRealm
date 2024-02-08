@@ -43,6 +43,9 @@ public class OrderHeader
 
     public DateOnly PaymentDueDate { get; set; }
 
+    [StringLength(OrderHeaderSessionIdMaxLength)]
+    public string? SessionId { get; set; }
+
     [StringLength(OrderHeaderPaymentIntentIdMaxLength)]
     public string? PaymentIntentId { get; set; }
 }

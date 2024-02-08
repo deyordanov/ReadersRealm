@@ -89,4 +89,13 @@ public static class Constants
         public const string Admin = "Admin";
         public const string Customer = "Customer";
     }
+
+    public static class StripeSettings
+    {
+        public const string PublishableKeyAsString = "Stripe:PublishableKey";
+        public const string SecretKeyAsString = "Stripe:SecretKey";
+
+        public const string FullSuccessUrl = "{0}/Customer/ShoppingCart/OrderConfirmation?orderHeaderId={1}";
+        public const string FullCancelUrl = "{0}/Customer/ShoppingCart/Index";
+    }
 }

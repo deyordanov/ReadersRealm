@@ -3,7 +3,9 @@
 using Data.Models;
 using Extensions.ClaimsPrincipal;
 using Microsoft.AspNetCore.Mvc;
+using ReadersRealm.Extensions.HttpContextAccessor;
 using Services.Contracts;
+using Stripe.Checkout;
 using ViewModels.ApplicationUser;
 using ViewModels.ShoppingCart;
 using Web.ViewModels.OrderDetails;
@@ -12,6 +14,9 @@ using static Common.Constants.Constants.OrderHeader;
 using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
+using static Common.Constants.Constants.StripeSettings;
+using Stripe.Checkout;
+using ViewModels.OrderHeader;
 
 [Area(Customer)]
 public class ShoppingCartController : BaseController
@@ -20,17 +25,20 @@ public class ShoppingCartController : BaseController
     private readonly IApplicationUserService _applicationUserService;
     private readonly IOrderHeaderService _orderHeaderService;
     private readonly IOrderDetailsService _orderDetailsService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public ShoppingCartController(
         IShoppingCartService shoppingCartService, 
         IApplicationUserService applicationUserService,
         IOrderHeaderService orderHeaderService,
-        IOrderDetailsService orderDetailsService)
+        IOrderDetailsService orderDetailsService,
+        IHttpContextAccessor httpContextAccessor)
     {
         this._shoppingCartService = shoppingCartService;
         this._applicationUserService = applicationUserService;
         this._orderHeaderService = orderHeaderService;
         this._orderDetailsService = orderDetailsService;
+        this._httpContextAccessor = httpContextAccessor;
     }
 
     [HttpGet]
@@ -93,7 +101,8 @@ public class ShoppingCartController : BaseController
             ._shoppingCartService
             .GetAllListAsync(userId);
 
-        if (User.IsInRole(CompanyRole))
+        bool isUserInCompanyRole = User.IsInRole(CompanyRole);
+        if (isUserInCompanyRole)
         {
             //Order Confirmation -> Processing -> Shipping -> Make Payment
             shoppingCartModel.OrderHeader.PaymentStatus = PaymentStatusDelayedPayment;
@@ -125,12 +134,78 @@ public class ShoppingCartController : BaseController
                 .CreateOrderDetailsAsync(orderDetailsModel);
         }
 
-        return RedirectToAction(nameof(OrderConfirmation), nameof(ShoppingCart)); 
+        if (!isUserInCompanyRole)
+        {
+            string domain = this._httpContextAccessor.GetDomain();
+            SessionCreateOptions options = new SessionCreateOptions
+            {
+                LineItems = new List<SessionLineItemOptions>(),
+                SuccessUrl = string.Format(FullSuccessUrl, domain, orderHeaderId),
+                CancelUrl = string.Format(FullCancelUrl, domain),
+                Mode = "payment", 
+            };
+
+            foreach (ShoppingCartViewModel shoppingCart in shoppingCartModel.ShoppingCartsList)
+            {
+                options.LineItems.Add(new SessionLineItemOptions()
+                {
+                    PriceData = new SessionLineItemPriceDataOptions()
+                    {
+                        UnitAmountDecimal = shoppingCart.Book.Price * 100,
+                        Currency = "usd",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions()
+                        {
+                            Name = shoppingCart.Book.Title,
+                        }
+                    },
+                    Quantity = shoppingCart.Count,
+                });
+            }
+
+            SessionService service = new SessionService();
+            Session session = await service.CreateAsync(options);
+
+            await this
+                ._orderHeaderService
+                .UpdateOrderHeaderPaymentIntentIdAsync(orderHeaderId, session.Id, session.PaymentIntentId);
+
+            Response.Headers.Add("Location", session.Url);
+            return new StatusCodeResult(303);
+        }
+
+        return RedirectToAction(nameof(OrderConfirmation), nameof(ShoppingCart), new { orderHeaderId = orderHeaderId }); 
     }
 
     [HttpGet]
-    public IActionResult OrderConfirmation()
+    public async Task<IActionResult> OrderConfirmation(Guid orderHeaderId)
     {
+        OrderHeaderViewModel orderHeaderModel = await this
+            ._orderHeaderService
+            .GetByIdAsyncWithNavPropertiesAsync(orderHeaderId);
+
+        bool isUserInCompanyRole = this.User.IsInRole(CompanyRole);
+        if (!isUserInCompanyRole)
+        {
+            SessionService service = new SessionService();
+            Session session = await service.GetAsync(orderHeaderModel.SessionId);
+
+            if (session.PaymentStatus.ToLower() == "paid")
+            {
+                await this
+                    ._orderHeaderService
+                    .UpdateOrderHeaderPaymentIntentIdAsync(orderHeaderModel.Id, session.Id, session.PaymentIntentId);
+
+                await this
+                    ._orderHeaderService
+                    .UpdateOrderHeaderStatusAsync(orderHeaderModel.Id, OrderStatusApproved, PaymentStatusApproved);
+            }
+        }
+
+        string applicationUserId = this.User.GetId();
+        await this
+            ._shoppingCartService
+            .DeleteAllShoppingCartsApplicationUserIdAsync(applicationUserId);
+
         return View();
     }
 

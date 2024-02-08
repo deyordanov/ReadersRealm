@@ -9,4 +9,5 @@ public interface IShoppingCartRepository : IRepository<ShoppingCart>
     Task<ShoppingCart?> GetByIdWithNavPropertiesAsync(Guid id, string properties);
     Task<ShoppingCart?> GetFirstOrDefaultWithFilterAsync(Expression<Func<ShoppingCart, bool>> filter);
     Task<ShoppingCart?> GetByApplicationUserIdAndBookIdAsync(string applicationUserId, Guid bookId);
+    Task<List<ShoppingCart>> GetAllByApplicationUserIdAsync(string applicationUserId);
 }

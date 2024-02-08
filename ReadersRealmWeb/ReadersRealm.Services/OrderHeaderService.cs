@@ -53,6 +53,7 @@ public class OrderHeaderService : IOrderHeaderService
             PaymentDueDate = orderHeader.PaymentDueDate,
             PaymentIntentId = orderHeader.PaymentIntentId,
             PaymentStatus = orderHeader.PaymentStatus,
+            SessionId = orderHeader.SessionId,
             ShippingDate = orderHeader.ShippingDate,
             TrackingNumber = orderHeader.TrackingNumber,
         };
@@ -70,6 +71,7 @@ public class OrderHeaderService : IOrderHeaderService
             OrderStatus = orderHeaderModel.OrderStatus,
             OrderTotal = orderHeaderModel.OrderTotal,
             ShippingDate = orderHeaderModel.ShippingDate,
+            SessionId = orderHeaderModel.SessionId,
             TrackingNumber = orderHeaderModel.TrackingNumber,
             PaymentDueDate = orderHeaderModel.PaymentDueDate,
             PaymentStatus = orderHeaderModel.PaymentStatus,
@@ -87,5 +89,45 @@ public class OrderHeaderService : IOrderHeaderService
             .SaveAsync();
 
         return orderHeader.Id;
+    }
+
+    public async Task UpdateOrderHeaderStatusAsync(Guid id, string? orderStatus, string? paymentStatus)
+    {
+        OrderHeader? orderHeader = await this
+            ._unitOfWork
+            .OrderHeaderRepository
+            .GetByIdAsync(id);
+
+        if (orderHeader == null)
+        {
+            throw new OrderHeaderNotFoundException();
+        }
+
+        orderHeader.OrderStatus = orderStatus ?? orderHeader.OrderStatus;
+        orderHeader.PaymentStatus = paymentStatus ?? orderHeader.PaymentStatus;
+
+        await this
+            ._unitOfWork
+            .SaveAsync();
+    }
+
+    public async Task UpdateOrderHeaderPaymentIntentIdAsync(Guid id, string? sessionId, string? paymentIntentId)
+    {
+        OrderHeader? orderHeader = await this
+            ._unitOfWork
+            .OrderHeaderRepository
+            .GetByIdAsync(id);
+
+        if (orderHeader == null)
+        {
+            throw new OrderHeaderNotFoundException();
+        }
+
+        orderHeader.SessionId = sessionId ?? orderHeader.SessionId;
+        orderHeader.PaymentIntentId = paymentIntentId ?? orderHeader.PaymentIntentId;
+
+        await this
+            ._unitOfWork
+            .SaveAsync();
     }
 }

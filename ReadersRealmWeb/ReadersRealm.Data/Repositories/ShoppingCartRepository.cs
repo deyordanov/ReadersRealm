@@ -58,4 +58,13 @@ public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRep
             .FirstOrDefaultAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId &&
                                                  shoppingCart.BookId == bookId);
     }
+
+    public async Task<List<ShoppingCart>> GetAllByApplicationUserIdAsync(string applicationUserId)
+    {
+        return await this
+            ._dbContext
+            .ShoppingCarts
+            .Where(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId)
+            .ToListAsync();
+    }
 }

@@ -30,6 +30,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+    <PackageReference Include="Stripe.net" Version="43.13.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,6 +66,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Extensions\HttpContextAccessor\" />
     <Folder Include="wwwroot\images\book\" />
   </ItemGroup>
 
