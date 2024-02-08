@@ -51,6 +51,21 @@ public static class Constants
         public const string ShoppingCartItemHasBeenDeletedSuccessfully = "The items has been deleted successfully!";
     }
 
+    public static class OrderHeader
+    {
+        public const string OrderStatusPending = "Pending";
+        public const string OrderStatusApproved = "Approved";
+        public const string OrderStatusInProcess = "Processing";
+        public const string OrderStatusShipped = "Shipped";
+        public const string OrderStatusCancelled = "Cancelled";
+        public const string OrderStatusRefunded = "Refunded";
+
+        public const string PaymentStatusPending = "Pending";
+        public const string PaymentStatusApproved = "Approved";
+        public const string PaymentStatusDelayedPayment = "Approved for delayed payment";
+        public const string PaymentStatusRejected = "Rejected";
+    }
+
     public static class Roles
     {
         public const string CustomerRole = "Customer";

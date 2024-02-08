@@ -10,6 +10,8 @@ public interface IUnitOfWork : IDisposable
     ICompanyRepository CompanyRepository { get; }
     IShoppingCartRepository ShoppingCartRepository { get; }
     IApplicationUserRepository ApplicationUserRepository { get; }
+    IOrderHeaderRepository OrderHeaderRepository { get; }
+    IOrderDetailsRepository OrderDetailsRepository { get; }
     Task SaveAsync();
     void Dispose(bool disposing);
 }

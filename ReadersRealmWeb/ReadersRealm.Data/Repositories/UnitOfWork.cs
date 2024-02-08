@@ -1,6 +1,7 @@
 ﻿namespace ReadersRealm.Data.Repositories;
 
 using Contracts;
+using Microsoft.AspNetCore.Identity;
 using Models;
 
 public class UnitOfWork : IUnitOfWork
@@ -19,6 +20,8 @@ public class UnitOfWork : IUnitOfWork
         this.CompanyRepository = new CompanyRepository(dbContext);
         this.ShoppingCartRepository = new ShoppingCartRepository(dbContext);
         this.ApplicationUserRepository = new ApplicationUserRepository(dbContext);
+        this.OrderHeaderRepository = new OrderHeaderRepository(dbContext);
+        this.OrderDetailsRepository = new OrderDetailsRepository(dbContext);
     }
 
     public ICategoryRepository CategoryRepository { get; private set; }
@@ -30,6 +33,8 @@ public class UnitOfWork : IUnitOfWork
     public ICompanyRepository CompanyRepository { get; private set; }
     public IShoppingCartRepository ShoppingCartRepository { get; private set; }
     public IApplicationUserRepository ApplicationUserRepository { get; private set; }
+    public IOrderHeaderRepository OrderHeaderRepository { get; private set; }
+    public IOrderDetailsRepository OrderDetailsRepository { get; }
 
     public async Task SaveAsync()
     {

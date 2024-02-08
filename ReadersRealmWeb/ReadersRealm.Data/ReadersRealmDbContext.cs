@@ -1,7 +1,5 @@
 ﻿namespace ReadersRealm.Data;
 
-using Common;
-using Common.Constants;
 using Common.Extensions.ModelBuilderExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -24,6 +22,10 @@ public class ReadersRealmDbContext : IdentityDbContext<IdentityUser>
     public required DbSet<Company> Companies { get; set; }
 
     public required DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
+    public required DbSet<OrderHeader> OrderHeaders { get; set; }
+
+    public required DbSet<OrderDetails> OrdersDetails { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
