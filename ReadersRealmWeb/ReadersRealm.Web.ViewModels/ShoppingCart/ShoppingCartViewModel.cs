@@ -2,9 +2,9 @@
 
 using ApplicationUser;
 using Book;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using static Common.Constants.ValidationConstants.ShoppingCart;
 using static Common.Constants.ValidationMessageConstants.ShoppingCart;
 

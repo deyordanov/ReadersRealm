@@ -6,15 +6,18 @@ using Data.Models;
 using Data.Repositories.Contracts;
 using ViewModels.ApplicationUser;
 using ViewModels.Book;
+using ViewModels.OrderHeader;
 using ViewModels.ShoppingCart;
 
 public class ShoppingCartService : IShoppingCartService
 {
-    private IUnitOfWork unitOfWork;
+    private readonly IUnitOfWork unitOfWork;
+    private readonly IApplicationUserService applicationUserService;
 
-    public ShoppingCartService(IUnitOfWork unitOfWork)
+    public ShoppingCartService(IUnitOfWork unitOfWork, IApplicationUserService applicationUserService)
     {
         this.unitOfWork = unitOfWork;
+        this.applicationUserService = applicationUserService;
     }
 
     public async Task<ShoppingCartViewModel> GetShoppingCartByIdWithNavPropertiesOrCreateAsync(Guid id)
@@ -108,7 +111,6 @@ public class ShoppingCartService : IShoppingCartService
         await this
             .unitOfWork
             .SaveAsync();
-
     }
 
     public async Task<bool> ShoppingCartExistsAsync(string applicationUserId, Guid bookId)
@@ -127,9 +129,23 @@ public class ShoppingCartService : IShoppingCartService
             .ShoppingCartRepository
             .GetAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId, null, "Book, ApplicationUser");
 
+        OrderApplicationUserViewModel applicationUser = await this.applicationUserService.GetApplicationUserForOrderAsync(applicationUserId);
+
         AllShoppingCartsListViewModel shoppingCartModel = new AllShoppingCartsListViewModel()
         {
-            OrderTotal = allShoppingCarts.Sum(shoppingCart => this.CalculateShoppingCartTotal(shoppingCart.Count, shoppingCart.Book.Price)),
+            OrderHeader = new OrderHeaderViewModel()
+            {
+                ApplicationUserId = applicationUserId,
+                ApplicationUser = applicationUser,
+                OrderTotal = allShoppingCarts.Sum(shoppingCart => this.CalculateShoppingCartTotal(shoppingCart.Count, shoppingCart.Book.Price)),
+                FirstName = applicationUser.FirstName,
+                LastName = applicationUser.LastName,
+                City = applicationUser.City ?? string.Empty,
+                StreetAddress = applicationUser.StreetAddress ?? string.Empty,
+                PostalCode = applicationUser.PostalCode ?? string.Empty,
+                State = applicationUser.State ?? string.Empty,
+                PhoneNumber = applicationUser.PhoneNumber ?? string.Empty,
+            },
             ShoppingCartsList = allShoppingCarts.Select(shoppingCart => new ShoppingCartViewModel()
             {
                 Id = shoppingCart.Id,

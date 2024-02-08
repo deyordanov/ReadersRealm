@@ -69,6 +69,9 @@ public static class ValidationConstants
 
         public const int ApplicationUserPostalCodeMaxLength = 12;
         public const int ApplicationUserPostalCodeMinLength = 4;
+
+        public const int ApplicationUserPhoneNumberMaxLength = 20;
+        public const int ApplicationUserPhoneNumberMinLength = 7;
     }
 
     public static class RegisterModel
@@ -121,10 +124,35 @@ public static class ValidationConstants
         public const int CompanyPhoneNumberMaxLength = 20;
         public const int CompanyPhoneNumberMinLength = 7;
     }
-
+    
     public static class ShoppingCart
     {
         public const int ShoppingCartCountMaxRange = 1000;
         public const int ShoppingCartCountMinRange = 1;
+    }
+
+    public static class OrderHeader
+    {
+        public const string OrderHeaderOrderTotalColumnType = "decimal(18,2)";
+
+        public const int OrderHeaderOrderStatusMaxLength = 20;
+        public const int OrderHeaderOrderStatusMinLength = 3;
+
+        public const int OrderHeaderPaymentStatusMaxLength = 20;
+        public const int OrderHeaderPaymentStatusMinLength = 3;
+
+        public const int OrderHeaderTrackingNumberMaxLength = 30;
+        public const int OrderHeaderTrackingNumberMinLength = 10;
+
+        public const int OrderHeaderCarrierMaxLength = 20;
+        public const int OrderHeadersCarrierMinLength = 2;
+
+        public const int OrderHeaderPaymentIntentIdMaxLength = 40;
+        public const int OrderHeaderPaymentIntentIdMinLength = 4;
+    }
+
+    public static class OrderDetails
+    {
+        public const string OrderDetailsPriceColumnType = "decimal(18,2)";
     }
 }

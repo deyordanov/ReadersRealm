@@ -2,7 +2,7 @@
 
 public class ShoppingCartNotFoundException : ApplicationException
 {
-    private const string DefaultMessage = "Such a shopping cart was not found!";
+    private const string DefaultMessage = "The requested shopping cart was not found.";
 
     public ShoppingCartNotFoundException()
         : base(DefaultMessage) { }

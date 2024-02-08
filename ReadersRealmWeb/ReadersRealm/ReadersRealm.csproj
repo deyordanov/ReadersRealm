@@ -40,6 +40,7 @@
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Delete.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Customer\Views\Home\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Customer\Views\ShoppingCart\OrderConfirmation.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\_NotificationPartialView.cshtml" />
   </ItemGroup>
 
@@ -63,12 +64,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Customer\Views\ShoppingCart\" />
     <Folder Include="wwwroot\images\book\" />
   </ItemGroup>
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Areas\Customer\Views\Home\Details.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Customer\Views\ShoppingCart\OrderConfirmation.cshtml" />
   </ItemGroup>
 
 </Project>

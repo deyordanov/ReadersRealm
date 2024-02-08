@@ -74,4 +74,21 @@ public static class ValidationMessageConstants
     {
         public const string ShoppingCartCountRangeMessage = "{0} should be between {1} and {2}!";
     }
+
+    public static class ApplicationUser
+    {
+        public const string ApplicationUserFirstNameLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string ApplicationUserLastNameLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string ApplicationUserStreetAddressLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string ApplicationUserCityLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string ApplicationUserStateLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string ApplicationUserPostalCodeLengthMessage = "{0} must be between {2} and {1} characters!";
+
+        public const string ApplicationUserPhoneNumberLengthMessage = "{0} must be between {2} and {1} characters!";
+    }
 }

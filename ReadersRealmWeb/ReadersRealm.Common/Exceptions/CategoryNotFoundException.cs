@@ -2,7 +2,7 @@
 
 public class CategoryNotFoundException : ApplicationException
 {
-    private const string DefaultMessage = "Such a category was not found!";
+    private const string DefaultMessage = "The requested category was not found.";
 
     public CategoryNotFoundException()
      : base(DefaultMessage) { }

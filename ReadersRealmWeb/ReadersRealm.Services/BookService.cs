@@ -247,7 +247,9 @@ public class BookService : IBookService
         bookToEdit.Used = bookModel.Used;
         bookToEdit.ImageUrl = bookModel.ImageUrl;
 
-        await this.unitOfWork.SaveAsync();
+        await this
+            .unitOfWork
+            .SaveAsync();
     }
 
     public async Task DeleteBookAsync(DeleteBookViewModel bookModel)
