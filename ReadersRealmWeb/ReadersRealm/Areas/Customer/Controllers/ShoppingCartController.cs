@@ -3,10 +3,13 @@
 using Data.Models;
 using Extensions.ClaimsPrincipal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using ReadersRealm.Extensions.HttpContextAccessor;
 using Services.Contracts;
 using Stripe.Checkout;
+using System.Text;
 using ViewModels.ApplicationUser;
+using ViewModels.OrderHeader;
 using ViewModels.ShoppingCart;
 using Web.ViewModels.OrderDetails;
 using static Common.Constants.Constants.Areas;
@@ -15,8 +18,6 @@ using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
 using static Common.Constants.Constants.StripeSettings;
-using Stripe.Checkout;
-using ViewModels.OrderHeader;
 
 [Area(Customer)]
 public class ShoppingCartController : BaseController
@@ -75,11 +76,8 @@ public class ShoppingCartController : BaseController
                 ._shoppingCartService
                 .GetAllListAsync(userId);
 
-
             return View(shoppingCartModel);
         }
-    
-        shoppingCartModel.OrderHeader.OrderDate = DateTime.Now;
 
         OrderApplicationUserViewModel applicationUserModel = new OrderApplicationUserViewModel()
         {
@@ -115,6 +113,7 @@ public class ShoppingCartController : BaseController
             shoppingCartModel.OrderHeader.OrderStatus = OrderStatusPending;
         }
 
+        shoppingCartModel.OrderHeader.OrderDate = DateTime.Now;
         Guid orderHeaderId = await this
             ._orderHeaderService
             .CreateOrderHeaderAsync(shoppingCartModel.OrderHeader);
@@ -136,34 +135,7 @@ public class ShoppingCartController : BaseController
 
         if (!isUserInCompanyRole)
         {
-            string domain = this._httpContextAccessor.GetDomain();
-            SessionCreateOptions options = new SessionCreateOptions
-            {
-                LineItems = new List<SessionLineItemOptions>(),
-                SuccessUrl = string.Format(FullSuccessUrl, domain, orderHeaderId),
-                CancelUrl = string.Format(FullCancelUrl, domain),
-                Mode = "payment", 
-            };
-
-            foreach (ShoppingCartViewModel shoppingCart in shoppingCartModel.ShoppingCartsList)
-            {
-                options.LineItems.Add(new SessionLineItemOptions()
-                {
-                    PriceData = new SessionLineItemPriceDataOptions()
-                    {
-                        UnitAmountDecimal = shoppingCart.Book.Price * 100,
-                        Currency = "usd",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions()
-                        {
-                            Name = shoppingCart.Book.Title,
-                        }
-                    },
-                    Quantity = shoppingCart.Count,
-                });
-            }
-
-            SessionService service = new SessionService();
-            Session session = await service.CreateAsync(options);
+            Session session = await this.ConfigureStripe(orderHeaderId, shoppingCartModel);
 
             await this
                 ._orderHeaderService
@@ -191,13 +163,23 @@ public class ShoppingCartController : BaseController
 
             if (session.PaymentStatus.ToLower() == "paid")
             {
-                await this
-                    ._orderHeaderService
-                    .UpdateOrderHeaderPaymentIntentIdAsync(orderHeaderModel.Id, session.Id, session.PaymentIntentId);
+                orderHeaderModel.PaymentDate = DateTime.Now;
+                orderHeaderModel.SessionId = session.Id;
+                orderHeaderModel.PaymentIntentId = session.PaymentIntentId;
+                orderHeaderModel.OrderStatus = OrderStatusApproved;
+                orderHeaderModel.PaymentStatus = PaymentStatusApproved;
 
                 await this
                     ._orderHeaderService
-                    .UpdateOrderHeaderStatusAsync(orderHeaderModel.Id, OrderStatusApproved, PaymentStatusApproved);
+                    .UpdateOrderHeaderAsync(orderHeaderModel);
+
+                // await this
+                //     ._orderHeaderService
+                //     .UpdateOrderHeaderPaymentIntentIdAsync(orderHeaderModel.Id, session.Id, session.PaymentIntentId);
+                //
+                // await this
+                //     ._orderHeaderService
+                //     .UpdateOrderHeaderStatusAsync(orderHeaderModel.Id, OrderStatusApproved, PaymentStatusApproved);
             }
         }
 
@@ -206,7 +188,47 @@ public class ShoppingCartController : BaseController
             ._shoppingCartService
             .DeleteAllShoppingCartsApplicationUserIdAsync(applicationUserId);
 
-        return View();
+        return View(orderHeaderId);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DownloadReceipt(Guid? orderHeaderId)
+    {
+        if (orderHeaderId == null || orderHeaderId == Guid.Empty)
+        {
+            return NotFound();
+        }
+
+        OrderHeaderReceiptViewModel orderHeaderModel = await this
+            ._orderHeaderService
+            .GetOrderHeaderForReceiptAsync((Guid)orderHeaderId);
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.AppendLine($"Order Id: {orderHeaderId}");
+        sb.AppendLine($"Order Payment Id: {orderHeaderModel.PaymentIntentId}");
+        sb.AppendLine($"Order Date: {orderHeaderModel.OrderDate.ToString("d")}");
+        sb.AppendLine($"Total: {orderHeaderModel.OrderTotal.ToString("c")}");
+        sb.AppendLine($"Payment Status: {orderHeaderModel.PaymentStatus}");
+        sb.AppendLine($"Payment Date: {orderHeaderModel.PaymentDate}");
+        sb.AppendLine("Items Bought:");
+
+        foreach (OrderDetailsViewModel orderDetailsModel in orderHeaderModel.OrderDetails)
+        {
+            sb.AppendLine("--------------------------------------------");
+            sb.AppendLine($"    Book Title: {orderDetailsModel.Book.Title}");
+            sb.AppendLine($"    Book ISBN: {orderDetailsModel.Book.ISBN}");
+            sb.AppendLine($"    Book Price: {orderDetailsModel.Book.Price.ToString("c")}");
+            sb.AppendLine($"    Quantity: {orderDetailsModel.Count}");
+            sb.AppendLine($"    Total Price: {(orderDetailsModel.Book.Price * orderDetailsModel.Count).ToString("c")}");
+            sb.AppendLine("--------------------------------------------");
+        }
+
+        this._httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.ContentDisposition, "attachment;filename=receipt.txt");
+
+        byte[] textBytes = Encoding.UTF8.GetBytes(sb.ToString().TrimEnd());
+
+        return File(textBytes, "text/plain");
     }
 
     [HttpGet]
@@ -249,5 +271,37 @@ public class ShoppingCartController : BaseController
         TempData[Success] = ShoppingCartItemHasBeenDeletedSuccessfully;
 
         return RedirectToAction(nameof(Index));
+    }
+
+    private async Task<Session> ConfigureStripe(Guid orderHeaderId, AllShoppingCartsListViewModel shoppingCartModel)
+    {
+        string domain = this._httpContextAccessor.GetDomain();
+        SessionCreateOptions options = new SessionCreateOptions
+        {
+            LineItems = new List<SessionLineItemOptions>(),
+            SuccessUrl = string.Format(FullSuccessUrl, domain, orderHeaderId),
+            CancelUrl = string.Format(FullCancelUrl, domain),
+            Mode = "payment",
+        };
+
+        foreach (ShoppingCartViewModel shoppingCart in shoppingCartModel.ShoppingCartsList)
+        {
+            options.LineItems.Add(new SessionLineItemOptions()
+            {
+                PriceData = new SessionLineItemPriceDataOptions()
+                {
+                    UnitAmountDecimal = shoppingCart.Book.Price * 100,
+                    Currency = "usd",
+                    ProductData = new SessionLineItemPriceDataProductDataOptions()
+                    {
+                        Name = shoppingCart.Book.Title,
+                    }
+                },
+                Quantity = shoppingCart.Count,
+            });
+        }
+
+        SessionService service = new SessionService();
+        return await service.CreateAsync(options);
     }
 }

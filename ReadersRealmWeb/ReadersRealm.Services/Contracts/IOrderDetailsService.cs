@@ -5,4 +5,5 @@ namespace ReadersRealm.Services.Contracts;
 public interface IOrderDetailsService
 {
     Task CreateOrderDetailsAsync(OrderDetailsViewModel orderDetailsModel);
+    Task<IEnumerable<OrderDetailsViewModel>> GetAllByOrderHeaderAsync(Guid orderHeaderId);
 }

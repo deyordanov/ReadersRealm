@@ -29,7 +29,7 @@ public class ShoppingCartViewModel
     public int Count { get; set; }
 
     public string ApplicationUserId { get; set; } = string.Empty;
-
+    
     [ForeignKey(nameof(ApplicationUserId))]
     [ValidateNever]
     public ApplicationUserViewModel ApplicationUser { get; set; }

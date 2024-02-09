@@ -11,11 +11,16 @@ public class OrderHeaderService : IOrderHeaderService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IApplicationUserService _applicationUserService;
+    private readonly IOrderDetailsService _orderDetailsService;
 
-    public OrderHeaderService(IUnitOfWork unitOfWork, IApplicationUserService applicationUserService)
+    public OrderHeaderService(
+        IUnitOfWork unitOfWork, 
+        IApplicationUserService applicationUserService,
+        IOrderDetailsService orderDetailsService)
     {
         this._unitOfWork = unitOfWork;
         this._applicationUserService = applicationUserService;
+        this._orderDetailsService = orderDetailsService;
     }
     public async Task<OrderHeaderViewModel> GetByIdAsyncWithNavPropertiesAsync(Guid id)
     {
@@ -61,6 +66,32 @@ public class OrderHeaderService : IOrderHeaderService
         return orderHeaderModel;
     }
 
+    public async Task<OrderHeaderReceiptViewModel> GetOrderHeaderForReceiptAsync(Guid orderHeaderId)
+    {
+        OrderHeader? orderHeader = await this
+            ._unitOfWork
+            .OrderHeaderRepository
+            .GetByIdAsync(orderHeaderId);
+
+        if (orderHeader == null)
+        {
+            throw new OrderHeaderNotFoundException();
+        }
+
+        OrderHeaderReceiptViewModel orderHeaderModel = new OrderHeaderReceiptViewModel()
+        {
+            ApplicationUser = orderHeader.ApplicationUser,
+            PaymentStatus = orderHeader.PaymentStatus!,
+            OrderTotal = orderHeader.OrderTotal,
+            PaymentIntentId = orderHeader.PaymentIntentId!,
+            OrderDate = orderHeader.OrderDate,
+            PaymentDate = orderHeader.PaymentDate,
+            OrderDetails = await this._orderDetailsService.GetAllByOrderHeaderAsync(orderHeaderId),
+        };
+
+        return orderHeaderModel;
+    }
+
     public async Task<Guid> CreateOrderHeaderAsync(OrderHeaderViewModel orderHeaderModel)
     {
         OrderHeader orderHeader = new OrderHeader()
@@ -89,6 +120,36 @@ public class OrderHeaderService : IOrderHeaderService
             .SaveAsync();
 
         return orderHeader.Id;
+    }
+
+    public async Task UpdateOrderHeaderAsync(OrderHeaderViewModel orderHeaderModel)
+    {
+        OrderHeader? orderHeader = await this
+            ._unitOfWork
+            .OrderHeaderRepository
+            .GetByIdAsync(orderHeaderModel.Id);
+
+        if (orderHeader == null)
+        {
+            throw new OrderHeaderNotFoundException();
+        }
+
+        orderHeader.ApplicationUserId = orderHeaderModel.ApplicationUserId;
+        orderHeader.Carrier = orderHeaderModel.Carrier;
+        orderHeader.OrderDate = orderHeaderModel.OrderDate;
+        orderHeader.OrderStatus = orderHeaderModel.OrderStatus;
+        orderHeader.OrderTotal = orderHeaderModel.OrderTotal;
+        orderHeader.ShippingDate = orderHeaderModel.ShippingDate;
+        orderHeader.SessionId = orderHeaderModel.SessionId;
+        orderHeader.TrackingNumber = orderHeaderModel.TrackingNumber;
+        orderHeader.PaymentDueDate = orderHeaderModel.PaymentDueDate;
+        orderHeader.PaymentStatus = orderHeaderModel.PaymentStatus;
+        orderHeader.PaymentIntentId = orderHeaderModel.PaymentIntentId;
+        orderHeader.PaymentDate = orderHeaderModel.PaymentDate;
+
+        await this
+            ._unitOfWork
+            .SaveAsync();
     }
 
     public async Task UpdateOrderHeaderStatusAsync(Guid id, string? orderStatus, string? paymentStatus)
