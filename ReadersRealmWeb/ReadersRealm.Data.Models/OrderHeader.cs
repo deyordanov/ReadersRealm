@@ -48,4 +48,6 @@ public class OrderHeader
 
     [StringLength(OrderHeaderPaymentIntentIdMaxLength)]
     public string? PaymentIntentId { get; set; }
+
+    public Order Order { get; set; }
 }

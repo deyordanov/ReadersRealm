@@ -31,4 +31,6 @@ public class OrderDetails
 
     [Column(TypeName = OrderDetailsPriceColumnType)]
     public decimal Price { get; set; }
+
+    public Order Order { get; set; }
 }
