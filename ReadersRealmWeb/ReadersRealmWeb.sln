@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Data.Models", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Services", "ReadersRealm.Services\ReadersRealm.Services.csproj", "{71C7143E-04F0-4F9D-AA81-72AE5176DB4C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.ViewModels", "ReadersRealm.Web.ViewModels\ReadersRealm.ViewModels.csproj", "{330A3C41-278F-4947-B4A8-5046014C4AF1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Common", "ReadersRealm.Common\ReadersRealm.Common.csproj", "{F6A1CE7B-7FB7-42BF-87C6-755D17E59EF3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.ViewModels", "ReadersRealm.ViewModels\ReadersRealm.ViewModels.csproj", "{6A6A0F9D-689B-424A-B989-3E94C9B8A795}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadersRealm.DataTransferObjects", "ReadersRealm.DataTransferObjects\ReadersRealm.DataTransferObjects.csproj", "{C01426F2-FD2E-482E-9655-F5DD50397820}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +39,18 @@ Global
 		{71C7143E-04F0-4F9D-AA81-72AE5176DB4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71C7143E-04F0-4F9D-AA81-72AE5176DB4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71C7143E-04F0-4F9D-AA81-72AE5176DB4C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{330A3C41-278F-4947-B4A8-5046014C4AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{330A3C41-278F-4947-B4A8-5046014C4AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{330A3C41-278F-4947-B4A8-5046014C4AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{330A3C41-278F-4947-B4A8-5046014C4AF1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6A1CE7B-7FB7-42BF-87C6-755D17E59EF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6A1CE7B-7FB7-42BF-87C6-755D17E59EF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6A1CE7B-7FB7-42BF-87C6-755D17E59EF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6A1CE7B-7FB7-42BF-87C6-755D17E59EF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A6A0F9D-689B-424A-B989-3E94C9B8A795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A6A0F9D-689B-424A-B989-3E94C9B8A795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A6A0F9D-689B-424A-B989-3E94C9B8A795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A6A0F9D-689B-424A-B989-3E94C9B8A795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C01426F2-FD2E-482E-9655-F5DD50397820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C01426F2-FD2E-482E-9655-F5DD50397820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C01426F2-FD2E-482E-9655-F5DD50397820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C01426F2-FD2E-482E-9655-F5DD50397820}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

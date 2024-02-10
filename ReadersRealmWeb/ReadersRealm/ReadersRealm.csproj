@@ -41,7 +41,9 @@
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Delete.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Order\Details.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Customer\Views\Home\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Order\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Customer\Views\ShoppingCart\OrderConfirmation.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\_NotificationPartialView.cshtml" />
   </ItemGroup>
@@ -61,8 +63,9 @@
   <ItemGroup>
     <ProjectReference Include="..\ReadersRealm.Common\ReadersRealm.Common.csproj" />
     <ProjectReference Include="..\ReadersRealm.Data.Models\ReadersRealm.Data.Models.csproj" />
+    <ProjectReference Include="..\ReadersRealm.DataTransferObjects\ReadersRealm.DataTransferObjects.csproj" />
     <ProjectReference Include="..\ReadersRealm.Services\ReadersRealm.Services.csproj" />
-    <ProjectReference Include="..\ReadersRealm.Web.ViewModels\ReadersRealm.ViewModels.csproj" />
+    <ProjectReference Include="..\ReadersRealm.ViewModels\ReadersRealm.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,6 +79,14 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Areas\Customer\Views\ShoppingCart\OrderConfirmation.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Admin\Views\Order\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Admin\Views\Order\Details.cshtml" />
   </ItemGroup>
 
 </Project>

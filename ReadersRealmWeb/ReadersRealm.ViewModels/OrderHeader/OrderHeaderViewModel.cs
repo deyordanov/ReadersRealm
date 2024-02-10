@@ -3,7 +3,6 @@
 using ApplicationUser;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static Common.Constants.ValidationConstants.ApplicationUser;
 using static Common.Constants.ValidationMessageConstants.ApplicationUser;
 
@@ -13,9 +12,8 @@ public class OrderHeaderViewModel
 
     public string ApplicationUserId { get; set; } = string.Empty;
 
-    [ForeignKey(nameof(ApplicationUserId))]
     [ValidateNever]
-    public OrderApplicationUserViewModel ApplicationUser { get; set; }
+    public OrderApplicationUserViewModel ApplicationUser { get; set; } = null!;
 
     public DateTime OrderDate { get; set; }
 

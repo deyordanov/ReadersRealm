@@ -8,10 +8,12 @@ using ReadersRealm.Extensions.HttpContextAccessor;
 using Services.Contracts;
 using Stripe.Checkout;
 using System.Text;
+using DataTransferObjects.OrderDetails;
+using DataTransferObjects.OrderHeader;
 using ViewModels.ApplicationUser;
+using ViewModels.OrderDetails;
 using ViewModels.OrderHeader;
 using ViewModels.ShoppingCart;
-using Web.ViewModels.OrderDetails;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.OrderHeader;
 using static Common.Constants.Constants.Roles;
@@ -24,6 +26,7 @@ public class ShoppingCartController : BaseController
 {
     private readonly IShoppingCartService _shoppingCartService;
     private readonly IApplicationUserService _applicationUserService;
+    private readonly IOrderService _orderService;
     private readonly IOrderHeaderService _orderHeaderService;
     private readonly IOrderDetailsService _orderDetailsService;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -31,12 +34,14 @@ public class ShoppingCartController : BaseController
     public ShoppingCartController(
         IShoppingCartService shoppingCartService, 
         IApplicationUserService applicationUserService,
+        IOrderService orderService,
         IOrderHeaderService orderHeaderService,
         IOrderDetailsService orderDetailsService,
         IHttpContextAccessor httpContextAccessor)
     {
         this._shoppingCartService = shoppingCartService;
         this._applicationUserService = applicationUserService;
+        this._orderService = orderService;
         this._orderHeaderService = orderHeaderService;
         this._orderDetailsService = orderDetailsService;
         this._httpContextAccessor = httpContextAccessor;
@@ -77,6 +82,21 @@ public class ShoppingCartController : BaseController
                 .GetAllListAsync(userId);
 
             return View(shoppingCartModel);
+        }
+
+        OrderHeaderViewModel? orderHeaderModel = await this
+            ._orderHeaderService
+            .GetByApplicationUserIdAndOrderStatusAsync(shoppingCartModel.OrderHeader.ApplicationUserId, OrderStatusPending);
+
+        if (orderHeaderModel != null)
+        {
+            await this
+                ._orderDetailsService
+                .DeleteOrderDetailsRangeByOrderHeaderIdAsync(orderHeaderModel.Id);
+
+            await this
+                ._orderHeaderService
+                .DeleteOrderHeaderAsync(orderHeaderModel);
         }
 
         OrderApplicationUserViewModel applicationUserModel = new OrderApplicationUserViewModel()
@@ -125,7 +145,7 @@ public class ShoppingCartController : BaseController
                 BookId = shoppingCart.BookId,
                 OrderHeaderId = orderHeaderId,
                 Count = shoppingCart.Count,
-                Price = shoppingCart.TotalPrice
+                Price = shoppingCart.TotalPrice,
             };
 
             await this
@@ -172,14 +192,6 @@ public class ShoppingCartController : BaseController
                 await this
                     ._orderHeaderService
                     .UpdateOrderHeaderAsync(orderHeaderModel);
-
-                // await this
-                //     ._orderHeaderService
-                //     .UpdateOrderHeaderPaymentIntentIdAsync(orderHeaderModel.Id, session.Id, session.PaymentIntentId);
-                //
-                // await this
-                //     ._orderHeaderService
-                //     .UpdateOrderHeaderStatusAsync(orderHeaderModel.Id, OrderStatusApproved, PaymentStatusApproved);
             }
         }
 
@@ -199,28 +211,28 @@ public class ShoppingCartController : BaseController
             return NotFound();
         }
 
-        OrderHeaderReceiptViewModel orderHeaderModel = await this
+        OrderHeaderReceiptDto orderHeaderDto = await this
             ._orderHeaderService
             .GetOrderHeaderForReceiptAsync((Guid)orderHeaderId);
 
         StringBuilder sb = new StringBuilder();
 
         sb.AppendLine($"Order Id: {orderHeaderId}");
-        sb.AppendLine($"Order Payment Id: {orderHeaderModel.PaymentIntentId}");
-        sb.AppendLine($"Order Date: {orderHeaderModel.OrderDate.ToString("d")}");
-        sb.AppendLine($"Total: {orderHeaderModel.OrderTotal.ToString("c")}");
-        sb.AppendLine($"Payment Status: {orderHeaderModel.PaymentStatus}");
-        sb.AppendLine($"Payment Date: {orderHeaderModel.PaymentDate}");
+        sb.AppendLine($"Order Payment Id: {orderHeaderDto.PaymentIntentId}");
+        sb.AppendLine($"Order Date: {orderHeaderDto.OrderDate.ToString("d")}");
+        sb.AppendLine($"Total: {orderHeaderDto.OrderTotal.ToString("c")}");
+        sb.AppendLine($"Payment Status: {orderHeaderDto.PaymentStatus}");
+        sb.AppendLine($"Payment Date: {orderHeaderDto.PaymentDate}");
         sb.AppendLine("Items Bought:");
 
-        foreach (OrderDetailsViewModel orderDetailsModel in orderHeaderModel.OrderDetails)
+        foreach (OrderDetailsReceiptDto orderDetailsDto in orderHeaderDto.OrderDetails)
         {
             sb.AppendLine("--------------------------------------------");
-            sb.AppendLine($"    Book Title: {orderDetailsModel.Book.Title}");
-            sb.AppendLine($"    Book ISBN: {orderDetailsModel.Book.ISBN}");
-            sb.AppendLine($"    Book Price: {orderDetailsModel.Book.Price.ToString("c")}");
-            sb.AppendLine($"    Quantity: {orderDetailsModel.Count}");
-            sb.AppendLine($"    Total Price: {(orderDetailsModel.Book.Price * orderDetailsModel.Count).ToString("c")}");
+            sb.AppendLine($"    Book Title: {orderDetailsDto.Book.Title}");
+            sb.AppendLine($"    Book ISBN: {orderDetailsDto.Book.ISBN}");
+            sb.AppendLine($"    Book Price: {orderDetailsDto.Book.Price.ToString("c")}");
+            sb.AppendLine($"    Quantity: {orderDetailsDto.Count}");
+            sb.AppendLine($"    Total Price: {(orderDetailsDto.Book.Price * orderDetailsDto.Count).ToString("c")}");
             sb.AppendLine("--------------------------------------------");
         }
 

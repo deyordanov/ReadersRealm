@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Web.ViewModels.Author;
+﻿namespace ReadersRealm.ViewModels.Author;
 
 public class AllAuthorsListViewModel
 {

@@ -20,7 +20,7 @@ public class ShoppingCartViewModel
 
     [ForeignKey(nameof(BookId))]
     [ValidateNever]
-    public DetailsBookViewModel Book { get; set; }
+    public DetailsBookViewModel Book { get; set; } = null!;
 
     [Required]
     [Range(ShoppingCartCountMinRange, 
@@ -32,7 +32,7 @@ public class ShoppingCartViewModel
     
     [ForeignKey(nameof(ApplicationUserId))]
     [ValidateNever]
-    public ApplicationUserViewModel ApplicationUser { get; set; }
+    public ApplicationUserViewModel ApplicationUser { get; set; } = null!;
 
     [ValidateNever]
     public decimal TotalPrice { get; set; }

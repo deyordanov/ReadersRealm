@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using System.Diagnostics;
+using Common;
 using ViewModels.Book;
 using ViewModels.ShoppingCart;
 using Web.ViewModels;
-using Web.ViewModels.Book;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
@@ -29,9 +29,10 @@ public class HomeController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
-        IEnumerable<AllBooksViewModel> allBooks = await this
+        PaginatedList<AllBooksViewModel> allBooks = await this
             ._bookService
             .GetAllAsync(pageIndex, 8, searchTerm);
+
 
         return View(allBooks);
     }

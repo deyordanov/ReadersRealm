@@ -1,6 +1,7 @@
 ﻿namespace ReadersRealm.ViewModels.Book;
 
-using Data.Models;
+using Author;
+using Category;
 using Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -29,10 +30,10 @@ public class DetailsBookViewModel
     [Display(Name = "Author")]
     public Guid AuthorId { get; set; }
 
-    public Author Author { get; set; }
+    public AuthorViewModel Author { get; set; } = null!;
 
     [Display(Name = "Category")]
     public int CategoryId { get; set; }
 
-    public Category Category { get; set; }
+    public CategoryViewModel Category { get; set; } = null!;
 }

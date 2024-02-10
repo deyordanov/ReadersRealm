@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using ViewModels.Book;
-using Web.ViewModels.Book;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Book;
 using static Common.Constants.Constants.Roles;

@@ -170,8 +170,8 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
 
             Input = new()
             {
-                FirstName = "",
-                LastName = "",
+                FirstName = string.Empty,
+                LastName = string.Empty,
                 Roles = this.roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
                 Companies = companies.Select(c => new SelectListItem(c.Name, c.Id.ToString())),
             };
@@ -181,7 +181,7 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
-        {
+        { 
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)

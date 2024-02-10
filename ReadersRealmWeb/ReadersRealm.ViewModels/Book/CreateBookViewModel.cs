@@ -1,10 +1,9 @@
 ﻿namespace ReadersRealm.ViewModels.Book;
 
+using Author;
 using Category;
-using Data.Models;
 using Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
-using Web.ViewModels.Author;
 using static ReadersRealm.Common.Constants.ValidationConstants.Book;
 using static ReadersRealm.Common.Constants.ValidationMessageConstants.Book;
 
@@ -50,12 +49,12 @@ public class CreateBookViewModel
     [Display(Name = "Author")]
     public Guid AuthorId { get; set; }
 
-    public Author? Author { get; set; }
+    public AuthorViewModel? Author { get; set; }
 
     [Display(Name = "Category")]
     public int CategoryId { get; set; }
 
-    public Category? Category { get; set; }
+    public CategoryViewModel? Category { get; set; }
 
     public required IEnumerable<AllAuthorsListViewModel>? AuthorsList { get; set; }
 

@@ -1,13 +1,13 @@
-﻿namespace ReadersRealm.Web.ViewModels.Author;
+﻿namespace ReadersRealm.ViewModels.Author;
 
-using Data.Models;
+using Book;
 using Data.Models.Enums;
 
 public class AllAuthorsViewModel
 {
     public AllAuthorsViewModel()
     {
-        this.Books = new HashSet<Book>();
+        this.Books = new HashSet<BookViewModel>();
     }
 
     public Guid Id { get; set; }
@@ -26,5 +26,5 @@ public class AllAuthorsViewModel
 
     public required string PhoneNumber { get; set; }
 
-    public HashSet<Book> Books { get; set; }
+    public IEnumerable<BookViewModel> Books { get; set; }
 }

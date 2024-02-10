@@ -1,6 +1,7 @@
 ﻿@model AllShoppingCartsListViewModel
 <form method="post">
-    <input asp-for="@Model.OrderHeader.ApplicationUserId" value="@Model.OrderHeader.ApplicationUserId" hidden/>
+    <input asp-for="OrderHeader.ApplicationUserId" value="@Model.OrderHeader.ApplicationUserId" hidden/>
+    <input asp-for="OrderHeader.Id" value="@Model.OrderHeader.Id" hidden/>
     <div class="container">
         <div class="card shadow border-0">
             <div class="card-body">

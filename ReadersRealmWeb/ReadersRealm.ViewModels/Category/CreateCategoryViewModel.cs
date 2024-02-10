@@ -2,7 +2,6 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 using static ReadersRealm.Common.Constants.Constants.Category;
 using static ReadersRealm.Common.Constants.ValidationConstants.Category;
 using static ReadersRealm.Common.Constants.ValidationMessageConstants.Category;

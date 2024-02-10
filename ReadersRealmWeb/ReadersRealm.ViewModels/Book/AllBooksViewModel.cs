@@ -1,6 +1,8 @@
-﻿namespace ReadersRealm.Web.ViewModels.Book;
+﻿// ReSharper disable InconsistentNaming
+namespace ReadersRealm.ViewModels.Book;
 
-using Data.Models;
+using Author;
+using Category;
 using Data.Models.Enums;
 
 public class AllBooksViewModel
@@ -25,9 +27,9 @@ public class AllBooksViewModel
 
     public Guid AuthorId { get; set; }
 
-    public Author Author { get; set; }
+    public AuthorViewModel Author { get; set; } = null!;
 
     public int CategoryId { get; set; }
 
-    public Category Category { get; set; }
+    public CategoryViewModel Category { get; set; } = null!;
 }
