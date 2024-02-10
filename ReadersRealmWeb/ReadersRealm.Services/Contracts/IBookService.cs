@@ -3,7 +3,6 @@
 using Common;
 using Data.Models;
 using ViewModels.Book;
-using Web.ViewModels.Book;
 
 public interface IBookService
 {

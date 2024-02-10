@@ -275,7 +275,7 @@ namespace ReadersRealm.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors", t =>
+                    b.ToTable("Authors", null, t =>
                         {
                             t.HasComment("Readers Realm Author");
                         });
@@ -361,7 +361,7 @@ namespace ReadersRealm.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Books", t =>
+                    b.ToTable("Books", null, t =>
                         {
                             t.HasComment("Readers Realm Book");
                         });
@@ -369,7 +369,7 @@ namespace ReadersRealm.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1611b979-3b16-47c5-9b23-f82783e0814f"),
+                            Id = new Guid("4dba24af-138e-47af-bf7a-15eef1fe4f49"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
@@ -383,7 +383,7 @@ namespace ReadersRealm.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("050c2c4f-415e-461a-8fe7-af072f1c276c"),
+                            Id = new Guid("c315bff6-1cd0-4060-bd16-265dfaed78ab"),
                             AuthorId = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
                             BookCover = 0,
                             CategoryId = 2,
@@ -418,7 +418,7 @@ namespace ReadersRealm.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", t =>
+                    b.ToTable("Categories", null, t =>
                         {
                             t.HasComment("Readers Realm Category");
                         });
@@ -487,7 +487,7 @@ namespace ReadersRealm.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.Order", b =>
@@ -504,7 +504,7 @@ namespace ReadersRealm.Data.Migrations
                     b.HasIndex("OrderHeaderId")
                         .IsUnique();
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.OrderDetails", b =>
@@ -536,7 +536,7 @@ namespace ReadersRealm.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrdersDetails");
+                    b.ToTable("OrdersDetails", (string)null);
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.OrderHeader", b =>
@@ -592,7 +592,7 @@ namespace ReadersRealm.Data.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("OrderHeaders");
+                    b.ToTable("OrderHeaders", (string)null);
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.ShoppingCart", b =>
@@ -617,7 +617,7 @@ namespace ReadersRealm.Data.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("ShoppingCarts");
+                    b.ToTable("ShoppingCarts", (string)null);
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.ApplicationUser", b =>

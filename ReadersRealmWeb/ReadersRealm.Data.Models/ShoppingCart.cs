@@ -2,8 +2,6 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Common;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 public class ShoppingCart
 {

@@ -1,0 +1,104 @@
+﻿@model PaginatedList<AllOrdersViewModel>
+
+<partial name="_NotificationPartialView" />
+<div class="row mb-2">
+    <form asp-controller="ShoppingCart" asp-action="Index" method="get" class="col-8" style="display: flex">
+        <div class="col-3 px-0">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="searchTerm" value="@ViewBag.SearchTerm">
+        </div>
+        <div class="col-3 px-0">
+            <button class="btn btn-success" type="submit">Search</button>
+        </div>
+    </form>
+</div>
+@if (Model.Count != 0)
+{
+    <table class="table table-bordered table-striped border-black" style="width: 100%">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Id</th>
+                <th>Phone Number</th>
+                <th>Order Status</th>
+                <th>Payment Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (AllOrdersViewModel orderModel in @Model)
+            {
+                <tr>
+                    <td>
+                        @(orderModel.OrderHeader.FirstName + " " + orderModel.OrderHeader.LastName)
+                    </td>
+                    <td>
+                        @orderModel.OrderHeader.ApplicationUserId
+                    </td>
+                    <td>
+                        @orderModel.OrderHeader.PhoneNumber
+                    </td>
+                    <td>
+                        @orderModel.OrderHeader.OrderStatus
+                    </td>
+                    <td>
+                        @orderModel.OrderHeader.PaymentStatus
+                    </td>
+                    <td>
+                        <div class="w-100">
+                            <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-id="@orderModel.Id" asp-route-pageIndex=@Model.PageIndex asp-route-searchTerm="@ViewBag.SearchTerm" class="btn btn-primary btn-sm mb-1" style="font-size: 13px">
+                                <i class="bi bi-pencil-square"></i> Details
+                            </a>
+                            @if (orderModel.OrderHeader.PaymentStatus == PaymentStatusApproved)
+                            {
+                                <a asp-area="Customer" asp-controller="ShoppingCart" asp-action="DownloadReceipt" asp-route-orderHeaderId="@orderModel.OrderHeader.Id" class="btn btn-success btn-sm" style="font-size: 13px">
+                                    <i class="bi bi-receipt"></i> Download Receipt
+                                </a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>No products found!</h1>
+}
+
+@{
+    bool prevDisabled = !Model.HasPreviousPage ? true : false;
+    bool nextDisabled = !Model.HasNextPage ? true : false;
+}
+
+<nav>
+    <ul class="row p-0">
+        <li class="page-item col-6" style="display: flex; justify-content: start">
+            @if (prevDisabled)
+            {
+                <button asp-controller="ShoppingCart" asp-action="Index" class="page-link" disabled>
+                    <span style="font-size: 1rem" class="btn btn-outline-danger">Previous</span>
+                </button>
+            }
+            else
+            {
+                <a asp-controller="ShoppingCart" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-searchTerm="@ViewBag.SearchTerm" class="page-link">
+                    <span style="font-size: 1rem" class="btn btn-outline-dark">Previous</span>
+                </a>
+            }
+        </li>
+        <li class="page-item col-6" style="display: flex; justify-content: end">
+            @if (nextDisabled)
+            {
+                <button asp-controller="ShoppingCart" asp-action="Index" class="page-link" disabled>
+                    <span style="font-size: 1rem" class="btn btn-outline-danger">Next</span>
+                </button>
+            }
+            else
+            {
+                <a asp-controller="ShoppingCart" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)" asp-route-searchTerm="@ViewBag.SearchTerm" class="page-link">
+                    <span style="font-size: 1rem" class="btn btn-outline-dark">Next</span>
+                </a>
+            }
+        </li>
+    </ul>
+</nav>

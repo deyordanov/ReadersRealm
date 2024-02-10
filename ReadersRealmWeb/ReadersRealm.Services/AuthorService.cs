@@ -3,7 +3,9 @@
 using Contracts;
 using Data.Models;
 using Data.Repositories.Contracts;
-using Web.ViewModels.Author;
+using ViewModels.Author;
+using ViewModels.Book;
+using static Common.Constants.ValidationConstants.Author;
 
 public class AuthorService : IAuthorService
 {
@@ -22,17 +24,29 @@ public class AuthorService : IAuthorService
             .GetAsync(null, null, string.Empty);
 
         IEnumerable<AllAuthorsViewModel> authorsToReturn = allAuthors
-            .Select(a => new AllAuthorsViewModel()
+            .Select(author => new AllAuthorsViewModel()
             {
-                LastName = a.LastName,
-                Email = a.Email,
-                FirstName = a.FirstName,
-                PhoneNumber = a.PhoneNumber,
-                Age = a.Age,
-                Books = a.Books,
-                Gender = a.Gender,
-                Id = a.Id,
-                MiddleName = a.MiddleName,
+                LastName = author.LastName,
+                Email = author.Email,
+                FirstName = author.FirstName,
+                PhoneNumber = author.PhoneNumber,
+                Age = author.Age,
+                Books = author.Books.Select(book => new BookViewModel()
+                {
+                    ISBN = book.ISBN,
+                    Title = book.Title,
+                    AuthorId = book.AuthorId,
+                    BookCover = book.BookCover,
+                    CategoryId = book.CategoryId,
+                    Description = book.Description,
+                    Id = book.Id,
+                    Pages = book.Pages,
+                    Price = book.Price,
+                    Used = book.Used,
+                }),
+                Gender = author.Gender,
+                Id = author.Id,
+                MiddleName = author.MiddleName,
             });
 
         return authorsToReturn;

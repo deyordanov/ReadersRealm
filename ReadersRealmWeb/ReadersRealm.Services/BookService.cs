@@ -5,10 +5,9 @@ using Common.Exceptions;
 using Contracts;
 using Data.Models;
 using Data.Repositories.Contracts;
-using ReadersRealm.Web.ViewModels.Author;
+using ReadersRealm.ViewModels.Author;
 using ViewModels.Book;
 using ViewModels.Category;
-using Web.ViewModels.Book;
 
 public class BookService : IBookService
 {
@@ -36,23 +35,38 @@ public class BookService : IBookService
             .GetAsync(book => book.Title.ToLower().StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty), null, PropertiesToInclude);
 
         return PaginatedList<AllBooksViewModel>.Create(allBooks
-            .Select(b => new AllBooksViewModel()
+            .Select(book => new AllBooksViewModel()
             {
-                Id = b.Id,
-                ISBN = b.ISBN,
-                Title = b.Title,
-                Author = b.Author,
-                AuthorId = b.AuthorId,
-                Category = b.Category,
-                CategoryId = b.CategoryId,
-                BookCover = b.BookCover,
-                Description = b.Description,
-                Pages = b.Pages,
-                Price = b.Price,
-                Used = b.Used,
-                ImageUrl = b.ImageUrl,
+                Id = book.Id,
+                ISBN = book.ISBN,
+                Title = book.Title,
+                Author = new AuthorViewModel()
+                {
+                    Id = book.Author.Id,
+                    FirstName = book.Author.FirstName,
+                    MiddleName = book.Author.MiddleName,
+                    LastName = book.Author.LastName,
+                    PhoneNumber = book.Author.PhoneNumber,
+                    Email = book.Author.Email,
+                    Age = book.Author.Age,
+                    Gender = book.Author.Gender,
+                },
+                AuthorId = book.AuthorId,
+                Category = new CategoryViewModel()
+                {
+                    Id = book.Category.Id,
+                    Name = book.Category.Name,
+                    DisplayOrder = book.Category.DisplayOrder,
+                },
+                CategoryId = book.CategoryId,
+                BookCover = book.BookCover,
+                Description = book.Description,
+                Pages = book.Pages,
+                Price = book.Price,
+                Used = book.Used,
+                ImageUrl = book.ImageUrl,
             })
-            .ToList(), pageIndex, pageSize); ;
+            .ToList(), pageIndex, pageSize);
     }
 
     public async Task<Book?> GetBookByIdAsync(Guid id)
@@ -102,9 +116,7 @@ public class BookService : IBookService
             Price = book.Price,
             Used = book.Used,
             ImageUrl = book.ImageUrl,
-            Author = book.Author,
             AuthorId = book.AuthorId,
-            Category = book.Category,
             CategoryId = book.CategoryId,
             AuthorsList = authorsList,
             CategoriesList = categoriesList
@@ -136,9 +148,24 @@ public class BookService : IBookService
             Price = book.Price,
             Used = book.Used,
             ImageUrl = book.ImageUrl,
-            Author = book.Author,
+            Author = new AuthorViewModel()
+            {
+                Id = book.Author.Id,
+                FirstName = book.Author.FirstName,
+                MiddleName = book.Author.MiddleName,
+                LastName = book.Author.LastName,
+                PhoneNumber = book.Author.PhoneNumber,
+                Email = book.Author.Email,
+                Age = book.Author.Age,
+                Gender = book.Author.Gender,
+            },
             AuthorId = book.AuthorId,
-            Category = book.Category,
+            Category = new CategoryViewModel()
+            {
+                Id = book.Category.Id,
+                Name = book.Category.Name,
+                DisplayOrder = book.Category.DisplayOrder,
+            },
             CategoryId = book.CategoryId,
         };
 
@@ -168,9 +195,24 @@ public class BookService : IBookService
             Price = book.Price,
             Used = book.Used,
             ImageUrl = book.ImageUrl,
-            Author = book.Author,
+            Author = new AuthorViewModel()
+            {
+                Id = book.Author.Id,
+                FirstName = book.Author.FirstName,
+                MiddleName = book.Author.MiddleName,
+                LastName = book.Author.LastName,
+                PhoneNumber = book.Author.PhoneNumber,
+                Email = book.Author.Email,
+                Age = book.Author.Age,
+                Gender = book.Author.Gender,
+            },
             AuthorId = book.AuthorId,
-            Category = book.Category,
+            Category = new CategoryViewModel()
+            {
+                Id = book.Category.Id,
+                Name = book.Category.Name,
+                DisplayOrder = book.Category.DisplayOrder,
+            },
             CategoryId = book.CategoryId,
         };
 

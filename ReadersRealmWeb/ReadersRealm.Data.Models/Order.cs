@@ -1,13 +1,14 @@
 ﻿namespace ReadersRealm.Data.Models;
 
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Order
 {
     public Order()
     {
-        this.OrderDetails = new HashSet<OrderDetails>();
+        this.Id = Guid.NewGuid();
+        this.OrderDetailsList = new HashSet<OrderDetails>();
     }
 
     public Guid Id { get; set; }
@@ -17,6 +18,6 @@ public class Order
     [ForeignKey(nameof(OrderHeaderId))]
     public OrderHeader OrderHeader { get; set; }
 
-    [DeleteBehavior(DeleteBehavior.Restrict)]
-    public IEnumerable<OrderDetails> OrderDetails { get; set; }
+    [DeleteBehavior(DeleteBehavior.Cascade)]
+    public IEnumerable<OrderDetails> OrderDetailsList { get; set; }
 }

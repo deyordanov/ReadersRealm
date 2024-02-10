@@ -5,25 +5,26 @@ using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderRepository
+public class OrderRepository : Repository<Order>, IOrderRepository
 {
     private readonly ReadersRealmDbContext _dbContext;
-    public OrderHeaderRepository(ReadersRealmDbContext dbContext) : base(dbContext)
+
+    public OrderRepository(ReadersRealmDbContext dbContext) : base(dbContext)
     {
         this._dbContext = dbContext;
     }
 
-    public async Task<OrderHeader?> GetByIdAsync(Guid id)
+    public async Task<Order?> GetByIdAsync(Guid id)
     {
         return await this
             ._dbContext
-            .OrderHeaders
-            .FirstOrDefaultAsync(orderHeader => orderHeader.Id == id);
+            .Orders
+            .FirstOrDefaultAsync(order => order.Id == id);
     }
 
-    public Task<OrderHeader?> GetByIdWithNavPropertiesAsync(Guid id, string properties)
+    public Task<Order?> GetByIdWithNavPropertiesAsync(Guid id, string properties)
     {
-        IQueryable<OrderHeader> query = this._dbContext.OrderHeaders;
+        IQueryable<Order> query = this._dbContext.Orders;
 
         string[] propertiesToAdd = properties.Split(", ", StringSplitOptions.RemoveEmptyEntries);
 
@@ -37,6 +38,6 @@ public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderReposi
             query = query.Include(property);
         }
 
-        return query.FirstOrDefaultAsync(b => b.Id == id);
+        return query.FirstOrDefaultAsync(order => order.Id == id);
     }
 }

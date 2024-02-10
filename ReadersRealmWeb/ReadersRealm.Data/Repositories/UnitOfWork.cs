@@ -20,6 +20,7 @@ public class UnitOfWork : IUnitOfWork
         this.ApplicationUserRepository = new ApplicationUserRepository(dbContext);
         this.OrderHeaderRepository = new OrderHeaderRepository(dbContext);
         this.OrderDetailsRepository = new OrderDetailsRepository(dbContext);
+        this.OrderRepository = new OrderRepository(dbContext);
     }
 
     public ICategoryRepository CategoryRepository { get; private set; }
@@ -30,6 +31,7 @@ public class UnitOfWork : IUnitOfWork
     public IApplicationUserRepository ApplicationUserRepository { get; private set; }
     public IOrderHeaderRepository OrderHeaderRepository { get; private set; }
     public IOrderDetailsRepository OrderDetailsRepository { get; }
+    public IOrderRepository OrderRepository { get; }
 
     public async Task SaveAsync()
     {

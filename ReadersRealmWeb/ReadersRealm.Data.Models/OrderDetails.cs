@@ -19,18 +19,18 @@ public class OrderDetails
 
     [ForeignKey(nameof(OrderHeaderId))]
     [ValidateNever]
-    public OrderHeader OrderHeader { get; set; }
+    public OrderHeader OrderHeader { get; set; } = null!;
 
     public Guid BookId { get; set; }
 
     [ForeignKey(nameof(BookId))]
     [ValidateNever]
-    public Book Book { get; set; }
+    public Book Book { get; set; } = null!;
 
     public int Count { get; set; }
 
     [Column(TypeName = OrderDetailsPriceColumnType)]
     public decimal Price { get; set; }
 
-    public Order Order { get; set; }
+    public Order Order { get; set; } = null!;
 }

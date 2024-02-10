@@ -46,7 +46,7 @@ public class OrderHeader
     [StringLength(OrderHeaderSessionIdMaxLength)]
     public string? SessionId { get; set; }
 
-    [StringLength(OrderHeaderPaymentIntentIdMaxLength)]
+    [StringLength(OrderHeaderPaymentIntentIdMaxLength)] 
     public string? PaymentIntentId { get; set; }
 
     public Order Order { get; set; }

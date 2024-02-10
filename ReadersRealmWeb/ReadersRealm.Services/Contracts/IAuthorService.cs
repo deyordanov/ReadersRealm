@@ -1,6 +1,6 @@
 ﻿namespace ReadersRealm.Services.Contracts;
 
-using Web.ViewModels.Author;
+using ViewModels.Author;
 
 public interface IAuthorService
 {

@@ -9,6 +9,7 @@ public interface IUnitOfWork : IDisposable
     IApplicationUserRepository ApplicationUserRepository { get; }
     IOrderHeaderRepository OrderHeaderRepository { get; }
     IOrderDetailsRepository OrderDetailsRepository { get; }
+    IOrderRepository OrderRepository { get; }
     Task SaveAsync();
     void Dispose(bool disposing);
 }

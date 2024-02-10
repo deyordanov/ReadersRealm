@@ -61,6 +61,12 @@ public static class Constants
         public const string ShoppingCartItemHasBeenDeletedSuccessfully = "The items has been deleted successfully!";
     }
 
+    public static class Order
+    {
+        //Action Result
+        public const string OrderHasSuccessfullyBeenUpdated = "The order has been updated successfully!";
+    }
+
     public static class OrderHeader
     {
         public const string OrderStatusPending = "Pending";

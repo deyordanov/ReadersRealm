@@ -27,6 +27,8 @@ public class ReadersRealmDbContext : IdentityDbContext<IdentityUser>
 
     public required DbSet<OrderDetails> OrdersDetails { get; set; }
 
+    public required DbSet<Order> Orders { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Seed();

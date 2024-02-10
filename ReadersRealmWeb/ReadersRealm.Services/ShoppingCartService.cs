@@ -8,6 +8,7 @@ using ViewModels.ApplicationUser;
 using ViewModels.Book;
 using ViewModels.OrderHeader;
 using ViewModels.ShoppingCart;
+using static Common.Constants.Constants.OrderHeader;
 
 public class ShoppingCartService : IShoppingCartService
 {
@@ -15,33 +16,20 @@ public class ShoppingCartService : IShoppingCartService
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IApplicationUserService _applicationUserService;
+    private readonly IOrderHeaderService _orderHeaderService;
+    private readonly IOrderDetailsService _orderDetailsService;
 
-    public ShoppingCartService(IUnitOfWork unitOfWork, IApplicationUserService applicationUserService)
+
+    public ShoppingCartService(
+        IUnitOfWork unitOfWork, 
+        IApplicationUserService applicationUserService,
+        IOrderHeaderService orderHeaderService,
+        IOrderDetailsService orderDetailsService)
     {
         this._unitOfWork = unitOfWork;
         this._applicationUserService = applicationUserService;
-    }
-
-    public async Task<ShoppingCartViewModel> GetShoppingCartByIdWithNavPropertiesOrCreateAsync(Guid id)
-    {
-        ShoppingCart? shoppingCart = await this
-            ._unitOfWork
-            .ShoppingCartRepository
-            .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
-
-        if (shoppingCart == null)
-        {
-            shoppingCart = new ShoppingCart();
-        }
-
-        ShoppingCartViewModel viewModel = new ShoppingCartViewModel()
-        {
-            Id = shoppingCart!.Id,
-            ApplicationUserId = shoppingCart.ApplicationUserId,
-            BookId = shoppingCart.BookId,
-        };
-
-        return viewModel;
+        this._orderHeaderService = orderHeaderService;
+        this._orderDetailsService = orderDetailsService;
     }
 
     public ShoppingCartViewModel GetShoppingCart(DetailsBookViewModel bookModel)
@@ -150,6 +138,21 @@ public class ShoppingCartService : IShoppingCartService
 
         OrderApplicationUserViewModel applicationUser = await this._applicationUserService.GetApplicationUserForOrderAsync(applicationUserId);
 
+        // OrderHeaderViewModel? orderHeaderModel = await this
+        //     ._orderHeaderService
+        //     .GetByApplicationUserIdAndOrderStatusAsync(applicationUser.Id, OrderStatusPending);
+        //
+        // if (orderHeaderModel != null)
+        // {
+        //     await this
+        //         ._orderDetailsService
+        //         .DeleteOrderDetailsRangeByOrderHeaderIdAsync(orderHeaderModel.Id);
+        //
+        //     await this
+        //         ._orderHeaderService
+        //         .DeleteOrderHeaderAsync(orderHeaderModel);
+        // }
+
         AllShoppingCartsListViewModel shoppingCartModel = new AllShoppingCartsListViewModel()
         {
             OrderHeader = new OrderHeaderViewModel()
@@ -163,7 +166,7 @@ public class ShoppingCartService : IShoppingCartService
                 StreetAddress = applicationUser.StreetAddress ?? string.Empty,
                 PostalCode = applicationUser.PostalCode ?? string.Empty,
                 State = applicationUser.State ?? string.Empty,
-                PhoneNumber = applicationUser.PhoneNumber ?? string.Empty,
+                PhoneNumber = applicationUser.PhoneNumber ?? string.Empty, 
             },
             ShoppingCartsList = allShoppingCarts.Select(shoppingCart => new ShoppingCartViewModel()
             {
@@ -187,9 +190,7 @@ public class ShoppingCartService : IShoppingCartService
                     Price = shoppingCart.Book.Price,
                     Used = shoppingCart.Book.Used,
                     ImageUrl = shoppingCart.Book.ImageUrl,
-                    Author = shoppingCart.Book.Author,
                     AuthorId = shoppingCart.Book.AuthorId,
-                    Category = shoppingCart.Book.Category,
                     CategoryId = shoppingCart.Book.CategoryId,
                 },
                 Count = shoppingCart.Count,

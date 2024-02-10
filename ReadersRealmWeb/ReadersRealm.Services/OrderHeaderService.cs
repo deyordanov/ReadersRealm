@@ -4,22 +4,24 @@ using Common.Exceptions;
 using Contracts;
 using Data.Models;
 using Data.Repositories.Contracts;
+using DataTransferObjects.OrderDetails;
+using ReadersRealm.DataTransferObjects.OrderHeader;
 using ViewModels.ApplicationUser;
+using ViewModels.Order;
 using ViewModels.OrderHeader;
 
 public class OrderHeaderService : IOrderHeaderService
 {
+    private const string PropertiesToInclude = "ApplicationUser";
+
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IApplicationUserService _applicationUserService;
     private readonly IOrderDetailsService _orderDetailsService;
 
     public OrderHeaderService(
         IUnitOfWork unitOfWork, 
-        IApplicationUserService applicationUserService,
         IOrderDetailsService orderDetailsService)
     {
         this._unitOfWork = unitOfWork;
-        this._applicationUserService = applicationUserService;
         this._orderDetailsService = orderDetailsService;
     }
     public async Task<OrderHeaderViewModel> GetByIdAsyncWithNavPropertiesAsync(Guid id)
@@ -27,29 +29,35 @@ public class OrderHeaderService : IOrderHeaderService
         OrderHeader? orderHeader = await this
             ._unitOfWork
             .OrderHeaderRepository
-            .GetByIdAsync(id);
+            .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
 
         if (orderHeader == null)
         {
             throw new OrderHeaderNotFoundException();
         }
 
-        OrderApplicationUserViewModel applicationUser = await this
-            ._applicationUserService
-            .GetApplicationUserForOrderAsync(orderHeader.ApplicationUserId);
-
         OrderHeaderViewModel orderHeaderModel = new OrderHeaderViewModel()
         {
             Id = orderHeader.Id,
             ApplicationUserId = orderHeader.ApplicationUserId,
-            ApplicationUser = applicationUser,
-            FirstName = applicationUser.FirstName,
-            LastName = applicationUser.LastName,
-            City = applicationUser.City ?? string.Empty,
-            StreetAddress = applicationUser.StreetAddress ?? string.Empty,
-            PostalCode = applicationUser.PostalCode ?? string.Empty,
-            State = applicationUser.State ?? string.Empty,
-            PhoneNumber = applicationUser.PhoneNumber ?? string.Empty,
+            ApplicationUser = new OrderApplicationUserViewModel()
+            {
+                Id = orderHeader.ApplicationUser.Id,
+                FirstName = orderHeader.ApplicationUser.FirstName,
+                LastName = orderHeader.ApplicationUser.LastName,
+                City = orderHeader.ApplicationUser.City,
+                PhoneNumber = orderHeader.ApplicationUser.PhoneNumber,
+                PostalCode = orderHeader.ApplicationUser.PostalCode,
+                State = orderHeader.ApplicationUser.State,
+                StreetAddress = orderHeader.ApplicationUser.StreetAddress,
+            },
+            FirstName = orderHeader.ApplicationUser.FirstName,
+            LastName = orderHeader.ApplicationUser.LastName,
+            City = orderHeader.ApplicationUser.City ?? string.Empty,
+            StreetAddress = orderHeader.ApplicationUser.StreetAddress ?? string.Empty,
+            PostalCode = orderHeader.ApplicationUser.PostalCode ?? string.Empty,
+            State = orderHeader.ApplicationUser.State ?? string.Empty,
+            PhoneNumber = orderHeader.ApplicationUser.PhoneNumber ?? string.Empty,
             OrderTotal = orderHeader.OrderTotal,
             OrderStatus = orderHeader.OrderStatus,
             OrderDate = orderHeader.OrderDate,
@@ -66,7 +74,49 @@ public class OrderHeaderService : IOrderHeaderService
         return orderHeaderModel;
     }
 
-    public async Task<OrderHeaderReceiptViewModel> GetOrderHeaderForReceiptAsync(Guid orderHeaderId)
+    public async Task<OrderHeaderViewModel?> GetByApplicationUserIdAndOrderStatusAsync(string applicationUserId, string orderStatus)
+    {
+        IEnumerable<OrderHeader> orderHeaders = await this
+            ._unitOfWork
+            .OrderHeaderRepository
+            .GetAsync(orderHeader => orderHeader.ApplicationUserId == applicationUserId &&
+                                     orderHeader.OrderStatus == orderStatus, null, PropertiesToInclude);
+
+        OrderHeader? orderHeader = orderHeaders.FirstOrDefault();
+
+        if (orderHeader == null)
+        {
+            return null;
+        }
+
+        OrderHeaderViewModel orderHeaderModel = new OrderHeaderViewModel()
+        {
+            Id = orderHeader.Id,
+            FirstName = orderHeader.ApplicationUser.FirstName,
+            LastName = orderHeader.ApplicationUser.LastName,
+            PhoneNumber = orderHeader.ApplicationUser.PhoneNumber ?? string.Empty,
+            City = orderHeader.ApplicationUser.City ?? string.Empty,
+            PostalCode = orderHeader.ApplicationUser.PostalCode ?? string.Empty,
+            State = orderHeader.ApplicationUser.PostalCode ?? string.Empty,
+            StreetAddress = orderHeader.ApplicationUser.StreetAddress ?? string.Empty,
+            ApplicationUserId = orderHeader.ApplicationUserId,
+            OrderStatus = orderHeader.OrderStatus,
+            PaymentStatus = orderHeader.PaymentStatus,
+            OrderTotal = orderHeader.OrderTotal,
+            SessionId = orderHeader.SessionId,
+            PaymentDueDate = orderHeader.PaymentDueDate,
+            Carrier = orderHeader.Carrier,
+            OrderDate = orderHeader.OrderDate,
+            PaymentIntentId = orderHeader.PaymentIntentId,
+            PaymentDate = orderHeader.PaymentDate,
+            ShippingDate = orderHeader.ShippingDate,
+            TrackingNumber = orderHeader.TrackingNumber,
+        };
+
+        return orderHeaderModel;
+    }
+
+    public async Task<OrderHeaderReceiptDto> GetOrderHeaderForReceiptAsync(Guid orderHeaderId)
     {
         OrderHeader? orderHeader = await this
             ._unitOfWork
@@ -78,15 +128,14 @@ public class OrderHeaderService : IOrderHeaderService
             throw new OrderHeaderNotFoundException();
         }
 
-        OrderHeaderReceiptViewModel orderHeaderModel = new OrderHeaderReceiptViewModel()
+        OrderHeaderReceiptDto orderHeaderModel = new OrderHeaderReceiptDto()
         {
-            ApplicationUser = orderHeader.ApplicationUser,
             PaymentStatus = orderHeader.PaymentStatus!,
             OrderTotal = orderHeader.OrderTotal,
             PaymentIntentId = orderHeader.PaymentIntentId!,
             OrderDate = orderHeader.OrderDate,
             PaymentDate = orderHeader.PaymentDate,
-            OrderDetails = await this._orderDetailsService.GetAllByOrderHeaderAsync(orderHeaderId),
+            OrderDetails = await this._orderDetailsService.GetAllOrderDetailsForReceiptAsDtosAsync(orderHeaderId),
         };
 
         return orderHeaderModel;
@@ -94,7 +143,7 @@ public class OrderHeaderService : IOrderHeaderService
 
     public async Task<Guid> CreateOrderHeaderAsync(OrderHeaderViewModel orderHeaderModel)
     {
-        OrderHeader orderHeader = new OrderHeader()
+        OrderHeader orderHeader = new OrderHeader
         {
             ApplicationUserId = orderHeaderModel.ApplicationUserId,
             Carrier = orderHeaderModel.Carrier,
@@ -186,6 +235,28 @@ public class OrderHeaderService : IOrderHeaderService
 
         orderHeader.SessionId = sessionId ?? orderHeader.SessionId;
         orderHeader.PaymentIntentId = paymentIntentId ?? orderHeader.PaymentIntentId;
+
+        await this
+            ._unitOfWork
+            .SaveAsync();
+    }
+
+    public async Task DeleteOrderHeaderAsync(OrderHeaderViewModel orderHeaderModel)
+    {
+        OrderHeader? orderHeaderToDelete = await this
+            ._unitOfWork
+            .OrderHeaderRepository
+            .GetByIdAsync(orderHeaderModel.Id);
+
+        if (orderHeaderToDelete == null)
+        {
+            throw new OrderHeaderNotFoundException();
+        }
+
+        this
+            ._unitOfWork
+            .OrderHeaderRepository
+            .Delete(orderHeaderToDelete);
 
         await this
             ._unitOfWork
