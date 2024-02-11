@@ -18,6 +18,6 @@ public class Order
     [ForeignKey(nameof(OrderHeaderId))]
     public OrderHeader OrderHeader { get; set; }
 
-    [DeleteBehavior(DeleteBehavior.Cascade)]
+    [DeleteBehavior(DeleteBehavior.Restrict)]
     public IEnumerable<OrderDetails> OrderDetailsList { get; set; }
 }

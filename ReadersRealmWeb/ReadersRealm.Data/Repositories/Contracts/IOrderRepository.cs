@@ -6,4 +6,5 @@ public interface IOrderRepository : IRepository<Order>
 {
     Task<Order?> GetByIdAsync(Guid id);
     Task<Order?> GetByIdWithNavPropertiesAsync(Guid id, string properties);
+    Task<Order?> GetByOrderHeaderIdAsync(Guid orderHeaderId);
 }

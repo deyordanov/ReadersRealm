@@ -47,6 +47,11 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
         return query.ToListAsync();
     }
 
+    public void DetachEntity(TEntity entity)
+    {
+        this._dbContext.Entry(entity).State = EntityState.Detached;
+    }
+
     public async Task AddAsync(TEntity entity)
     {
         await this._dbSet.AddAsync(entity);

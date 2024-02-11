@@ -32,5 +32,9 @@ public class OrderDetails
     [Column(TypeName = OrderDetailsPriceColumnType)]
     public decimal Price { get; set; }
 
+    public Guid OrderId { get; set; }
+
+
+    [ForeignKey(nameof(OrderId))]
     public Order Order { get; set; } = null!;
 }

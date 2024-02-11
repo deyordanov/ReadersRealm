@@ -40,4 +40,12 @@ public class OrderRepository : Repository<Order>, IOrderRepository
 
         return query.FirstOrDefaultAsync(order => order.Id == id);
     }
+
+    public async Task<Order?> GetByOrderHeaderIdAsync(Guid orderHeaderId)
+    {
+        return await this
+            ._dbContext
+            .Orders
+            .FirstOrDefaultAsync(order => order.OrderHeaderId == orderHeaderId);
+    }
 }

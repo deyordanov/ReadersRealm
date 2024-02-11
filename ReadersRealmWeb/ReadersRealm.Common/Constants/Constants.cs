@@ -63,12 +63,16 @@ public static class Constants
 
     public static class Order
     {
-        //Action Result
+        //Action Results
         public const string OrderHasSuccessfullyBeenUpdated = "The order has been updated successfully!";
     }
 
     public static class OrderHeader
     {
+        //Action Results
+        public const string OrderStatusHasSuccessfullyBeenUpdated = "The order status has successfully been updated!";
+
+        //Order Status
         public const string OrderStatusPending = "Pending";
         public const string OrderStatusApproved = "Approved";
         public const string OrderStatusInProcess = "Processing";
@@ -76,6 +80,7 @@ public static class Constants
         public const string OrderStatusCancelled = "Cancelled";
         public const string OrderStatusRefunded = "Refunded";
 
+        //Payment Status
         public const string PaymentStatusPending = "Pending";
         public const string PaymentStatusApproved = "Approved";
         public const string PaymentStatusDelayedPayment = "Approved for delayed payment";
