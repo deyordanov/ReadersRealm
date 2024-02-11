@@ -10,6 +10,7 @@
     <input asp-for="OrderHeader.ApplicationUserId" hidden/>
     <input asp-for="OrderHeader.Id" hidden/>
     <input asp-for="OrderHeader.OrderStatus" hidden/>
+    <input asp-for="OrderHeader.OrderTotal" hidden/>
     <div class="container">
         <div class="card">
             <div class="col-12 col-md-12" style="margin: 1rem 0 0 1rem">
@@ -272,7 +273,8 @@
                                     </div>
                                 </li>
                             </ul>
-                            @if (Model.OrderHeader.PaymentStatus == PaymentStatusDelayedPayment ||
+                            @if (User.IsInRole(CompanyRole) &&
+                                 Model.OrderHeader.PaymentStatus == PaymentStatusDelayedPayment ||
                                  Model.OrderHeader.OrderStatus == OrderStatusShipped)
                             {
                                 <button type="submit" class="btn btn-success form-control my-1 rounded-2">Pay Now</button>
@@ -282,20 +284,20 @@
                             {
                                 @if (Model.OrderHeader.OrderStatus == OrderStatusApproved)
                                 {
-                                    <button asp-action="StartProcessing" asp-route-orderHeaderId="@Model.OrderHeaderId" asp-route-pageIndex="@ViewBag.PageIndex" asp-route-searchTerm="@ViewBag.SearchTerm" type="submit" class="btn btn-primary form-control my-1 rounded-2">Start Processing</button>
+                                    <button asp-action="StartProcessingOrder" asp-route-orderHeaderId="@Model.OrderHeaderId" asp-route-pageIndex="@ViewBag.PageIndex" asp-route-searchTerm="@ViewBag.SearchTerm" type="submit" class="btn btn-primary form-control my-1 rounded-2">Start Processing</button>
                                 }
 
                                 @if (Model.OrderHeader.OrderStatus == OrderStatusInProcess)
                                 {
-                                    <button asp-action="Ship" asp-route-orderHeaderId="@Model.OrderHeaderId" asp-route-pageIndex="@ViewBag.PageIndex" asp-route-searchTerm="@ViewBag.SearchTerm" type="submit" class="btn btn-primary form-control my-1 rounded-2">Ship Order</button>
+                                    <button asp-action="ShipOrder" asp-route-orderHeaderId="@Model.OrderHeaderId" asp-route-pageIndex="@ViewBag.PageIndex" asp-route-searchTerm="@ViewBag.SearchTerm" type="submit" class="btn btn-primary form-control my-1 rounded-2">Ship Order</button>
                                 }
                             }
                             
-                            @if (Model.OrderHeader.OrderStatus != OrderStatusRefunded &&
+                            @if (Model.OrderHeader.PaymentStatus != PaymentStatusRefunded &&
                                  Model.OrderHeader.OrderStatus != OrderStatusCancelled && 
                                  Model.OrderHeader.OrderStatus != OrderStatusShipped)
                             {
-                                <button type="submit" class="btn btn-danger form-control my-1 rounded-2">Cancel Order</button>
+                                <button asp-action="CancelOrder" type="submit" class="btn btn-danger form-control my-1 rounded-2">Cancel Order</button>
                             }
                         </div>
                     </div>

@@ -1,8 +1,8 @@
 ﻿namespace ReadersRealm.Data.Models;
 
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using static Common.Constants.ValidationConstants.OrderHeader;
 public class OrderHeader
 {
@@ -18,7 +18,7 @@ public class OrderHeader
 
     [ForeignKey(nameof(ApplicationUserId))]
     [ValidateNever]
-    public ApplicationUser ApplicationUser { get; set; }
+    public ApplicationUser ApplicationUser { get; set; } = null!;
 
     public DateTime OrderDate { get; set; }
 
@@ -49,5 +49,5 @@ public class OrderHeader
     [StringLength(OrderHeaderPaymentIntentIdMaxLength)] 
     public string? PaymentIntentId { get; set; }
 
-    public Order Order { get; set; }
+    public Order Order { get; set; } = null!;
 }

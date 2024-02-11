@@ -138,7 +138,7 @@ public static class ValidationConstants
         public const int OrderHeaderOrderStatusMaxLength = 20;
         public const int OrderHeaderOrderStatusMinLength = 3;
 
-        public const int OrderHeaderPaymentStatusMaxLength = 20;
+        public const int OrderHeaderPaymentStatusMaxLength = 50;
         public const int OrderHeaderPaymentStatusMinLength = 3;
 
         public const int OrderHeaderTrackingNumberMaxLength = 30;

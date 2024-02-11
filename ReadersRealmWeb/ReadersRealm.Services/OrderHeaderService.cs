@@ -143,7 +143,7 @@ public class OrderHeaderService : IOrderHeaderService
 
     public async Task<(Guid orderHeaderId, Guid orderId)> CreateOrderHeaderAsync(OrderHeaderViewModel orderHeaderModel)
     {
-        OrderHeader orderHeader = new OrderHeader
+        OrderHeader orderHeader = new OrderHeader()
         {
             ApplicationUserId = orderHeaderModel.ApplicationUserId,
             Carrier = orderHeaderModel.Carrier,
