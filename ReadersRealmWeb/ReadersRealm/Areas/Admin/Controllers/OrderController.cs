@@ -111,4 +111,28 @@ public class OrderController : BaseController
 
         return RedirectToAction(nameof(Details), nameof(Order), new { id = orderId, pageIndex, searchTerm });
     }
+
+    [HttpPost]
+    [Authorize(Roles = AuthorizeAdminAndEmployeeRoles)]
+    public async Task<IActionResult> Ship(DetailsOrderViewModel orderModel, int pageIndex, string? searchTerm)
+    {
+        Guid orderId = await this
+            ._orderService
+            .GetOrderIdByOrderHeaderIdAsync(orderModel.OrderHeaderId);
+
+        if (orderModel.OrderHeader.TrackingNumber == null ||
+            orderModel.OrderHeader.Carrier == null)
+        {
+            TempData[Error] = OrderTrackingNumberAndCarrierAreNotSet;
+            return RedirectToAction(nameof(Details), nameof(Order), new { id = orderId, pageIndex, searchTerm });
+        }
+
+        await this
+            ._orderHeaderService
+            .UpdateOrderHeaderStatusAsync(orderModel.OrderHeaderId, OrderStatusShipped, null);
+
+        TempData[Success] = OrderStatusHasSuccessfullyBeenUpdated;
+
+        return RedirectToAction(nameof(Details), nameof(Order), new { id = orderId, pageIndex, searchTerm });
+    }
 }

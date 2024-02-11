@@ -9,6 +9,7 @@
 <form method="post">
     <input asp-for="OrderHeader.ApplicationUserId" hidden/>
     <input asp-for="OrderHeader.Id" hidden/>
+    <input asp-for="OrderHeader.OrderStatus" hidden/>
     <div class="container">
         <div class="card">
             <div class="col-12 col-md-12" style="margin: 1rem 0 0 1rem">
@@ -286,7 +287,7 @@
 
                                 @if (Model.OrderHeader.OrderStatus == OrderStatusInProcess)
                                 {
-                                    <button type="submit" class="btn btn-primary form-control my-1 rounded-2">Ship Order</button>
+                                    <button asp-action="Ship" asp-route-orderHeaderId="@Model.OrderHeaderId" asp-route-pageIndex="@ViewBag.PageIndex" asp-route-searchTerm="@ViewBag.SearchTerm" type="submit" class="btn btn-primary form-control my-1 rounded-2">Ship Order</button>
                                 }
                             }
                             

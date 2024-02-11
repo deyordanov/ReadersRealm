@@ -1,6 +1,8 @@
 ﻿namespace ReadersRealm.Areas.Customer.Controllers;
 
 using Data.Models;
+using DataTransferObjects.OrderDetails;
+using DataTransferObjects.OrderHeader;
 using Extensions.ClaimsPrincipal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -8,8 +10,6 @@ using ReadersRealm.Extensions.HttpContextAccessor;
 using Services.Contracts;
 using Stripe.Checkout;
 using System.Text;
-using DataTransferObjects.OrderDetails;
-using DataTransferObjects.OrderHeader;
 using ViewModels.ApplicationUser;
 using ViewModels.OrderDetails;
 using ViewModels.OrderHeader;

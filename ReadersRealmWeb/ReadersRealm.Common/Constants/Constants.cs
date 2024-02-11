@@ -71,6 +71,8 @@ public static class Constants
     {
         //Action Results
         public const string OrderStatusHasSuccessfullyBeenUpdated = "The order status has successfully been updated!";
+        public const string OrderTrackingNumberAndCarrierAreNotSet =
+            "Both the order tracking number and carrier must be filled out before shipping!";
 
         //Order Status
         public const string OrderStatusPending = "Pending";
