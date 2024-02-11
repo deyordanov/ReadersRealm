@@ -44,7 +44,7 @@ public class OrderService : IOrderService
             {
                 Id = order.Id,
                 OrderHeader = await this._orderHeaderService.GetByIdAsyncWithNavPropertiesAsync(order.OrderHeaderId),
-                OrderDetailsList = await this._orderDetailsService.GetAllByOrderHeaderAsync(order.OrderHeaderId),
+                OrderDetailsList = await this._orderDetailsService.GetAllByOrderHeaderIdAsync(order.OrderHeaderId),
             };
 
             allOrderModelsList.Add(orderModel);
@@ -68,7 +68,7 @@ public class OrderService : IOrderService
             {
                 Id = order.Id,
                 OrderHeader = await this._orderHeaderService.GetByIdAsyncWithNavPropertiesAsync(order.OrderHeaderId),
-                OrderDetailsList = await this._orderDetailsService.GetAllByOrderHeaderAsync(order.OrderHeaderId)
+                OrderDetailsList = await this._orderDetailsService.GetAllByOrderHeaderIdAsync(order.OrderHeaderId)
             };
 
             allOrderModelsList.Add(orderModel);
@@ -101,7 +101,7 @@ public class OrderService : IOrderService
             Id = order.Id,
             OrderHeaderId = order.OrderHeaderId,
             OrderHeader = await this._orderHeaderService.GetByIdAsyncWithNavPropertiesAsync(order.OrderHeaderId),
-            OrderDetailsList = await this._orderDetailsService.GetAllByOrderHeaderAsync(order.OrderHeaderId)
+            OrderDetailsList = await this._orderDetailsService.GetAllByOrderHeaderIdAsync(order.OrderHeaderId)
         };
 
         return orderModel;

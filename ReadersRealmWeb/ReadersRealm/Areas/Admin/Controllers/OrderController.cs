@@ -3,16 +3,21 @@
 using Common;
 using Data.Models;
 using Extensions.ClaimsPrincipal;
+using Extensions.HttpContextAccessor;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ReadersRealm.ViewModels.OrderHeader;
 using Services.Contracts;
 using Stripe;
+using Stripe.Checkout;
 using ViewModels.Order;
+using ViewModels.OrderDetails;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Order;
+using static Common.Constants.Constants.OrderHeader;
 using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.Shared;
-using static Common.Constants.Constants.OrderHeader;
+using static Common.Constants.Constants.StripeSettings;
 
 [Area(Admin)]
 public class OrderController : BaseController
@@ -21,13 +26,19 @@ public class OrderController : BaseController
 
     private readonly IOrderService _orderService;
     private readonly IOrderHeaderService _orderHeaderService;
+    private readonly IOrderDetailsService _orderDetailsService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public OrderController(
         IOrderService orderService,
-        IOrderHeaderService orderHeaderService)
+        IOrderHeaderService orderHeaderService,
+        IOrderDetailsService orderDetailsService,
+        IHttpContextAccessor httpContextAccessor)
     {
         this._orderService = orderService;
         this._orderHeaderService = orderHeaderService;
+        this._orderDetailsService = orderDetailsService;
+        this._httpContextAccessor = httpContextAccessor;
     }
 
     [HttpGet]
@@ -177,6 +188,55 @@ public class OrderController : BaseController
         return RedirectToAction(nameof(Details), nameof(Order), new { id = orderId, pageIndex, searchTerm });
     }
 
+    [HttpPost]
+    public async Task<IActionResult> PayForOrder(DetailsOrderViewModel orderModel, int pageIndex, string? searchTerm)
+    {
+        orderModel.OrderDetailsList = await this
+            ._orderDetailsService
+            .GetAllByOrderHeaderIdAsync(orderModel.OrderHeader.Id);
+
+        Session session = await this.ConfigureStripe(orderModel);
+
+        await this
+        ._orderHeaderService
+            .UpdateOrderHeaderPaymentIntentIdAsync(orderModel.OrderHeader.Id, session.Id, session.PaymentIntentId);
+
+        // await this
+        //     ._orderHeaderService
+        //     .UpdateOrderHeaderAsync(orderModel.OrderHeader);
+
+        Response.Headers.Add("Location", session.Url);
+        return new StatusCodeResult(303);
+    }
+
+
+    //Finish order confirmation and set order header order status, payment status, etc....
+    [HttpGet]
+    public async Task<IActionResult> OrderConfirmation(Guid orderHeaderId)
+    {
+        OrderHeaderViewModel orderHeaderModel = await this
+            ._orderHeaderService
+            .GetByIdAsyncWithNavPropertiesAsync(orderHeaderId);
+
+        SessionService service = new SessionService();
+        Session session = await service.GetAsync(orderHeaderModel.SessionId);
+
+        if (session.PaymentStatus.ToLower() == "paid")
+        {
+            orderHeaderModel.PaymentDate = DateTime.Now;
+            orderHeaderModel.SessionId = session.Id;
+            orderHeaderModel.PaymentIntentId = session.PaymentIntentId;
+            orderHeaderModel.OrderStatus = OrderStatusApproved;
+            orderHeaderModel.PaymentStatus = PaymentStatusApproved;
+
+            await this
+                ._orderHeaderService
+                .UpdateOrderHeaderAsync(orderHeaderModel);
+        }
+
+        return View(orderHeaderId);
+    }
+
     private async Task InitiateStripeRefund(DetailsOrderViewModel orderModel)
     {
         RefundCreateOptions refundOptions = new RefundCreateOptions()
@@ -187,5 +247,40 @@ public class OrderController : BaseController
 
         RefundService service = new RefundService();
         Refund refund = await service.CreateAsync(refundOptions);
+    }
+
+    private async Task<Session> ConfigureStripe(DetailsOrderViewModel orderModel)
+    {
+        string domain = this._httpContextAccessor.GetDomain();
+        SessionCreateOptions options = new SessionCreateOptions
+        {
+            LineItems = new List<SessionLineItemOptions>(),
+            SuccessUrl = string.Format(FullSuccessUrlOrder, domain, orderModel.OrderHeader.Id),
+            CancelUrl = string.Format(FullCancelUrlOrder, domain),
+            Mode = "payment",
+        };
+
+        foreach (OrderDetailsViewModel orderDetailsModel in orderModel.OrderDetailsList)
+        {
+            options.LineItems.Add(new SessionLineItemOptions()
+            {
+                PriceData = new SessionLineItemPriceDataOptions()
+                {
+                    UnitAmountDecimal = orderDetailsModel.Count <= 50 ? Math.Round(orderDetailsModel.Book.Price * 100) :
+                        orderDetailsModel.Count is > 50 and <= 100 ?
+                            Math.Round((orderDetailsModel.Book.Price * 100) - ((orderDetailsModel.Book.Price * 100) * 0.1M)) :
+                            Math.Round((orderDetailsModel.Book.Price * 100) - ((orderDetailsModel.Book.Price * 100) * 0.2M)),
+                    Currency = "usd",
+                    ProductData = new SessionLineItemPriceDataProductDataOptions()
+                    {
+                        Name = orderDetailsModel.Book.Title,
+                    }
+                },
+                Quantity = orderDetailsModel.Count,
+            });
+        }
+
+        SessionService service = new SessionService();
+        return await service.CreateAsync(options);
     }
 }

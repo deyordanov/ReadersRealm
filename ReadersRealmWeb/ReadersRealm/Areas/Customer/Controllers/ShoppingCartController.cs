@@ -291,8 +291,8 @@ public class ShoppingCartController : BaseController
         SessionCreateOptions options = new SessionCreateOptions
         {
             LineItems = new List<SessionLineItemOptions>(),
-            SuccessUrl = string.Format(FullSuccessUrl, domain, orderHeaderId),
-            CancelUrl = string.Format(FullCancelUrl, domain),
+            SuccessUrl = string.Format(FullSuccessUrlShoppingCart, domain, orderHeaderId),
+            CancelUrl = string.Format(FullCancelUrlShoppingCart, domain),
             Mode = "payment",
         };
 

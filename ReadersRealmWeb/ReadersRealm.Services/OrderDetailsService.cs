@@ -42,7 +42,7 @@ public class OrderDetailsService : IOrderDetailsService
             .SaveAsync();
     }
 
-    public async Task<IEnumerable<OrderDetailsViewModel>> GetAllByOrderHeaderAsync(Guid orderHeaderId)
+    public async Task<IEnumerable<OrderDetailsViewModel>> GetAllByOrderHeaderIdAsync(Guid orderHeaderId)
     {
         IEnumerable<OrderDetails> orderDetailsList = await this
             ._unitOfWork
@@ -117,7 +117,7 @@ public class OrderDetailsService : IOrderDetailsService
     public async Task DeleteOrderDetailsRangeByOrderHeaderIdAsync(Guid orderHeaderId)
     {
         IEnumerable<OrderDetailsViewModel> orderDetailsModelList = await this
-            .GetAllByOrderHeaderAsync(orderHeaderId);
+            .GetAllByOrderHeaderIdAsync(orderHeaderId);
 
         IEnumerable<OrderDetails> orderDetailsToDelete = orderDetailsModelList
             .Select(orderDetailsModel => new OrderDetails()
