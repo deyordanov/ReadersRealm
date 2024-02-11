@@ -141,7 +141,7 @@ public class OrderHeaderService : IOrderHeaderService
         return orderHeaderModel;
     }
 
-    public async Task<Guid> CreateOrderHeaderAsync(OrderHeaderViewModel orderHeaderModel)
+    public async Task<(Guid orderHeaderId, Guid orderId)> CreateOrderHeaderAsync(OrderHeaderViewModel orderHeaderModel)
     {
         OrderHeader orderHeader = new OrderHeader
         {
@@ -159,6 +159,11 @@ public class OrderHeaderService : IOrderHeaderService
             PaymentDate = orderHeaderModel.PaymentDate,
         };
 
+        orderHeader.Order = new Order
+        {
+            OrderHeaderId = orderHeader.Id,
+        };
+
         await this
             ._unitOfWork
             .OrderHeaderRepository
@@ -168,7 +173,7 @@ public class OrderHeaderService : IOrderHeaderService
             ._unitOfWork
             .SaveAsync();
 
-        return orderHeader.Id;
+        return (orderHeader.Id, orderHeader.Order.Id);
     }
 
     public async Task UpdateOrderHeaderAsync(OrderHeaderViewModel orderHeaderModel)

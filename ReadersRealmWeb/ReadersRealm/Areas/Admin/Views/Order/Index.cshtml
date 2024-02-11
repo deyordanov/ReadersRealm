@@ -75,13 +75,13 @@ else
         <li class="page-item col-6" style="display: flex; justify-content: start">
             @if (prevDisabled)
             {
-                <button asp-controller="ShoppingCart" asp-action="Index" class="page-link" disabled>
+                <button asp-controller="Order" asp-action="Index" class="page-link" disabled>
                     <span style="font-size: 1rem" class="btn btn-outline-danger">Previous</span>
                 </button>
             }
             else
             {
-                <a asp-controller="ShoppingCart" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-searchTerm="@ViewBag.SearchTerm" class="page-link">
+                <a asp-controller="Order" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-searchTerm="@ViewBag.SearchTerm" class="page-link">
                     <span style="font-size: 1rem" class="btn btn-outline-dark">Previous</span>
                 </a>
             }
@@ -89,13 +89,13 @@ else
         <li class="page-item col-6" style="display: flex; justify-content: end">
             @if (nextDisabled)
             {
-                <button asp-controller="ShoppingCart" asp-action="Index" class="page-link" disabled>
+                <button asp-controller="Order" asp-action="Index" class="page-link" disabled>
                     <span style="font-size: 1rem" class="btn btn-outline-danger">Next</span>
                 </button>
             }
             else
             {
-                <a asp-controller="ShoppingCart" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)" asp-route-searchTerm="@ViewBag.SearchTerm" class="page-link">
+                <a asp-controller="Order" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)" asp-route-searchTerm="@ViewBag.SearchTerm" class="page-link">
                     <span style="font-size: 1rem" class="btn btn-outline-dark">Next</span>
                 </a>
             }

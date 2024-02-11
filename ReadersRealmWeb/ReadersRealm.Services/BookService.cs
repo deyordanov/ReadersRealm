@@ -69,22 +69,6 @@ public class BookService : IBookService
             .ToList(), pageIndex, pageSize);
     }
 
-    public async Task<Book?> GetBookByIdAsync(Guid id)
-    {
-        return await this
-            ._unitOfWork
-            .BookRepository
-            .GetByIdAsync(id);
-    }
-
-    public async Task<Book?> GetBookByIdWithNavPropertiesAsync(Guid id)
-    {
-        return await this
-            ._unitOfWork
-            .BookRepository
-            .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
-    }
-
     public async Task<EditBookViewModel> GetBookForEditAsync(Guid id)
     {
         Book? book =  await this

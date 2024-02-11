@@ -38,14 +38,6 @@ public class CompanyService : ICompanyService
             .ToList(), pageIndex, pageSize);
     }
 
-    public async Task<Company?> GetCompanyByIdAsync(Guid id)
-    {
-        return await this
-            ._unitOfWork
-            .CompanyRepository
-            .GetByIdAsync(id);
-    }
-
     public async Task<List<AllCompaniesListViewModel>> GetAllListAsync()
     {
         IEnumerable<Company> allCompanies = await this

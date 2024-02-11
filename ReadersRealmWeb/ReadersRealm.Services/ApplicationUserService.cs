@@ -15,28 +15,6 @@ public class ApplicationUserService : IApplicationUserService
         this._unitOfWork = unitOfWork;
     }
 
-    public async Task<ApplicationUserViewModel> GetByIdAsync(string id)
-    {
-        ApplicationUser? applicationUser = await this
-            ._unitOfWork
-            .ApplicationUserRepository
-            .GetByIdAsync(id);
-
-        if (applicationUser == null)
-        {
-            throw new ApplicationUserNotFoundException();
-        }
-
-        ApplicationUserViewModel applicationUserModel = new ApplicationUserViewModel()
-        {
-            Id = applicationUser.Id,
-            FirstName = applicationUser.FirstName,
-            LastName = applicationUser.LastName,
-        };
-
-        return applicationUserModel;
-    }
-
     public async Task<OrderApplicationUserViewModel> GetApplicationUserForOrderAsync(string id)
     {
         ApplicationUser? applicationUser = await this

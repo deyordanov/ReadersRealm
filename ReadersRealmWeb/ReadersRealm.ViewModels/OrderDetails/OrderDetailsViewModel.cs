@@ -2,6 +2,7 @@
 
 using Book;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Order;
 using OrderHeader;
 
 public class OrderDetailsViewModel
@@ -17,6 +18,9 @@ public class OrderDetailsViewModel
 
     [ValidateNever]
     public BookViewModel Book { get; set; } = null!;
+
+    [ValidateNever] 
+    public OrderViewModel? Order { get; set; }
 
     public int Count { get; set; }
 

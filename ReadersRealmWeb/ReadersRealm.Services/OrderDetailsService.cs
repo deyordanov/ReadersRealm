@@ -29,10 +29,7 @@ public class OrderDetailsService : IOrderDetailsService
             OrderHeaderId = orderDetailsModel.OrderHeaderId,
             Count = orderDetailsModel.Count,
             Price = orderDetailsModel.Price,
-            Order = new Order()
-            {
-                OrderHeaderId = orderDetailsModel.OrderHeaderId,
-            },
+            OrderId = orderDetailsModel.Order!.Id,
         };
 
         await this
@@ -79,18 +76,6 @@ public class OrderDetailsService : IOrderDetailsService
             });
 
         return orderDetailsModelList;
-    }
-
-    public async Task<IEnumerable<OrderDetailsDto>> GetAllByOrderHeaderAsDtosAsync(Guid orderHeaderId)
-    {
-        IEnumerable<OrderDetails> orderDetailsLit = await this
-            ._unitOfWork
-            .OrderDetailsRepository
-            .GetAsync(orderDetails => orderDetails.OrderHeaderId == orderHeaderId,
-                null,
-                PropertiesToInclude);
-
-        throw new NotImplementedException();
     }
 
     public async Task<IEnumerable<OrderDetailsReceiptDto>> GetAllOrderDetailsForReceiptAsDtosAsync(Guid orderHeaderId)

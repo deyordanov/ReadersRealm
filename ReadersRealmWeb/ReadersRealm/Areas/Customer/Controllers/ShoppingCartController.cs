@@ -134,7 +134,7 @@ public class ShoppingCartController : BaseController
         }
 
         shoppingCartModel.OrderHeader.OrderDate = DateTime.Now;
-        Guid orderHeaderId = await this
+        (Guid orderHeaderId, Guid orderId) orderHeaderData = await this
             ._orderHeaderService
             .CreateOrderHeaderAsync(shoppingCartModel.OrderHeader);
 
@@ -143,9 +143,10 @@ public class ShoppingCartController : BaseController
             OrderDetailsViewModel orderDetailsModel = new OrderDetailsViewModel()
             {
                 BookId = shoppingCart.BookId,
-                OrderHeaderId = orderHeaderId,
+                OrderHeaderId = orderHeaderData.orderHeaderId,
                 Count = shoppingCart.Count,
                 Price = shoppingCart.TotalPrice,
+                Order = await this._orderService.GetOrderForSummaryAsync(orderHeaderData.orderId)
             };
 
             await this
@@ -155,17 +156,17 @@ public class ShoppingCartController : BaseController
 
         if (!isUserInCompanyRole)
         {
-            Session session = await this.ConfigureStripe(orderHeaderId, shoppingCartModel);
+            Session session = await this.ConfigureStripe(orderHeaderData.orderHeaderId, shoppingCartModel);
 
             await this
                 ._orderHeaderService
-                .UpdateOrderHeaderPaymentIntentIdAsync(orderHeaderId, session.Id, session.PaymentIntentId);
+                .UpdateOrderHeaderPaymentIntentIdAsync(orderHeaderData.orderHeaderId, session.Id, session.PaymentIntentId);
 
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }
 
-        return RedirectToAction(nameof(OrderConfirmation), nameof(ShoppingCart), new { orderHeaderId = orderHeaderId }); 
+        return RedirectToAction(nameof(OrderConfirmation), nameof(ShoppingCart), new { orderHeaderId = orderHeaderData.orderHeaderId }); 
     }
 
     [HttpGet]
@@ -233,7 +234,6 @@ public class ShoppingCartController : BaseController
             sb.AppendLine($"    Book Price: {orderDetailsDto.Book.Price.ToString("c")}");
             sb.AppendLine($"    Quantity: {orderDetailsDto.Count}");
             sb.AppendLine($"    Total Price: {(orderDetailsDto.Book.Price * orderDetailsDto.Count).ToString("c")}");
-            sb.AppendLine("--------------------------------------------");
         }
 
         this._httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.ContentDisposition, "attachment;filename=receipt.txt");
@@ -302,7 +302,10 @@ public class ShoppingCartController : BaseController
             {
                 PriceData = new SessionLineItemPriceDataOptions()
                 {
-                    UnitAmountDecimal = shoppingCart.Book.Price * 100,
+                    UnitAmountDecimal = shoppingCart.Count <= 50 ? Math.Round(shoppingCart.Book.Price * 100) :
+                        shoppingCart.Count is > 50 and <= 100 ?
+                            Math.Round((shoppingCart.Book.Price * 100) - ((shoppingCart.Book.Price * 100) * 0.1M)) :
+                            Math.Round((shoppingCart.Book.Price * 100) - ((shoppingCart.Book.Price * 100) * 0.2M)),
                     Currency = "usd",
                     ProductData = new SessionLineItemPriceDataProductDataOptions()
                     {

@@ -77,17 +77,24 @@ public class OrderService : IOrderService
         return PaginatedList<AllOrdersViewModel>.Create(allOrderModelsList, pageIndex, pageSize);
     }
 
+    public async Task<OrderViewModel> GetOrderForSummaryAsync(Guid id)
+    {
+        Order order = await this
+            .GetByIdAsync(id);
+
+        OrderViewModel orderModel = new OrderViewModel()
+        {
+            Id = order.Id,
+            OrderHeaderId = order.OrderHeaderId,
+        };
+         
+        return orderModel;
+    }
+
     public async Task<DetailsOrderViewModel> GetOrderForDetailsAsync(Guid id)
     {
-        Order? order = await this
-            ._unitOfWork
-            .OrderRepository
-            .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
-
-        if (order == null)
-        {
-            throw new OrderNotFoundException();
-        }
+        Order order = await this
+            .GetByIdAsync(id);
 
         DetailsOrderViewModel orderModel = new DetailsOrderViewModel
         {
@@ -98,6 +105,14 @@ public class OrderService : IOrderService
         };
 
         return orderModel;
+    }
+
+    public async Task<Guid> GetOrderIdByOrderHeaderIdAsync(Guid orderHeaderId)
+    {
+        Order order = await this
+            .GetByOrderHeaderIdAsync(orderHeaderId);
+
+        return order.Id;
     }
 
     public async Task UpdateOrderAsync(DetailsOrderViewModel orderModel)
@@ -121,5 +136,35 @@ public class OrderService : IOrderService
         await this
             ._orderHeaderService
             .UpdateOrderHeaderAsync(orderModel.OrderHeader);
+    }
+
+    private async Task<Order> GetByIdAsync(Guid id)
+    {
+        Order? order = await this
+            ._unitOfWork
+            .OrderRepository
+            .GetByIdAsync(id);
+
+        if (order == null)
+        {
+            throw new OrderNotFoundException();
+        }
+
+        return order;
+    }
+
+    private async Task<Order> GetByOrderHeaderIdAsync(Guid orderHeaderId)
+    {
+        Order? order = await this
+            ._unitOfWork
+            .OrderRepository
+            .GetByOrderHeaderIdAsync(orderHeaderId);
+
+        if (order == null)
+        {
+            throw new OrderNotFoundException();
+        }
+
+        return order;
     }
 }

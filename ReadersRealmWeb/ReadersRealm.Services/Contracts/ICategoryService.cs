@@ -6,7 +6,6 @@ using ViewModels.Category;
 public interface ICategoryService
 {
     Task<IEnumerable<AllCategoriesViewModel>> GetAllAsync();
-    Task<Category?> GetCategoryByIdAsync(int id);
     Task<List<AllCategoriesListViewModel>> GetAllListAsync();
     CreateCategoryViewModel GetCategoryForCreate();
     Task<EditCategoryViewModel> GetCategoryForEditAsync(int id);

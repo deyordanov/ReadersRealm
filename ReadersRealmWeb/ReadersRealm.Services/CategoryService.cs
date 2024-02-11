@@ -122,14 +122,6 @@ public class CategoryService : ICategoryService
         await this._unitOfWork.SaveAsync();
     }
 
-    public async Task<Category?> GetCategoryByIdAsync(int id)
-    {
-        return await this
-            ._unitOfWork
-            .CategoryRepository
-            .GetByIdAsync(id);
-    }
-
     public async Task EditCategoryAsync(EditCategoryViewModel categoryModel)
     {
         Category? categoryToEdit = await this

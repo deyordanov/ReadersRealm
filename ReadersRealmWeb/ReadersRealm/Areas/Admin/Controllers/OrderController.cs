@@ -1,6 +1,7 @@
 ﻿namespace ReadersRealm.Areas.Admin.Controllers;
 
 using Common;
+using Data.Models;
 using Extensions.ClaimsPrincipal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,17 +11,22 @@ using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Order;
 using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.Shared;
+using static Common.Constants.Constants.OrderHeader;
 
 [Area(Admin)]
 public class OrderController : BaseController
 {
-    private const string AuthorizeDetailsActionRoles = $"{AdminRole}, {EmployeeRole}";
+    private const string AuthorizeAdminAndEmployeeRoles = $"{AdminRole}, {EmployeeRole}";
 
     private readonly IOrderService _orderService;
+    private readonly IOrderHeaderService _orderHeaderService;
 
-    public OrderController(IOrderService orderService)
+    public OrderController(
+        IOrderService orderService,
+        IOrderHeaderService orderHeaderService)
     {
         this._orderService = orderService;
+        this._orderHeaderService = orderHeaderService;
     }
 
     [HttpGet]
@@ -64,7 +70,7 @@ public class OrderController : BaseController
     }
 
     [HttpPost]
-    [Authorize(Roles = AuthorizeDetailsActionRoles)]
+    [Authorize(Roles = AuthorizeAdminAndEmployeeRoles)]
     public async Task<IActionResult> Details(DetailsOrderViewModel orderModel, int pageIndex, string? searchTerm)
     {
         if (!ModelState.IsValid)
@@ -87,5 +93,22 @@ public class OrderController : BaseController
             .GetOrderForDetailsAsync((Guid)orderModel.Id);
 
         return View(orderModel);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = AuthorizeAdminAndEmployeeRoles)]
+    public async Task<IActionResult> StartProcessing(Guid orderHeaderId, int pageIndex, string? searchTerm)
+    {
+        await this
+            ._orderHeaderService
+            .UpdateOrderHeaderStatusAsync(orderHeaderId, OrderStatusInProcess, null);
+
+        TempData[Success] = OrderStatusHasSuccessfullyBeenUpdated;
+
+        Guid orderId = await this
+            ._orderService
+            .GetOrderIdByOrderHeaderIdAsync(orderHeaderId);
+
+        return RedirectToAction(nameof(Details), nameof(Order), new { id = orderId, pageIndex, searchTerm });
     }
 }

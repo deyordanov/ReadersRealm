@@ -7,8 +7,6 @@ using ViewModels.Book;
 public interface IBookService
 {
     Task<PaginatedList<AllBooksViewModel>> GetAllAsync(int pageIndex, int pageSize, string? searchTerm);
-    Task<Book?> GetBookByIdAsync(Guid id);
-    Task<Book?> GetBookByIdWithNavPropertiesAsync(Guid id);
     Task<CreateBookViewModel> GetBookForCreateAsync();
     Task<EditBookViewModel> GetBookForEditAsync(Guid id);
     Task<DeleteBookViewModel> GetBookForDeleteAsync(Guid id);
