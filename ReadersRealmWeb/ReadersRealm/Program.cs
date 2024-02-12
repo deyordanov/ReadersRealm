@@ -44,6 +44,19 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
 
+/*
+    Configure the application to use an in-memory cache - this cache (IDistributedCache) is local to each server, so other servers will not be able to access the data stored in the cache. For other larger, more complex applications, which use multiple servers we can use Redis
+ */
+builder.Services.AddDistributedMemoryCache();
+
+//Configure the session middleware
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(120);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,6 +76,9 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+//Add the session middleware to the pipeline.
+app.UseSession();
 
 app.MapRazorPages();
 app.MapControllerRoute(

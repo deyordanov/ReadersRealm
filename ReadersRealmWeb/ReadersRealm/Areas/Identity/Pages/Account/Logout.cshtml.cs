@@ -2,29 +2,36 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using static ReadersRealm.Common.Constants.Constants.SessionKeys;
 
 namespace ReadersRealm.Areas.Identity.Pages.Account
 {
+    using Extensions.ClaimsPrincipal;
+    using Services.Contracts;
+
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
+        private readonly IShoppingCartService _shoppingCartService;
 
-        public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger)
+        public LogoutModel(
+            SignInManager<IdentityUser> signInManager, 
+            ILogger<LogoutModel> logger, 
+            IShoppingCartService shoppingCartService)
         {
-            _signInManager = signInManager;
-            _logger = logger;
+            this._signInManager = signInManager;
+            this._logger = logger;
+            this._shoppingCartService = shoppingCartService;
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            await this.SetShoppingCartItemsCountInSession();
+
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
@@ -37,6 +44,17 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
                 // request and the identity for the user gets updated.
                 return RedirectToPage();
             }
+        }
+
+        private async Task SetShoppingCartItemsCountInSession()
+        {
+            string userId = User.GetId();
+
+            int itemsCount = await this
+                ._shoppingCartService
+                .GetShoppingCartCountByApplicationUserIdAsync(userId);
+
+            HttpContext.Session.SetInt32(ShoppingCartSessionKey, default);
         }
     }
 }

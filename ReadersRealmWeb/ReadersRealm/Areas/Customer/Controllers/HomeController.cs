@@ -1,4 +1,4 @@
-namespace ReadersRealm.Areas.Customer.Controllers;
+ namespace ReadersRealm.Areas.Customer.Controllers;
 
 using Extensions.ClaimsPrincipal;
 using Microsoft.AspNetCore.Authorization;
@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using System.Diagnostics;
 using Common;
+using Duende.IdentityServer.Extensions;
 using ViewModels.Book;
 using ViewModels.ShoppingCart;
 using Web.ViewModels;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
+using static Common.Constants.Constants.SessionKeys;
 
 [Area(Customer)]
 public class HomeController : BaseController
@@ -29,6 +31,11 @@ public class HomeController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
+        if (User.IsAuthenticated())
+        {
+            await this.SetShoppingCartItemsCountInSession();
+        }
+
         PaginatedList<AllBooksViewModel> allBooks = await this
             ._bookService
             .GetAllAsync(pageIndex, 8, searchTerm);
@@ -74,7 +81,11 @@ public class HomeController : BaseController
         string userId = User.GetId();
         shoppingCartModel.ApplicationUserId = userId;
 
-        bool shoppingCartExists = await this._shoppingCartService.ShoppingCartExistsAsync(userId, shoppingCartModel.BookId);
+        bool shoppingCartExists = await this
+            ._shoppingCartService
+            .ShoppingCartExistsAsync(userId, shoppingCartModel.BookId);
+
+
         if (!shoppingCartExists)
         {
             await this
@@ -88,7 +99,9 @@ public class HomeController : BaseController
                 .UpdateShoppingCartCountAsync(shoppingCartModel);
         }
 
-        TempData[Success] = ShoppingCartItemsHaveBeenAddedSuccessfully;
+        await this.SetShoppingCartItemsCountInSession();
+
+            TempData[Success] = ShoppingCartItemsHaveBeenAddedSuccessfully;
 
         return RedirectToAction(nameof(Index));
     }
@@ -104,5 +117,16 @@ public class HomeController : BaseController
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    private async Task SetShoppingCartItemsCountInSession()
+    {
+        string userId = User.GetId();
+
+        int itemsCount = await this
+            ._shoppingCartService
+            .GetShoppingCartCountByApplicationUserIdAsync(userId);
+
+        HttpContext.Session.SetInt32(ShoppingCartSessionKey, itemsCount);
     }
 }

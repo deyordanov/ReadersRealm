@@ -274,8 +274,8 @@
                                 </li>
                             </ul>
                             @if (User.IsInRole(CompanyRole) &&
-                                 Model.OrderHeader.PaymentStatus == PaymentStatusDelayedPayment ||
-                                 Model.OrderHeader.OrderStatus == OrderStatusShipped)
+                                 (Model.OrderHeader.PaymentStatus == PaymentStatusDelayedPayment ||
+                                  Model.OrderHeader.OrderStatus == OrderStatusShipped))
                             {
                                 <button asp-action="PayForOrder" type="submit" class="btn btn-success form-control my-1 rounded-2">Pay Now</button>
                             }

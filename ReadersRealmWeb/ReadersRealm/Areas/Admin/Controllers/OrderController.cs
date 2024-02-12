@@ -139,10 +139,6 @@ public class OrderController : BaseController
             return RedirectToAction(nameof(Details), nameof(Order), new { id = orderId, pageIndex, searchTerm });
         }
 
-        // await this
-        //      ._orderHeaderService
-        //      .UpdateOrderHeaderStatusAsync(orderModel.OrderHeaderId, OrderStatusShipped, null);
-
         orderModel.OrderHeader.OrderStatus = OrderStatusShipped;
         orderModel.OrderHeader.ShippingDate = DateTime.UtcNow;
 
@@ -201,16 +197,11 @@ public class OrderController : BaseController
         ._orderHeaderService
             .UpdateOrderHeaderPaymentIntentIdAsync(orderModel.OrderHeader.Id, session.Id, session.PaymentIntentId);
 
-        // await this
-        //     ._orderHeaderService
-        //     .UpdateOrderHeaderAsync(orderModel.OrderHeader);
-
         Response.Headers.Add("Location", session.Url);
         return new StatusCodeResult(303);
     }
 
 
-    //Finish order confirmation and set order header order status, payment status, etc....
     [HttpGet]
     public async Task<IActionResult> OrderConfirmation(Guid orderHeaderId)
     {
@@ -226,7 +217,7 @@ public class OrderController : BaseController
             orderHeaderModel.PaymentDate = DateTime.Now;
             orderHeaderModel.SessionId = session.Id;
             orderHeaderModel.PaymentIntentId = session.PaymentIntentId;
-            orderHeaderModel.OrderStatus = OrderStatusApproved;
+            orderHeaderModel.OrderStatus = orderHeaderModel.OrderStatus;
             orderHeaderModel.PaymentStatus = PaymentStatusApproved;
 
             await this

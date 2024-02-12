@@ -4,6 +4,7 @@ using Common.Exceptions;
 using Contracts;
 using Data.Models;
 using Data.Repositories.Contracts;
+using Microsoft.AspNetCore.Http;
 using ViewModels.ApplicationUser;
 using ViewModels.Book;
 using ViewModels.OrderHeader;
@@ -40,6 +41,18 @@ public class ShoppingCartService : IShoppingCartService
             Book = bookModel,
             BookId = bookModel.Id,
         };
+    }
+
+    public async Task<int> GetShoppingCartCountByApplicationUserIdAsync(string applicationUserId)
+    {
+        IEnumerable<ShoppingCart> shoppingCarts = await this
+            ._unitOfWork
+            .ShoppingCartRepository
+            .GetAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId,
+                null, 
+                "");
+
+        return shoppingCarts.Count();
     }
 
     public async Task CreateShoppingCartAsync(ShoppingCartViewModel shoppingCartModel)
@@ -220,7 +233,7 @@ public class ShoppingCartService : IShoppingCartService
             .SaveAsync();
     }
 
-    public async Task DecreaseQuantityForShoppingCartAsync(Guid shoppingCartId)
+    public async Task<bool> DecreaseQuantityForShoppingCartAsync(Guid shoppingCartId)
     {
         ShoppingCart? shoppingCart = await this
             ._unitOfWork
@@ -243,7 +256,11 @@ public class ShoppingCartService : IShoppingCartService
         else
         {
             await this.DeleteShoppingCartAsync(shoppingCartId);
+
+            return true;
         }
+
+        return false;
     }
 
     private decimal CalculateShoppingCartTotal(int count, decimal bookPrice)

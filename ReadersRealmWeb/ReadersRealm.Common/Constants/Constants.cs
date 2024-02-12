@@ -56,9 +56,9 @@ public static class Constants
     {
         //Action Results
         public const string ShoppingCartItemsHaveBeenAddedSuccessfully =
-            "The items have been added successfully to your shopping cart!";
+            "The item has been added successfully to your shopping cart!";
 
-        public const string ShoppingCartItemHasBeenDeletedSuccessfully = "The items has been deleted successfully!";
+        public const string ShoppingCartItemHasBeenDeletedSuccessfully = "The item has been deleted successfully!";
     }
 
     public static class Order
@@ -114,5 +114,10 @@ public static class Constants
 
         public const string FullSuccessUrlOrder = "{0}/Admin/Order/OrderConfirmation?orderHeaderId={1}";
         public const string FullCancelUrlOrder = "{0}/Admin/Order/Index";
+    }
+
+    public static class SessionKeys
+    {
+        public const string ShoppingCartSessionKey = "ShoppingCartSession";
     }
 }

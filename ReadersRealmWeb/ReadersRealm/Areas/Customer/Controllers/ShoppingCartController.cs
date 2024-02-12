@@ -20,6 +20,7 @@ using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
 using static Common.Constants.Constants.StripeSettings;
+using static Common.Constants.Constants.SessionKeys;
 
 [Area(Customer)]
 public class ShoppingCartController : BaseController
@@ -266,9 +267,14 @@ public class ShoppingCartController : BaseController
             return NotFound();
         }
 
-        await this
+        bool isItemDeleted = await this
             ._shoppingCartService
             .DecreaseQuantityForShoppingCartAsync((Guid)id);
+
+        if (isItemDeleted)
+        {
+            await this.SetShoppingCartItemsCountInSession();
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -279,6 +285,8 @@ public class ShoppingCartController : BaseController
         await this
             ._shoppingCartService
             .DeleteShoppingCartAsync(id);
+
+        await this.SetShoppingCartItemsCountInSession();
 
         TempData[Success] = ShoppingCartItemHasBeenDeletedSuccessfully;
 
@@ -318,5 +326,16 @@ public class ShoppingCartController : BaseController
 
         SessionService service = new SessionService();
         return await service.CreateAsync(options);
+    }
+
+    private async Task SetShoppingCartItemsCountInSession()
+    {
+        string userId = User.GetId();
+
+        int itemsCount = await this
+            ._shoppingCartService
+            .GetShoppingCartCountByApplicationUserIdAsync(userId);
+
+        HttpContext.Session.SetInt32(ShoppingCartSessionKey, itemsCount);
     }
 }
