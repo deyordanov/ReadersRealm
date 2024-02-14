@@ -12,6 +12,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using static ReadersRealm.Common.Constants.Constants.Roles;
+using static ReadersRealm.Common.Constants.Constants.Shared;
+using static ReadersRealm.Common.Constants.Constants.User;
 using static ReadersRealm.Common.Constants.ValidationConstants.RegisterModel;
 using static ReadersRealm.Common.Constants.ValidationMessageConstants.RegisterModel;
 
@@ -237,7 +239,15 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await signInManager.SignInAsync(user, isPersistent: false);
+                        if (!User.IsInRole(AdminRole))
+                        {
+                            await signInManager.SignInAsync(user, isPersistent: false);
+                        }
+                        else
+                        {
+                            TempData[Success] = UserHasSuccessfullyBeenCreated;
+                        }
+
                         return LocalRedirect(returnUrl);
                     }
                 }

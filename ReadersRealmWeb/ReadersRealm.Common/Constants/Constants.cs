@@ -90,6 +90,11 @@ public static class Constants
         public const string PaymentStatusCancelled = "Cancelled";
     }
 
+    public static class User
+    {
+        public const string UserHasSuccessfullyBeenCreated = "The user has been created successfully!";
+    }
+
     public static class Roles
     {
         public const string CustomerRole = "Customer";

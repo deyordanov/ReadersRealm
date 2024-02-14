@@ -1,4 +1,5 @@
 ﻿@page
+@using static ReadersRealm.Common.Constants.Constants.Roles;
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
@@ -62,16 +63,19 @@
                         <label asp-for="Input.PhoneNumber"></label>
                         <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3">
-                        <select asp-for="Input.Role" asp-items="@Model.Input.Roles" class="form-select" id="roles">
-                            <option disabled selected>Select a role</option>
-                        </select>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <select asp-for="Input.Role" asp-items="@Model.Input.Companies" class="form-select" id="companies">
-                            <option disabled selected>Select a company</option>
-                        </select>
-                    </div>
+                    @if (User.IsInRole(AdminRole))
+                    {
+                        <div class="form-floating mb-3">
+                            <select asp-for="Input.Role" asp-items="@Model.Input.Roles" class="form-select" id="roles">
+                                <option disabled selected>Select a role</option>
+                            </select>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select asp-for="Input.Role" asp-items="@Model.Input.Companies" class="form-select" id="companies">
+                                <option disabled selected>Select a company</option>
+                            </select>
+                        </div>
+                    }
                     <div class="row" style="display: flex; justify-content: center">
                         <button id="registerSubmit" type="submit" class="w-50 btn btn btn-primary rounded-2">Register</button>
                     </div>

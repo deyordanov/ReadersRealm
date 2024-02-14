@@ -30,7 +30,7 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
-            await this.SetShoppingCartItemsCountInSession();
+            HttpContext.Session.Remove(ShoppingCartSessionKey);
 
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
@@ -44,17 +44,6 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
                 // request and the identity for the user gets updated.
                 return RedirectToPage();
             }
-        }
-
-        private async Task SetShoppingCartItemsCountInSession()
-        {
-            string userId = User.GetId();
-
-            int itemsCount = await this
-                ._shoppingCartService
-                .GetShoppingCartCountByApplicationUserIdAsync(userId);
-
-            HttpContext.Session.SetInt32(ShoppingCartSessionKey, default);
         }
     }
 }
