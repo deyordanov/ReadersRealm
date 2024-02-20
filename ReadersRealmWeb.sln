@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Web", "ReadersRealm\ReadersRealm.Web.csproj", "{B94A83C4-C5EC-4738-AC98-6D8F2DCCA1AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Web", "ReadersRealm.Web\ReadersRealm.Web.csproj", "{B94A83C4-C5EC-4738-AC98-6D8F2DCCA1AE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Data", "ReadersRealm.Data\ReadersRealm.Data.csproj", "{C91D4E07-8AA3-45DB-9F71-2E0560790A7D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Data.Models", "ReadersRealm.Data.Models\ReadersRealm.Data.Models.csproj", "{12195604-F299-4FA0-98A5-96E09A3B14AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Services.Data", "ReadersRealm.Services\ReadersRealm.Services.Data.csproj", "{71C7143E-04F0-4F9D-AA81-72AE5176DB4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Services.Data", "ReadersRealm.Services.Data\ReadersRealm.Services.Data.csproj", "{71C7143E-04F0-4F9D-AA81-72AE5176DB4C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Common", "ReadersRealm.Common\ReadersRealm.Common.csproj", "{F6A1CE7B-7FB7-42BF-87C6-755D17E59EF3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Web.ViewModels", "ReadersRealm.ViewModels\ReadersRealm.Web.ViewModels.csproj", "{6A6A0F9D-689B-424A-B989-3E94C9B8A795}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Web.ViewModels", "ReadersRealm.Web.ViewModels\ReadersRealm.Web.ViewModels.csproj", "{6A6A0F9D-689B-424A-B989-3E94C9B8A795}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.DataTransferObjects", "ReadersRealm.DataTransferObjects\ReadersRealm.DataTransferObjects.csproj", "{C01426F2-FD2E-482E-9655-F5DD50397820}"
 EndProject

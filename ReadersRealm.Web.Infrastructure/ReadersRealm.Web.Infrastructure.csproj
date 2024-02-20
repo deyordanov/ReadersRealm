@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReadersRealm.Services\ReadersRealm.Services.Data.csproj" />
+    <ProjectReference Include="..\ReadersRealm.Services.Data\ReadersRealm.Services.Data.csproj" />
   </ItemGroup>
 
 </Project>
