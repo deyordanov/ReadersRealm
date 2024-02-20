@@ -19,23 +19,23 @@ public class AuthorConfiguration : IEntityTypeConfiguration<Author>
             new Author
             {
                 Id = new Guid("A5E87971-53AD-40DF-97FF-79DCAEF4520A"),
-                FirstName = "John",
-                LastName = "Smith",
-                Email = "johnsmith@example.com",
+                FirstName = "Masashi",
+                LastName = "Kishimoto",
+                Email = "kmasashi@gmail.com",
                 PhoneNumber = "123-456-7890",
                 Gender = Gender.Male,
-                Age = 45,
+                Age = 49,
             },
             new Author
             {
                 Id = new Guid("72FC4A67-9B6D-44E0-A21A-CC78BA323DEA"),
-                FirstName = "Emily",
-                LastName = "Johnson",
-                Email = "emilyjohnson@example.com",
+                FirstName = "Rick",
+                LastName = "Riordan",
+                Email = "rriordan@gmail.com",
                 PhoneNumber = "098-765-4321",
-                Gender = Gender.Female,
-                Age = 38,
-            }
+                Gender = Gender.Male,
+                Age = 59,
+            },
         };
 
         return authors;

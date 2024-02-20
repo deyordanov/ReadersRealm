@@ -1,10 +1,10 @@
 ﻿namespace ReadersRealm.Services.Data;
 
 using Common;
-using Common.Exceptions;
+using Common.Exceptions.Company;
+using Contracts;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
-using Contracts;
 using ViewModels.Company;
 
 public class CompanyService : ICompanyService

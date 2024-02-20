@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Common.Exceptions;
+﻿namespace ReadersRealm.Common.Exceptions.EntityProperty;
 
 public class PropertyNotFoundException : Exception
 {

@@ -1,9 +1,9 @@
 ﻿namespace ReadersRealm.Services.Data;
 
-using Common.Exceptions;
+using Common.Exceptions.Category;
+using Contracts;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
-using Contracts;
 using ViewModels.Category;
 
 public class CategoryService : ICategoryService

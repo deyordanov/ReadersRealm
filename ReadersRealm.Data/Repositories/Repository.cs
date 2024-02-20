@@ -1,9 +1,9 @@
 ﻿namespace ReadersRealm.Data.Repositories;
 
-using Common.Exceptions;
+using System.Linq.Expressions;
+using Common.Exceptions.EntityProperty;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {

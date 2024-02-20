@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Common.Exceptions;
+﻿namespace ReadersRealm.Common.Exceptions.Order;
 
 public class OrderNotFoundException : ApplicationException
 {

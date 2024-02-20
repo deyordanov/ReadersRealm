@@ -1,6 +1,6 @@
 ﻿namespace ReadersRealm.Services.Data;
 
-using Common.Exceptions;
+using Common.Exceptions.ShoppingCart;
 using Contracts;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;

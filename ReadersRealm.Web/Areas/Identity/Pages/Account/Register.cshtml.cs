@@ -2,29 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Encodings.Web;
 using static ReadersRealm.Common.Constants.Constants.Roles;
 using static ReadersRealm.Common.Constants.Constants.Shared;
 using static ReadersRealm.Common.Constants.Constants.User;
 using static ReadersRealm.Common.Constants.ValidationConstants.RegisterModel;
 using static ReadersRealm.Common.Constants.ValidationMessageConstants.RegisterModel;
 
-namespace ReadersRealm.Areas.Identity.Pages.Account
+namespace ReadersRealm.Web.Areas.Identity.Pages.Account
 {
-    using Common;
-    using Data.Models;
+    using System.ComponentModel.DataAnnotations;
+    using System.Text;
+    using System.Text.Encodings.Web;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using Services.Data.Contracts;
-    using ViewModels.Company;
+    using Microsoft.AspNetCore.WebUtilities;
+    using ReadersRealm.Data.Models;
+    using ReadersRealm.Services.Data.Contracts;
+    using ReadersRealm.ViewModels.Company;
 
     public class RegisterModel : PageModel
     {
@@ -164,8 +163,6 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            await EnsureRolesAreCreatedAsync();
-
             List<AllCompaniesListViewModel> companies = await companyService
                 .GetAllListAsync();
 
@@ -184,7 +181,9 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         { 
             returnUrl ??= Url.Content("~/");
+
             ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 ApplicationUser user = CreateUser();
@@ -282,26 +281,6 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)userStore;
-        }
-
-        private async Task EnsureRolesAreCreatedAsync()
-        {
-            List<string> roles = new List<string>()
-            {
-                CustomerRole,
-                AdminRole,
-                CompanyRole,
-                EmployeeRole,
-            };
-
-            foreach (string role in roles)
-            {
-                bool roleExists = await roleManager.RoleExistsAsync(role);
-                if (!roleExists)
-                {
-                    await roleManager.CreateAsync(new IdentityRole(role));
-                }
-            }
         }
     }
 }

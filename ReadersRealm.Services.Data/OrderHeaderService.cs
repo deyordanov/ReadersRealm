@@ -1,10 +1,10 @@
 ﻿namespace ReadersRealm.Services.Data;
 
-using Common.Exceptions;
+using Common.Exceptions.OrderHeader;
+using Contracts;
+using DataTransferObjects.OrderHeader;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
-using DataTransferObjects.OrderHeader;
-using Contracts;
 using ViewModels.ApplicationUser;
 using ViewModels.OrderHeader;
 

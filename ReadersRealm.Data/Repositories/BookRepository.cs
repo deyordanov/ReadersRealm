@@ -1,6 +1,6 @@
 ﻿namespace ReadersRealm.Data.Repositories;
 
-using Common.Exceptions;
+using Common.Exceptions.EntityProperty;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;

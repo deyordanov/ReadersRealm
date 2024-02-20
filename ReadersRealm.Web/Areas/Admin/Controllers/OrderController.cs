@@ -2,7 +2,7 @@
 
 using Common;
 using Data.Models;
-using Extensions;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReadersRealm.Areas;

@@ -7,6 +7,7 @@ using ReadersRealm.Data.Repositories;
 using ReadersRealm.Data.Repositories.Contracts;
 using ReadersRealm.Services.Data;
 using ReadersRealm.Services.Data.Contracts;
+using ReadersRealm.Web.Infrastructure.Extensions;
 using Stripe;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -79,6 +80,10 @@ app.UseAuthorization();
 
 //Add the session middleware to the pipeline.
 app.UseSession();
+
+await app.CreateRolesAsync();
+
+await app.CreateAdminUserAsync();
 
 app.MapRazorPages();
 app.MapControllerRoute(

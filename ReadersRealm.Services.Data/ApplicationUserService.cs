@@ -1,6 +1,6 @@
 ﻿namespace ReadersRealm.Services.Data;
 
-using Common.Exceptions;
+using Common.Exceptions.User;
 using Contracts;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
@@ -23,7 +23,7 @@ public class ApplicationUserService : IApplicationUserService
 
         if (applicationUser == null)
         {
-            throw new ApplicationUserNotFoundException();
+            throw new UserNotFoundException();
         }
 
         OrderApplicationUserViewModel applicationUserModel = new OrderApplicationUserViewModel()
@@ -49,7 +49,7 @@ public class ApplicationUserService : IApplicationUserService
 
         if (applicationUser == null)
         {
-            throw new ApplicationUserNotFoundException();
+            throw new UserNotFoundException();
         }
 
         applicationUser.FirstName = applicationUserModel.FirstName;

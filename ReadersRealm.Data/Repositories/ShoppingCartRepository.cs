@@ -1,10 +1,10 @@
 ﻿namespace ReadersRealm.Data.Repositories;
 
-using Common.Exceptions;
+using System.Linq.Expressions;
+using Common.Exceptions.EntityProperty;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using System.Linq.Expressions;
 
 public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRepository
 {

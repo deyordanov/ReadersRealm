@@ -177,7 +177,7 @@ public class BookController : BaseController
     {
         string wwwRootPath = _webHost.WebRootPath;
         string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-        string bookPath = Path.Combine(wwwRootPath, PathToSaveImage);
+        string bookPath = Path.Combine(wwwRootPath, PathToSaveImage.TrimStart('\\'));
 
         DeleteImageIfPresent(imageUrl, wwwRootPath);
 

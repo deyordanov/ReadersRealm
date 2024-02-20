@@ -2,13 +2,13 @@ namespace ReadersRealm.Web.Areas.Customer.Controllers;
 
 using Common;
 using Duende.IdentityServer.Extensions;
-using Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReadersRealm.Areas;
 using ReadersRealm.ViewModels.Book;
 using ReadersRealm.ViewModels.ShoppingCart;
 using System.Diagnostics;
+using Infrastructure.Extensions;
 using Services.Data.Contracts;
 using ViewModels;
 using static Common.Constants.Constants.Areas;

@@ -15,23 +15,35 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         return new HashSet<Category>()
         {
-            new Category()
+            new Category
             {
                 Id = 1,
-                Name = "Action",
+                Name = "Manga",
                 DisplayOrder = 1,
             },
             new Category()
             {
                 Id = 2,
-                Name = "SciFi",
+                Name = "Action",
                 DisplayOrder = 2,
             },
             new Category()
             {
                 Id = 3,
-                Name = "History",
+                Name = "SciFi",
                 DisplayOrder = 3,
+            },
+            new Category()
+            {
+                Id = 4,
+                Name = "History",
+                DisplayOrder = 4,
+            },
+            new Category()
+            {
+                Id = 5,
+                Name = "Fantasy",
+                DisplayOrder = 5,
             },
         };
     }

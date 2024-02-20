@@ -3,7 +3,6 @@
 using Data.Models;
 using DataTransferObjects.OrderDetails;
 using DataTransferObjects.OrderHeader;
-using Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using ReadersRealm.Areas;
@@ -13,6 +12,7 @@ using ReadersRealm.ViewModels.OrderHeader;
 using ReadersRealm.ViewModels.ShoppingCart;
 using Stripe.Checkout;
 using System.Text;
+using Infrastructure.Extensions;
 using Services.Data.Contracts;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.OrderHeader;

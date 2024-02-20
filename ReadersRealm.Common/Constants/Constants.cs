@@ -92,7 +92,19 @@ public static class Constants
 
     public static class User
     {
+        //Action Results
         public const string UserHasSuccessfullyBeenCreated = "The user has been created successfully!";
+
+        //User Creation Details
+        public const string AdminUserEmail = "admin@gmail.com";
+        public const string AdminUserFirstName = "Admin";
+        public const string AdminUserLastName = "Adminovich";
+        public const string AdminUserState = "Adminzona";
+        public const string AdminUserCity = "Admincity";
+        public const string AdminUserStreetAddress = "Adminova 1";
+        public const string AdminUserPostalCode = "2343";
+        public const string AdminUserPhoneNumber = "0893453255";
+        public const string AdminUserPassword = "Admin123!";
     }
 
     public static class Roles

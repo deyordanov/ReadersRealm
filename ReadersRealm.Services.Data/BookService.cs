@@ -1,10 +1,11 @@
 ﻿namespace ReadersRealm.Services.Data;
 
 using Common;
-using Common.Exceptions;
+using Common.Exceptions.Book;
+using Common.Exceptions.Category;
+using Contracts;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
-using Contracts;
 using ViewModels.Author;
 using ViewModels.Book;
 using ViewModels.Category;

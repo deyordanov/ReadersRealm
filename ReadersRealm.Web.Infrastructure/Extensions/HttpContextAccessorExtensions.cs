@@ -1,7 +1,8 @@
-﻿namespace ReadersRealm.Web.Extensions;
+﻿namespace ReadersRealm.Web.Infrastructure.Extensions;
 
+using Microsoft.AspNetCore.Http;
 
-public static class HttpContextAccessorExtension
+public static class HttpContextAccessorExtensions
 {
     public static string GetDomain(this IHttpContextAccessor context)
     {
