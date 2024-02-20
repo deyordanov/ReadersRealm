@@ -1,7 +1,7 @@
-﻿namespace ReadersRealm.Services.Contracts;
+﻿namespace ReadersRealm.Services.Data.Contracts;
 
-using DataTransferObjects.OrderDetails;
-using ViewModels.OrderDetails;
+using ReadersRealm.DataTransferObjects.OrderDetails;
+using ReadersRealm.ViewModels.OrderDetails;
 
 public interface IOrderDetailsService
 {

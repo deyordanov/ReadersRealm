@@ -3,7 +3,7 @@
 using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services.Contracts;
+using Services.Data.Contracts;
 using ViewModels.Category;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Category;

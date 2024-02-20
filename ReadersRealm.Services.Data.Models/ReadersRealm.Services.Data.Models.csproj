@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Book\" />
+    <Folder Include="ApplicationUser\" />
+    <Folder Include="Author\" />
+    <Folder Include="Category\" />
+    <Folder Include="OrderDetails\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ReadersRealm.Web.ViewModels\ReadersRealm.Web.ViewModels.csproj" />
   </ItemGroup>
 

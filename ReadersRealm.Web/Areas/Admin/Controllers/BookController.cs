@@ -4,7 +4,7 @@ using Common;
 using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services.Contracts;
+using Services.Data.Contracts;
 using ViewModels.Book;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Book;

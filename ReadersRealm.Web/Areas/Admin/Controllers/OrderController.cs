@@ -9,7 +9,7 @@ using ReadersRealm.Areas;
 using ReadersRealm.ViewModels.Order;
 using ReadersRealm.ViewModels.OrderDetails;
 using ReadersRealm.ViewModels.OrderHeader;
-using Services.Contracts;
+using Services.Data.Contracts;
 using Stripe;
 using Stripe.Checkout;
 using static Common.Constants.Constants.Areas;

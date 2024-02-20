@@ -23,7 +23,7 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
     using Data.Models;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using Services.Contracts;
+    using Services.Data.Contracts;
     using ViewModels.Company;
 
     public class RegisterModel : PageModel

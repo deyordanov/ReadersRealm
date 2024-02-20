@@ -1,8 +1,7 @@
-﻿namespace ReadersRealm.Services.Contracts;
+﻿namespace ReadersRealm.Services.Data.Contracts;
 
-using Common;
-using Data.Models;
-using ViewModels.Book;
+using ReadersRealm.Common;
+using ReadersRealm.ViewModels.Book;
 
 public interface IBookService
 {

@@ -7,7 +7,7 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Services.Contracts;
+using Services.Data.Contracts;
 using static Common.Constants.Constants.SessionKeys;
 
 public class LogoutModel : PageModel

@@ -10,4 +10,9 @@
     <ProjectReference Include="..\ReadersRealm.Services.Data\ReadersRealm.Services.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ModelBinders\" />
+    <Folder Include="Middlewares\" />
+  </ItemGroup>
+
 </Project>

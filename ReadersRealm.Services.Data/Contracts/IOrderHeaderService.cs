@@ -1,7 +1,7 @@
-﻿namespace ReadersRealm.Services.Contracts;
+﻿namespace ReadersRealm.Services.Data.Contracts;
 
-using DataTransferObjects.OrderHeader;
-using ViewModels.OrderHeader;
+using ReadersRealm.DataTransferObjects.OrderHeader;
+using ReadersRealm.ViewModels.OrderHeader;
 
 public interface IOrderHeaderService
 {

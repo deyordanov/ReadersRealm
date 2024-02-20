@@ -1,7 +1,7 @@
-﻿namespace ReadersRealm.Services.Contracts;
+﻿namespace ReadersRealm.Services.Data.Contracts;
 
-using Common;
-using ViewModels.Order;
+using ReadersRealm.Common;
+using ReadersRealm.ViewModels.Order;
 
 public interface IOrderService
 {

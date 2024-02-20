@@ -1,7 +1,7 @@
-﻿namespace ReadersRealm.Services.Contracts;
+﻿namespace ReadersRealm.Services.Data.Contracts;
 
-using ViewModels.Book;
-using ViewModels.ShoppingCart;
+using ReadersRealm.ViewModels.Book;
+using ReadersRealm.ViewModels.ShoppingCart;
 
 public interface IShoppingCartService
 {

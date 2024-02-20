@@ -1,7 +1,6 @@
-﻿namespace ReadersRealm.Services.Contracts;
+﻿namespace ReadersRealm.Services.Data.Contracts;
 
-using Data.Models;
-using ViewModels.Category;
+using ReadersRealm.ViewModels.Category;
 
 public interface ICategoryService
 {

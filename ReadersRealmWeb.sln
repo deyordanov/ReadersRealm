@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Common", "Read
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Web.ViewModels", "ReadersRealm.Web.ViewModels\ReadersRealm.Web.ViewModels.csproj", "{6A6A0F9D-689B-424A-B989-3E94C9B8A795}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.DataTransferObjects", "ReadersRealm.DataTransferObjects\ReadersRealm.DataTransferObjects.csproj", "{C01426F2-FD2E-482E-9655-F5DD50397820}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{0A61C2E3-41D3-4F99-A7B7-74A564C390C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{07305F86-DD32-4DCB-A1DB-1707A41488C1}"
