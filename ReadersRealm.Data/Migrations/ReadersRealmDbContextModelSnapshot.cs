@@ -284,21 +284,21 @@ namespace ReadersRealm.Data.Migrations
                         new
                         {
                             Id = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
-                            Age = 45,
-                            Email = "johnsmith@example.com",
-                            FirstName = "John",
+                            Age = 49,
+                            Email = "kmasashi@gmail.com",
+                            FirstName = "Masashi",
                             Gender = 0,
-                            LastName = "Smith",
+                            LastName = "Kishimoto",
                             PhoneNumber = "123-456-7890"
                         },
                         new
                         {
                             Id = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
-                            Age = 38,
-                            Email = "emilyjohnson@example.com",
-                            FirstName = "Emily",
-                            Gender = 1,
-                            LastName = "Johnson",
+                            Age = 59,
+                            Email = "rriordan@gmail.com",
+                            FirstName = "Rick",
+                            Gender = 0,
+                            LastName = "Riordan",
                             PhoneNumber = "098-765-4321"
                         });
                 });
@@ -369,31 +369,45 @@ namespace ReadersRealm.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("146e1ad8-3328-4a5d-97cd-a518138081db"),
+                            Id = new Guid("5672cad9-043f-44f7-9d81-abb080377a4c"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
-                            Description = "An exciting journey through uncharted lands.",
-                            ISBN = "1234567890123",
-                            ImageUrl = "",
-                            Pages = 320,
+                            Description = "\"Naruto Vol 1\" introduces readers to Naruto Uzumaki, a young ninja with dreams of becoming the strongest ninja and leader of his village, the Hokage. Despite being ostracized by the village for housing a fearsome nine-tailed fox that attacked the village years ago, Naruto is determined to gain the village's recognition through his accomplishments and hard work. The volume covers his struggles in the Ninja Academy, his formation of friendships and rivalries, and the beginning of his journey to becoming a skilled ninja. It sets the stage for an expansive story of growth, battles, and the pursuit of dreams amidst the complexities of the ninja world.",
+                            ISBN = "9797415363864",
+                            ImageUrl = "images\\bookSeedData\\9e84aff9-028a-4cd7-8e31-2e73eddce1d5.jpg",
+                            Pages = 192,
                             Price = 19.99m,
-                            Title = "The Great Adventure",
+                            Title = "Naruto Vol 1",
                             Used = false
                         },
                         new
                         {
-                            Id = new Guid("d6327305-771a-4680-8392-620d97c0ec4f"),
-                            AuthorId = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
-                            BookCover = 0,
-                            CategoryId = 2,
-                            Description = "Exploring the wonders of science in everyday life.",
-                            ISBN = "9876543210987",
-                            ImageUrl = "",
-                            Pages = 220,
-                            Price = 25.99m,
-                            Title = "Science and You",
-                            Used = true
+                            Id = new Guid("593ee34f-a1a8-493e-93c2-a235cb16695c"),
+                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "In \"Naruto Vol 8\" the Chunin Exam's second phase plunges Naruto, Sasuke, and Sakura into the perilous Forest of Death. Amidst treacherous battles and survival challenges, the team confronts formidable rivals and their own fears. As hidden dangers emerge, Naruto's resolve is tested, unveiling new powers and deepening bonds. This volume is a thrilling journey of growth, teamwork, and unyielding spirit against life-and-death stakes.",
+                            ISBN = "9785421961182",
+                            ImageUrl = "images\\bookSeedData\\b2f6e888-402f-4851-9392-8931a567ea9a.jpg",
+                            Pages = 192,
+                            Price = 19.99m,
+                            Title = "Naruto Vol 8",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("e7a0f13d-2eb2-4aa4-b196-31b73008a930"),
+                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "\"Naruto Vol 35\" shifts the focus to the aftermath of Naruto's intense training under Jiraiya and the looming threat of the Akatsuki. Naruto returns to Konoha, showcasing newfound strengths and techniques. Meanwhile, the story delves into the formation of new alliances and the preparation for a confrontation that could shake the ninja world to its core. This volume encapsulates themes of evolution and anticipation, setting the stage for epic battles and strategic mind games.",
+                            ISBN = "9799667150078",
+                            ImageUrl = "images\\bookSeedData\\3ba49236-d6a4-43ec-b9d7-d77eeff8e812.webp",
+                            Pages = 200,
+                            Price = 19.99m,
+                            Title = "Naruto Vol 35",
+                            Used = false
                         });
                 });
 
@@ -428,19 +442,31 @@ namespace ReadersRealm.Data.Migrations
                         {
                             Id = 1,
                             DisplayOrder = 1,
-                            Name = "Action"
+                            Name = "Manga"
                         },
                         new
                         {
                             Id = 2,
                             DisplayOrder = 2,
-                            Name = "SciFi"
+                            Name = "Action"
                         },
                         new
                         {
                             Id = 3,
                             DisplayOrder = 3,
+                            Name = "SciFi"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DisplayOrder = 4,
                             Name = "History"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DisplayOrder = 5,
+                            Name = "Fantasy"
                         });
                 });
 
