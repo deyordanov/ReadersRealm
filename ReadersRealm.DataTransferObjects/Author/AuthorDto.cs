@@ -7,7 +7,7 @@ public class AuthorDto
 {
     public AuthorDto()
     {
-        this.Books = new HashSet<BookDto>();
+        Books = new HashSet<BookDto>();
     }
 
     public Guid Id { get; set; }

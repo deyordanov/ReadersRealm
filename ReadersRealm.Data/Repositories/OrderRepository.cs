@@ -11,24 +11,23 @@ public class OrderRepository : Repository<Order>, IOrderRepository
 
     public OrderRepository(ReadersRealmDbContext dbContext) : base(dbContext)
     {
-        this._dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<Order?> GetByIdAsync(Guid id)
     {
-        return await this
-            ._dbContext
+        return await _dbContext
             .Orders
             .FirstOrDefaultAsync(order => order.Id == id);
     }
 
     public Task<Order?> GetByIdWithNavPropertiesAsync(Guid id, string properties)
     {
-        IQueryable<Order> query = this._dbContext.Orders;
+        IQueryable<Order> query = _dbContext.Orders;
 
         string[] propertiesToAdd = properties.Split(", ", StringSplitOptions.RemoveEmptyEntries);
 
-        if (!this.ArePropertiesPresentInEntity(propertiesToAdd))
+        if (!ArePropertiesPresentInEntity(propertiesToAdd))
         {
             throw new PropertyNotFoundException();
         }
@@ -43,8 +42,7 @@ public class OrderRepository : Repository<Order>, IOrderRepository
 
     public async Task<Order?> GetByOrderHeaderIdAsync(Guid orderHeaderId)
     {
-        return await this
-            ._dbContext
+        return await _dbContext
             .Orders
             .FirstOrDefaultAsync(order => order.OrderHeaderId == orderHeaderId);
     }

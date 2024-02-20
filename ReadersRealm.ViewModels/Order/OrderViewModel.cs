@@ -1,13 +1,13 @@
 ﻿namespace ReadersRealm.ViewModels.Order;
 
 using OrderDetails;
-using ReadersRealm.ViewModels.OrderHeader;
+using OrderHeader;
 
 public class OrderViewModel
 {
     public OrderViewModel()
     {
-        this.OrderDetailsList = new HashSet<OrderDetailsViewModel>();
+        OrderDetailsList = new HashSet<OrderDetailsViewModel>();
     }
 
     public Guid Id { get; set; }

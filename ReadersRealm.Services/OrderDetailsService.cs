@@ -1,11 +1,10 @@
-﻿namespace ReadersRealm.Services;
+﻿namespace ReadersRealm.Services.Data;
 
-using Contracts;
-using Data.Models;
-using Data.Repositories.Contracts;
+using ReadersRealm.Data.Models;
+using ReadersRealm.Data.Repositories.Contracts;
 using DataTransferObjects.Book;
-using DataTransferObjects.OrderHeader;
-using ReadersRealm.DataTransferObjects.OrderDetails;
+using DataTransferObjects.OrderDetails;
+using Contracts;
 using ViewModels.Book;
 using ViewModels.OrderDetails;
 
@@ -18,7 +17,7 @@ public class OrderDetailsService : IOrderDetailsService
     public OrderDetailsService(
         IUnitOfWork unitOfWork)
     {
-        this._unitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task CreateOrderDetailsAsync(OrderDetailsViewModel orderDetailsModel)
@@ -32,20 +31,17 @@ public class OrderDetailsService : IOrderDetailsService
             OrderId = orderDetailsModel.Order!.Id,
         };
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .OrderDetailsRepository
             .AddAsync(orderDetails);
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 
     public async Task<IEnumerable<OrderDetailsViewModel>> GetAllByOrderHeaderIdAsync(Guid orderHeaderId)
     {
-        IEnumerable<OrderDetails> orderDetailsList = await this
-            ._unitOfWork
+        IEnumerable<OrderDetails> orderDetailsList = await _unitOfWork
             .OrderDetailsRepository
             .GetAsync(orderDetails => orderDetails.OrderHeaderId == orderHeaderId,
                 null,
@@ -80,8 +76,7 @@ public class OrderDetailsService : IOrderDetailsService
 
     public async Task<IEnumerable<OrderDetailsReceiptDto>> GetAllOrderDetailsForReceiptAsDtosAsync(Guid orderHeaderId)
     {
-        IEnumerable<OrderDetails> orderDetailsList = await this
-            ._unitOfWork
+        IEnumerable<OrderDetails> orderDetailsList = await _unitOfWork
             .OrderDetailsRepository
             .GetAsync(orderDetails => orderDetails.OrderHeaderId == orderHeaderId,
                 null,
@@ -116,8 +111,7 @@ public class OrderDetailsService : IOrderDetailsService
 
     public async Task DeleteOrderDetailsRangeByOrderHeaderIdAsync(Guid orderHeaderId)
     {
-        IEnumerable<OrderDetailsViewModel> orderDetailsModelList = await this
-            .GetAllByOrderHeaderIdAsync(orderHeaderId);
+        IEnumerable<OrderDetailsViewModel> orderDetailsModelList = await GetAllByOrderHeaderIdAsync(orderHeaderId);
 
         IEnumerable<OrderDetails> orderDetailsToDelete = orderDetailsModelList
             .Select(orderDetailsModel => new OrderDetails()
@@ -125,13 +119,11 @@ public class OrderDetailsService : IOrderDetailsService
                 Id = orderDetailsModel.Id,
             });
 
-        this
-            ._unitOfWork
+        _unitOfWork
             .OrderDetailsRepository
             .DeleteRange(orderDetailsToDelete);
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 }

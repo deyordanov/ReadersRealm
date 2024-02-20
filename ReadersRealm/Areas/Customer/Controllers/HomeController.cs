@@ -1,19 +1,20 @@
- namespace ReadersRealm.Areas.Customer.Controllers;
+namespace ReadersRealm.Web.Areas.Customer.Controllers;
 
-using Extensions.ClaimsPrincipal;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Services.Contracts;
-using System.Diagnostics;
 using Common;
 using Duende.IdentityServer.Extensions;
-using ViewModels.Book;
-using ViewModels.ShoppingCart;
-using Web.ViewModels;
+using Extensions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ReadersRealm.Areas;
+using ReadersRealm.ViewModels.Book;
+using ReadersRealm.ViewModels.ShoppingCart;
+using Services.Contracts;
+using System.Diagnostics;
+using ViewModels;
 using static Common.Constants.Constants.Areas;
+using static Common.Constants.Constants.SessionKeys;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
-using static Common.Constants.Constants.SessionKeys;
 
 [Area(Customer)]
 public class HomeController : BaseController
@@ -23,8 +24,8 @@ public class HomeController : BaseController
 
     public HomeController(IBookService bookService, IShoppingCartService shoppingCartService)
     {
-        this._bookService = bookService;
-        this._shoppingCartService = shoppingCartService;
+        _bookService = bookService;
+        _shoppingCartService = shoppingCartService;
     }
 
     [HttpGet]
@@ -33,11 +34,10 @@ public class HomeController : BaseController
     {
         if (User.IsAuthenticated())
         {
-            await this.SetShoppingCartItemsCountInSession();
+            await SetShoppingCartItemsCountInSession();
         }
 
-        PaginatedList<AllBooksViewModel> allBooks = await this
-            ._bookService
+        PaginatedList<AllBooksViewModel> allBooks = await _bookService
             .GetAllAsync(pageIndex, 8, searchTerm);
 
 
@@ -53,12 +53,10 @@ public class HomeController : BaseController
             return NotFound();
         }
 
-        DetailsBookViewModel bookModel = await this
-            ._bookService
+        DetailsBookViewModel bookModel = await _bookService
             .GetBookForDetailsAsync((Guid)id);
 
-        ShoppingCartViewModel shoppingCartModel = this
-            ._shoppingCartService
+        ShoppingCartViewModel shoppingCartModel = _shoppingCartService
             .GetShoppingCart(bookModel);
 
         return View(shoppingCartModel);
@@ -69,8 +67,7 @@ public class HomeController : BaseController
     {
         if (!ModelState.IsValid)
         {
-            DetailsBookViewModel bookModel = await this
-                ._bookService
+            DetailsBookViewModel bookModel = await _bookService
                 .GetBookForDetailsAsync(shoppingCartModel.BookId);
 
             shoppingCartModel.Book = bookModel;
@@ -81,25 +78,22 @@ public class HomeController : BaseController
         string userId = User.GetId();
         shoppingCartModel.ApplicationUserId = userId;
 
-        bool shoppingCartExists = await this
-            ._shoppingCartService
+        bool shoppingCartExists = await _shoppingCartService
             .ShoppingCartExistsAsync(userId, shoppingCartModel.BookId);
 
 
         if (!shoppingCartExists)
         {
-            await this
-                ._shoppingCartService
+            await _shoppingCartService
                 .CreateShoppingCartAsync(shoppingCartModel);
         }
         else
         {
-            await this
-                ._shoppingCartService
+            await _shoppingCartService
                 .UpdateShoppingCartCountAsync(shoppingCartModel);
         }
 
-        await this.SetShoppingCartItemsCountInSession();
+        await SetShoppingCartItemsCountInSession();
 
             TempData[Success] = ShoppingCartItemsHaveBeenAddedSuccessfully;
 
@@ -123,8 +117,7 @@ public class HomeController : BaseController
     {
         string userId = User.GetId();
 
-        int itemsCount = await this
-            ._shoppingCartService
+        int itemsCount = await _shoppingCartService
             .GetShoppingCartCountByApplicationUserIdAsync(userId);
 
         HttpContext.Session.SetInt32(ShoppingCartSessionKey, itemsCount);

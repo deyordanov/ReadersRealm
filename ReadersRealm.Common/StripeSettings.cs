@@ -9,10 +9,10 @@ public class StripeSettings
 
     public StripeSettings(IConfiguration configuration)
     {
-        this._configuration = configuration;
+        _configuration = configuration;
 
-        this.SecretKey = this._configuration[SecretKeyAsString];
-        this.PublishableKey = this._configuration[PublishableKeyAsString];
+        SecretKey = _configuration[SecretKeyAsString];
+        PublishableKey = _configuration[PublishableKeyAsString];
     }
 
     public string? SecretKey { get; private set; }

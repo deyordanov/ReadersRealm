@@ -7,7 +7,7 @@ public class ShoppingCart
 {
     public ShoppingCart()
     {
-        this.Id = Guid.NewGuid();
+        Id = Guid.NewGuid();
     }
 
     [Key]

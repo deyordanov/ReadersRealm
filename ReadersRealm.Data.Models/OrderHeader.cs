@@ -8,7 +8,7 @@ public class OrderHeader
 {
     public OrderHeader()
     {
-        this.Id = Guid.NewGuid();
+        Id = Guid.NewGuid();
     }
 
     [Key]

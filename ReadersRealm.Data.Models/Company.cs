@@ -8,7 +8,7 @@ public class Company
 {
     public Company()
     {
-        this.Id = Guid.NewGuid();
+        Id = Guid.NewGuid();
     }
 
     [Key]

@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Extensions.HttpContextAccessor;
+﻿namespace ReadersRealm.Web.Extensions;
 
 
 public static class HttpContextAccessorExtension

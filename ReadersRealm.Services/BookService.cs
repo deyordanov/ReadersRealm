@@ -1,11 +1,11 @@
-﻿namespace ReadersRealm.Services;
+﻿namespace ReadersRealm.Services.Data;
 
 using Common;
 using Common.Exceptions;
+using ReadersRealm.Data.Models;
+using ReadersRealm.Data.Repositories.Contracts;
 using Contracts;
-using Data.Models;
-using Data.Repositories.Contracts;
-using ReadersRealm.ViewModels.Author;
+using ViewModels.Author;
 using ViewModels.Book;
 using ViewModels.Category;
 
@@ -22,15 +22,14 @@ public class BookService : IBookService
         ICategoryService categoryService, 
         IAuthorService authorService)
     {
-        this._unitOfWork = unitOfWork;
-        this._categoryService = categoryService;
-        this._authorService = authorService;
+        _unitOfWork = unitOfWork;
+        _categoryService = categoryService;
+        _authorService = authorService;
     }
 
     public async Task<PaginatedList<AllBooksViewModel>> GetAllAsync(int pageIndex, int pageSize, string? searchTerm)
     {
-        List<Book> allBooks = await this
-            ._unitOfWork
+        List<Book> allBooks = await _unitOfWork
             .BookRepository
             .GetAsync(book => book.Title.ToLower().StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty), null, PropertiesToInclude);
 
@@ -71,8 +70,7 @@ public class BookService : IBookService
 
     public async Task<EditBookViewModel> GetBookForEditAsync(Guid id)
     {
-        Book? book =  await this
-            ._unitOfWork
+        Book? book =  await _unitOfWork
             .BookRepository
             .GetByIdAsync(id);
 
@@ -81,12 +79,10 @@ public class BookService : IBookService
             throw new BookNotFoundException();
         }
 
-        List<AllAuthorsListViewModel> authorsList = await this
-            ._authorService
+        List<AllAuthorsListViewModel> authorsList = await _authorService
             .GetAllListAsync();
 
-        List<AllCategoriesListViewModel> categoriesList = await this
-            ._categoryService
+        List<AllCategoriesListViewModel> categoriesList = await _categoryService
             .GetAllListAsync();
 
         EditBookViewModel bookModel = new EditBookViewModel()
@@ -111,8 +107,7 @@ public class BookService : IBookService
 
     public async Task<DeleteBookViewModel> GetBookForDeleteAsync(Guid id)
     {
-        Book? book = await this
-            ._unitOfWork
+        Book? book = await _unitOfWork
             .BookRepository
             .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
 
@@ -158,8 +153,7 @@ public class BookService : IBookService
 
     public async Task<DetailsBookViewModel> GetBookForDetailsAsync(Guid id)
     {
-        Book? book = await this
-            ._unitOfWork
+        Book? book = await _unitOfWork
             .BookRepository
             .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
 
@@ -205,12 +199,10 @@ public class BookService : IBookService
 
     public async Task<CreateBookViewModel> GetBookForCreateAsync()
     {
-        List<AllAuthorsListViewModel> authorsList = await this
-            ._authorService
+        List<AllAuthorsListViewModel> authorsList = await _authorService
             .GetAllListAsync();
 
-        List<AllCategoriesListViewModel> categoriesList = await this
-            ._categoryService
+        List<AllCategoriesListViewModel> categoriesList = await _categoryService
             .GetAllListAsync();
 
         CreateBookViewModel bookModel = new CreateBookViewModel()
@@ -240,20 +232,17 @@ public class BookService : IBookService
             ImageUrl = bookModel.ImageUrl,
         };
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .BookRepository
             .AddAsync(bookToAdd);
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 
     public async Task EditBookAsync(EditBookViewModel bookModel)
     {
-        Book? bookToEdit = await this
-            ._unitOfWork
+        Book? bookToEdit = await _unitOfWork
             .BookRepository
             .GetByIdAsync(bookModel.Id);
 
@@ -274,15 +263,13 @@ public class BookService : IBookService
         bookToEdit.Used = bookModel.Used;
         bookToEdit.ImageUrl = bookModel.ImageUrl;
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteBookAsync(DeleteBookViewModel bookModel)
     {
-        Book? bookToDelete = await this
-            ._unitOfWork
+        Book? bookToDelete = await _unitOfWork
             .BookRepository
             .GetByIdAsync(bookModel.Id);
 
@@ -291,12 +278,11 @@ public class BookService : IBookService
             throw new BookNotFoundException();
         }
 
-        this._unitOfWork
+        _unitOfWork
             .BookRepository
             .Delete(bookToDelete);
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 }

@@ -4,18 +4,18 @@ public class PaginatedList<T> : List<T>
 {
     public PaginatedList(List<T> items, int totalCount, int pageIndex, int pageSize)
     {
-        this.PageIndex = pageIndex;
-        this.TotalPages = (int)Math.Floor(totalCount / (double)pageSize);
-        this.AddRange(items);
+        PageIndex = pageIndex;
+        TotalPages = (int)Math.Floor(totalCount / (double)pageSize);
+        AddRange(items);
     }
 
     public int PageIndex { get; set; }
 
     public int TotalPages { get; set; }
 
-    public bool HasPreviousPage => this.PageIndex > 0;
+    public bool HasPreviousPage => PageIndex > 0;
 
-    public bool HasNextPage => this.PageIndex < this.TotalPages;
+    public bool HasNextPage => PageIndex < TotalPages;
 
     public static PaginatedList<T> Create(List<T> data, int pageIndex, int pageSize)
     {

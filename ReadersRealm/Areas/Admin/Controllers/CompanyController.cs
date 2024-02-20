@@ -18,15 +18,14 @@ public class CompanyController : BaseController
 
     public CompanyController(ICompanyService companyService)
     {
-        this._companyService = companyService;
+        _companyService = companyService;
     }
 
     [HttpGet]
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
-        PaginatedList<AllCompaniesViewModel> allCompanies = await this
-            ._companyService
+        PaginatedList<AllCompaniesViewModel> allCompanies = await _companyService
             .GetAllAsync(pageIndex, 5, searchTerm);
 
         ViewBag.SearchTerm = searchTerm ?? string.Empty;
@@ -38,8 +37,7 @@ public class CompanyController : BaseController
     [Authorize(Roles = AdminRole)]
     public IActionResult Create()
     {
-        CreateCompanyViewModel companyModel = this
-            ._companyService
+        CreateCompanyViewModel companyModel = _companyService
             .GetCompanyForCreate();
 
         return View(companyModel);
@@ -54,8 +52,7 @@ public class CompanyController : BaseController
             return View(companyModel);
         }
 
-        await this
-            ._companyService
+        await _companyService
             .CreateCompanyAsync(companyModel);
 
         TempData[Success] = CompanyHasBeenSuccessfullyCreated;
@@ -72,8 +69,7 @@ public class CompanyController : BaseController
             return NotFound();
         }
 
-        EditCompanyViewModel companyModel = await this
-            ._companyService
+        EditCompanyViewModel companyModel = await _companyService
             .GetCompanyForEditAsync((Guid)id);
 
         ViewBag.PageIndex = pageIndex;
@@ -91,8 +87,7 @@ public class CompanyController : BaseController
             return View(companyModel);
         }
 
-        await this
-            ._companyService
+        await _companyService
             .EditCompanyAsync(companyModel);
 
         TempData[Success] = CompanyHasBeenSuccessfullyEdited;
@@ -109,8 +104,7 @@ public class CompanyController : BaseController
             return NotFound();
         }
 
-        DeleteCompanyViewModel companyModel = await this
-            ._companyService
+        DeleteCompanyViewModel companyModel = await _companyService
             .GetCompanyForDeleteAsync((Guid)id);
 
         return View(companyModel);
@@ -120,8 +114,7 @@ public class CompanyController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(DeleteCompanyViewModel companyModel)
     {
-        await this
-            ._companyService
+        await _companyService
             .DeleteCompanyAsync(companyModel);
 
         TempData[Success] = CompanyHasBeenSuccessfullyDeleted;

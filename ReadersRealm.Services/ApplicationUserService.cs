@@ -1,9 +1,9 @@
-﻿namespace ReadersRealm.Services;
+﻿namespace ReadersRealm.Services.Data;
 
 using Common.Exceptions;
 using Contracts;
-using Data.Models;
-using Data.Repositories.Contracts;
+using ReadersRealm.Data.Models;
+using ReadersRealm.Data.Repositories.Contracts;
 using ViewModels.ApplicationUser;
 
 public class ApplicationUserService : IApplicationUserService
@@ -12,13 +12,12 @@ public class ApplicationUserService : IApplicationUserService
 
     public ApplicationUserService(IUnitOfWork unitOfWork)
     {
-        this._unitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<OrderApplicationUserViewModel> GetApplicationUserForOrderAsync(string id)
     {
-        ApplicationUser? applicationUser = await this
-            ._unitOfWork
+        ApplicationUser? applicationUser = await _unitOfWork
             .ApplicationUserRepository
             .GetByIdAsync(id);
 
@@ -44,8 +43,7 @@ public class ApplicationUserService : IApplicationUserService
 
     public async Task UpdateApplicationUserAsync(OrderApplicationUserViewModel applicationUserModel)
     {
-        ApplicationUser? applicationUser = await this
-            ._unitOfWork
+        ApplicationUser? applicationUser = await _unitOfWork
             .ApplicationUserRepository
             .GetByIdAsync(applicationUserModel.Id);
 
@@ -62,8 +60,7 @@ public class ApplicationUserService : IApplicationUserService
         applicationUser.StreetAddress = applicationUserModel.StreetAddress;
         applicationUser.PhoneNumber = applicationUserModel.PhoneNumber;
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 }

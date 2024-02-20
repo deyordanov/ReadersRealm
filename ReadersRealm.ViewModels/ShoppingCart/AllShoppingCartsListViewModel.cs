@@ -6,7 +6,7 @@ public class AllShoppingCartsListViewModel
 {
     public AllShoppingCartsListViewModel()
     {
-        this.ShoppingCartsList = new HashSet<ShoppingCartViewModel>();
+        ShoppingCartsList = new HashSet<ShoppingCartViewModel>();
     }
 
     public OrderHeaderViewModel OrderHeader { get; set; } = null!;

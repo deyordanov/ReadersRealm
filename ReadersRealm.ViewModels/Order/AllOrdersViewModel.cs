@@ -7,7 +7,7 @@ public class AllOrdersViewModel
 {
     public AllOrdersViewModel()
     {
-        this.OrderDetailsList = new HashSet<OrderDetailsViewModel>();
+        OrderDetailsList = new HashSet<OrderDetailsViewModel>();
     }
 
     public Guid Id { get; set; }

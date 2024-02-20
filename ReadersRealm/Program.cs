@@ -7,6 +7,7 @@ using ReadersRealm.Data.Repositories;
 using ReadersRealm.Data.Repositories.Contracts;
 using ReadersRealm.Services;
 using ReadersRealm.Services.Contracts;
+using ReadersRealm.Services.Data;
 using Stripe;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

@@ -1,10 +1,9 @@
-﻿namespace ReadersRealm.Services;
+﻿namespace ReadersRealm.Services.Data;
 
 using Common.Exceptions;
+using ReadersRealm.Data.Models;
+using ReadersRealm.Data.Repositories.Contracts;
 using Contracts;
-using Data;
-using Data.Models;
-using Data.Repositories.Contracts;
 using ViewModels.Category;
 
 public class CategoryService : ICategoryService
@@ -13,13 +12,12 @@ public class CategoryService : ICategoryService
 
     public CategoryService(IUnitOfWork unitOfWork)
     {
-        this._unitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<IEnumerable<AllCategoriesViewModel>> GetAllAsync()
     {
-        List<Category> allCategories = await this
-            ._unitOfWork
+        List<Category> allCategories = await _unitOfWork
             .CategoryRepository
             .GetAsync(null, null, string.Empty);
 
@@ -36,8 +34,7 @@ public class CategoryService : ICategoryService
 
     public async Task<List<AllCategoriesListViewModel>> GetAllListAsync()
     {
-        List<Category> allCategories = await this
-            ._unitOfWork
+        List<Category> allCategories = await _unitOfWork
             .CategoryRepository
             .GetAsync(null, null, string.Empty);
 
@@ -54,8 +51,7 @@ public class CategoryService : ICategoryService
 
     public async Task<EditCategoryViewModel> GetCategoryForEditAsync(int id)
     {
-        Category? category = await this
-            ._unitOfWork
+        Category? category = await _unitOfWork
             .CategoryRepository
             .GetByIdAsync(id);
 
@@ -76,8 +72,7 @@ public class CategoryService : ICategoryService
 
     public async Task<DeleteCategoryViewModel> GetCategoryForDeleteAsync(int id)
     {
-        Category? category = await this
-            ._unitOfWork
+        Category? category = await _unitOfWork
             .CategoryRepository
             .GetByIdAsync(id);
 
@@ -114,18 +109,16 @@ public class CategoryService : ICategoryService
             DisplayOrder = categoryModel.DisplayOrder,
         };
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .CategoryRepository
             .AddAsync(categoryToAdd);
 
-        await this._unitOfWork.SaveAsync();
+        await _unitOfWork.SaveAsync();
     }
 
     public async Task EditCategoryAsync(EditCategoryViewModel categoryModel)
     {
-        Category? categoryToEdit = await this
-            ._unitOfWork
+        Category? categoryToEdit = await _unitOfWork
             .CategoryRepository
             .GetByIdAsync(categoryModel.Id);
 
@@ -137,13 +130,12 @@ public class CategoryService : ICategoryService
         categoryToEdit.Name = categoryModel.Name;
         categoryToEdit.DisplayOrder = categoryModel.DisplayOrder;
 
-        await this._unitOfWork.SaveAsync();
+        await _unitOfWork.SaveAsync();
     }
 
     public async Task DeleteCategoryAsync(DeleteCategoryViewModel categoryModel)
     {
-        Category? categoryToDelete = await this
-            ._unitOfWork
+        Category? categoryToDelete = await _unitOfWork
             .CategoryRepository
             .GetByIdAsync(categoryModel.Id);
 
@@ -152,13 +144,11 @@ public class CategoryService : ICategoryService
             throw new CategoryNotFoundException();
         }
 
-        this
-            ._unitOfWork
+        _unitOfWork
             .CategoryRepository
             .Delete(categoryToDelete);
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 

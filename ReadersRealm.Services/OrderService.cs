@@ -1,10 +1,10 @@
-﻿namespace ReadersRealm.Services;
+﻿namespace ReadersRealm.Services.Data;
 
 using Common;
 using Common.Exceptions;
+using ReadersRealm.Data.Models;
+using ReadersRealm.Data.Repositories.Contracts;
 using Contracts;
-using Data.Models;
-using Data.Repositories.Contracts;
 using ViewModels.ApplicationUser;
 using ViewModels.Order;
 
@@ -23,16 +23,15 @@ public class OrderService : IOrderService
         IOrderDetailsService orderDetailsService,
         IApplicationUserService applicationUserService)
     {
-        this._unitOfWork = unitOfWork;
-        this._orderHeaderService = orderHeaderService;
-        this._orderDetailsService = orderDetailsService;
-        this._applicationUserService = applicationUserService;
+        _unitOfWork = unitOfWork;
+        _orderHeaderService = orderHeaderService;
+        _orderDetailsService = orderDetailsService;
+        _applicationUserService = applicationUserService;
     }
 
     public async Task<PaginatedList<AllOrdersViewModel>> GetAllAsync(int pageIndex, int pageSize, string? searchTerm)
     {
-        List<Order> allOrders = await this
-            ._unitOfWork
+        List<Order> allOrders = await _unitOfWork
             .OrderRepository
             .GetAsync(null, null, PropertiesToInclude);
 
@@ -43,8 +42,8 @@ public class OrderService : IOrderService
             AllOrdersViewModel orderModel = new AllOrdersViewModel
             {
                 Id = order.Id,
-                OrderHeader = await this._orderHeaderService.GetByIdAsyncWithNavPropertiesAsync(order.OrderHeaderId),
-                OrderDetailsList = await this._orderDetailsService.GetAllByOrderHeaderIdAsync(order.OrderHeaderId),
+                OrderHeader = await _orderHeaderService.GetByIdAsyncWithNavPropertiesAsync(order.OrderHeaderId),
+                OrderDetailsList = await _orderDetailsService.GetAllByOrderHeaderIdAsync(order.OrderHeaderId),
             };
 
             allOrderModelsList.Add(orderModel);
@@ -55,8 +54,7 @@ public class OrderService : IOrderService
 
     public async Task<PaginatedList<AllOrdersViewModel>> GetAllByUserIdAsync(int pageIndex, int pageSize, string? searchTerm, string userId)
     {
-        List<Order> allOrders = await this
-            ._unitOfWork
+        List<Order> allOrders = await _unitOfWork
             .OrderRepository
             .GetAsync(order => order.OrderHeader.ApplicationUserId == userId, null, PropertiesToInclude);
 
@@ -67,8 +65,8 @@ public class OrderService : IOrderService
             AllOrdersViewModel orderModel = new AllOrdersViewModel
             {
                 Id = order.Id,
-                OrderHeader = await this._orderHeaderService.GetByIdAsyncWithNavPropertiesAsync(order.OrderHeaderId),
-                OrderDetailsList = await this._orderDetailsService.GetAllByOrderHeaderIdAsync(order.OrderHeaderId)
+                OrderHeader = await _orderHeaderService.GetByIdAsyncWithNavPropertiesAsync(order.OrderHeaderId),
+                OrderDetailsList = await _orderDetailsService.GetAllByOrderHeaderIdAsync(order.OrderHeaderId)
             };
 
             allOrderModelsList.Add(orderModel);
@@ -79,8 +77,7 @@ public class OrderService : IOrderService
 
     public async Task<OrderViewModel> GetOrderForSummaryAsync(Guid id)
     {
-        Order order = await this
-            .GetByIdAsync(id);
+        Order order = await GetByIdAsync(id);
 
         OrderViewModel orderModel = new OrderViewModel()
         {
@@ -93,15 +90,14 @@ public class OrderService : IOrderService
 
     public async Task<DetailsOrderViewModel> GetOrderForDetailsAsync(Guid id)
     {
-        Order order = await this
-            .GetByIdAsync(id);
+        Order order = await GetByIdAsync(id);
 
         DetailsOrderViewModel orderModel = new DetailsOrderViewModel
         {
             Id = order.Id,
             OrderHeaderId = order.OrderHeaderId,
-            OrderHeader = await this._orderHeaderService.GetByIdAsyncWithNavPropertiesAsync(order.OrderHeaderId),
-            OrderDetailsList = await this._orderDetailsService.GetAllByOrderHeaderIdAsync(order.OrderHeaderId)
+            OrderHeader = await _orderHeaderService.GetByIdAsyncWithNavPropertiesAsync(order.OrderHeaderId),
+            OrderDetailsList = await _orderDetailsService.GetAllByOrderHeaderIdAsync(order.OrderHeaderId)
         };
 
         return orderModel;
@@ -109,8 +105,7 @@ public class OrderService : IOrderService
 
     public async Task<Guid> GetOrderIdByOrderHeaderIdAsync(Guid orderHeaderId)
     {
-        Order order = await this
-            .GetByOrderHeaderIdAsync(orderHeaderId);
+        Order order = await GetByOrderHeaderIdAsync(orderHeaderId);
 
         return order.Id;
     }
@@ -129,19 +124,16 @@ public class OrderService : IOrderService
             StreetAddress = orderModel.OrderHeader.StreetAddress,
         };
 
-        await this
-            ._applicationUserService
+        await _applicationUserService
             .UpdateApplicationUserAsync(applicationUserModel);
 
-        await this
-            ._orderHeaderService
+        await _orderHeaderService
             .UpdateOrderHeaderAsync(orderModel.OrderHeader);
     }
 
     private async Task<Order> GetByIdAsync(Guid id)
     {
-        Order? order = await this
-            ._unitOfWork
+        Order? order = await _unitOfWork
             .OrderRepository
             .GetByIdAsync(id);
 
@@ -155,8 +147,7 @@ public class OrderService : IOrderService
 
     private async Task<Order> GetByOrderHeaderIdAsync(Guid orderHeaderId)
     {
-        Order? order = await this
-            ._unitOfWork
+        Order? order = await _unitOfWork
             .OrderRepository
             .GetByOrderHeaderIdAsync(orderHeaderId);
 

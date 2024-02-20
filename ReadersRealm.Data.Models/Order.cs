@@ -7,8 +7,8 @@ public class Order
 {
     public Order()
     {
-        this.Id = Guid.NewGuid();
-        this.OrderDetailsList = new HashSet<OrderDetails>();
+        Id = Guid.NewGuid();
+        OrderDetailsList = new HashSet<OrderDetails>();
     }
 
     public Guid Id { get; set; }

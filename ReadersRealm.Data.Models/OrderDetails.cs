@@ -9,7 +9,7 @@ public class OrderDetails
 {
     public OrderDetails()
     {
-        this.Id = Guid.NewGuid();
+        Id = Guid.NewGuid();
     }
 
     [Key]

@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Extensions.ClaimsPrincipal;
+﻿namespace ReadersRealm.Web.Extensions;
 
 using System.Security.Claims;
 public static class ClaimsPrincipalExtension

@@ -12,24 +12,23 @@ public class BookRepository : Repository<Book>, IBookRepository
     public BookRepository(ReadersRealmDbContext dbContext)
         : base(dbContext)
     {
-        this._dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<Book?> GetByIdAsync(Guid id)
     {
-        return await this
-            ._dbContext
+        return await _dbContext
             .Books
             .FirstOrDefaultAsync(book => book.Id == id);
     }
 
     public Task<Book?> GetByIdWithNavPropertiesAsync(Guid id, string properties)
     {
-        IQueryable<Book> query = this._dbContext.Books.AsNoTracking();
+        IQueryable<Book> query = _dbContext.Books.AsNoTracking();
 
         string[] propertiesToAdd = properties.Split(", ", StringSplitOptions.RemoveEmptyEntries);
 
-        if (!this.ArePropertiesPresentInEntity(propertiesToAdd))
+        if (!ArePropertiesPresentInEntity(propertiesToAdd))
         {
             throw new PropertyNotFoundException();
         }

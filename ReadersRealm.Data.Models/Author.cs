@@ -35,8 +35,8 @@ public class Author
     /// </summary>
     public Author()
     {
-        this.Id = Guid.NewGuid();
-        this.Books = new HashSet<Book>();
+        Id = Guid.NewGuid();
+        Books = new HashSet<Book>();
     }
 
     /// <summary>

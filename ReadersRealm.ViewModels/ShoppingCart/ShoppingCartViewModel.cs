@@ -12,7 +12,7 @@ public class ShoppingCartViewModel
 {
     public ShoppingCartViewModel()
     {
-        this.Id = Guid.NewGuid();
+        Id = Guid.NewGuid();
     }
     public Guid Id { get; set; }
 

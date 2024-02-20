@@ -65,12 +65,11 @@
     <ProjectReference Include="..\ReadersRealm.Common\ReadersRealm.Common.csproj" />
     <ProjectReference Include="..\ReadersRealm.Data.Models\ReadersRealm.Data.Models.csproj" />
     <ProjectReference Include="..\ReadersRealm.DataTransferObjects\ReadersRealm.DataTransferObjects.csproj" />
-    <ProjectReference Include="..\ReadersRealm.Services\ReadersRealm.Services.csproj" />
-    <ProjectReference Include="..\ReadersRealm.ViewModels\ReadersRealm.ViewModels.csproj" />
+    <ProjectReference Include="..\ReadersRealm.ViewModels\ReadersRealm.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\ReadersRealm.Web.Infrastructure\ReadersRealm.Web.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\HttpContextAccessor\" />
     <Folder Include="wwwroot\images\book\" />
   </ItemGroup>
 

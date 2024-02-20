@@ -21,7 +21,7 @@ public class Category
 {
     public Category()
     {
-        this.Books = new HashSet<Book>();
+        Books = new HashSet<Book>();
     }
 
     /// <summary>

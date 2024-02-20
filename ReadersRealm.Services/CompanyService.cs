@@ -1,10 +1,10 @@
-﻿namespace ReadersRealm.Services;
+﻿namespace ReadersRealm.Services.Data;
 
 using Common;
 using Common.Exceptions;
+using ReadersRealm.Data.Models;
+using ReadersRealm.Data.Repositories.Contracts;
 using Contracts;
-using Data.Models;
-using Data.Repositories.Contracts;
 using ViewModels.Company;
 
 public class CompanyService : ICompanyService
@@ -13,13 +13,12 @@ public class CompanyService : ICompanyService
 
     public CompanyService(IUnitOfWork unitOfWork)
     {
-        this._unitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<PaginatedList<AllCompaniesViewModel>> GetAllAsync(int pageIndex, int pageSize, string? searchTerm)
     {
-        IEnumerable<Company> allCompanies = await this
-            ._unitOfWork
+        IEnumerable<Company> allCompanies = await _unitOfWork
             .CompanyRepository
             .GetAsync(company => company.Name.ToLower().StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty), null, string.Empty);
 
@@ -40,8 +39,7 @@ public class CompanyService : ICompanyService
 
     public async Task<List<AllCompaniesListViewModel>> GetAllListAsync()
     {
-        IEnumerable<Company> allCompanies = await this
-            ._unitOfWork
+        IEnumerable<Company> allCompanies = await _unitOfWork
             .CompanyRepository
             .GetAsync(null, null, string.Empty);
 
@@ -67,8 +65,7 @@ public class CompanyService : ICompanyService
 
     public async Task<EditCompanyViewModel> GetCompanyForEditAsync(Guid id)
     {
-        Company? company = await this
-            ._unitOfWork
+        Company? company = await _unitOfWork
             .CompanyRepository
             .GetByIdAsync(id);
 
@@ -95,8 +92,7 @@ public class CompanyService : ICompanyService
 
     public async Task<DeleteCompanyViewModel> GetCompanyForDeleteAsync(Guid id)
     {
-        Company? company = await this
-            ._unitOfWork
+        Company? company = await _unitOfWork
             .CompanyRepository
             .GetByIdAsync(id);
 
@@ -135,20 +131,17 @@ public class CompanyService : ICompanyService
             PhoneNumber = bookModel.PhoneNumber,
         };
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .CompanyRepository
             .AddAsync(companyToAdd);
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 
     public async Task EditCompanyAsync(EditCompanyViewModel bookModel)
     {
-        Company? companyToEdit = await this
-            ._unitOfWork
+        Company? companyToEdit = await _unitOfWork
             .CompanyRepository
             .GetByIdAsync(bookModel.Id);
 
@@ -167,13 +160,12 @@ public class CompanyService : ICompanyService
         companyToEdit.State = bookModel.State;
         companyToEdit.PhoneNumber = bookModel.PhoneNumber;
 
-        await this._unitOfWork.SaveAsync();
+        await _unitOfWork.SaveAsync();
     }
 
     public async Task DeleteCompanyAsync(DeleteCompanyViewModel companyModel)
     {
-        Company? companyToDelete = await this
-            ._unitOfWork
+        Company? companyToDelete = await _unitOfWork
             .CompanyRepository
             .GetByIdAsync(companyModel.Id);
 
@@ -182,13 +174,11 @@ public class CompanyService : ICompanyService
             throw new CompanyNotFoundException();
         }
 
-        this
-            ._unitOfWork
+        _unitOfWork
             .CompanyRepository
             .Delete(companyToDelete);
 
-        await this 
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 }

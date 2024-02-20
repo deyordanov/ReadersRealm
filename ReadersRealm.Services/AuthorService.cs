@@ -1,11 +1,10 @@
-﻿namespace ReadersRealm.Services;
+﻿namespace ReadersRealm.Services.Data;
 
 using Contracts;
-using Data.Models;
-using Data.Repositories.Contracts;
+using ReadersRealm.Data.Models;
+using ReadersRealm.Data.Repositories.Contracts;
 using ViewModels.Author;
 using ViewModels.Book;
-using static Common.Constants.ValidationConstants.Author;
 
 public class AuthorService : IAuthorService
 {
@@ -13,13 +12,12 @@ public class AuthorService : IAuthorService
 
     public AuthorService(IUnitOfWork unitOfWork)
     {
-        this._unitOfWork = unitOfWork;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<IEnumerable<AllAuthorsViewModel>> GetAllAsync()
     {
-        List<Author> allAuthors = await this
-            ._unitOfWork
+        List<Author> allAuthors = await _unitOfWork
             .AuthorRepository
             .GetAsync(null, null, string.Empty);
 
@@ -54,8 +52,7 @@ public class AuthorService : IAuthorService
 
     public async Task<List<AllAuthorsListViewModel>> GetAllListAsync()
     {
-        List<Author> allAuthors = await this
-            ._unitOfWork
+        List<Author> allAuthors = await _unitOfWork
             .AuthorRepository
             .GetAsync(null, null, string.Empty);
 

@@ -2,48 +2,45 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+namespace ReadersRealm.Web.Areas.Identity.Pages.Account;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using static ReadersRealm.Common.Constants.Constants.SessionKeys;
+using Services.Contracts;
+using static Common.Constants.Constants.SessionKeys;
 
-namespace ReadersRealm.Areas.Identity.Pages.Account
+public class LogoutModel : PageModel
 {
-    using Extensions.ClaimsPrincipal;
-    using Services.Contracts;
+    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly ILogger<LogoutModel> _logger;
+    private readonly IShoppingCartService _shoppingCartService;
 
-    public class LogoutModel : PageModel
+    public LogoutModel(
+        SignInManager<IdentityUser> signInManager, 
+        ILogger<LogoutModel> logger, 
+        IShoppingCartService shoppingCartService)
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ILogger<LogoutModel> _logger;
-        private readonly IShoppingCartService _shoppingCartService;
+        _signInManager = signInManager;
+        _logger = logger;
+        _shoppingCartService = shoppingCartService;
+    }
 
-        public LogoutModel(
-            SignInManager<IdentityUser> signInManager, 
-            ILogger<LogoutModel> logger, 
-            IShoppingCartService shoppingCartService)
+    public async Task<IActionResult> OnPost(string returnUrl = null)
+    {
+        HttpContext.Session.Remove(ShoppingCartSessionKey);
+
+        await _signInManager.SignOutAsync();
+        _logger.LogInformation("User logged out.");
+        if (returnUrl != null)
         {
-            this._signInManager = signInManager;
-            this._logger = logger;
-            this._shoppingCartService = shoppingCartService;
+            return LocalRedirect(returnUrl);
         }
-
-        public async Task<IActionResult> OnPost(string returnUrl = null)
+        else
         {
-            HttpContext.Session.Remove(ShoppingCartSessionKey);
-
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            if (returnUrl != null)
-            {
-                return LocalRedirect(returnUrl);
-            }
-            else
-            {
-                // This needs to be a redirect so that the browser performs a new
-                // request and the identity for the user gets updated.
-                return RedirectToPage();
-            }
+            // This needs to be a redirect so that the browser performs a new
+            // request and the identity for the user gets updated.
+            return RedirectToPage();
         }
     }
 }

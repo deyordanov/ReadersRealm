@@ -9,13 +9,12 @@ public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicati
     private readonly ReadersRealmDbContext _dbContext;
     public ApplicationUserRepository(ReadersRealmDbContext dbContext) : base(dbContext)
     {
-        this._dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<ApplicationUser?> GetByIdAsync(string id)
     {
-        return await this
-            ._dbContext
+        return await _dbContext
             .ApplicationUsers
             .FirstOrDefaultAsync(applicationUser => applicationUser.Id == id);
     }

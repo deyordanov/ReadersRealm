@@ -19,7 +19,7 @@ public class CategoryController : BaseController
 
     public CategoryController(ICategoryService categoryService)
     {
-        this._categoryService = categoryService;
+        _categoryService = categoryService;
     }
 
     [HttpGet]
@@ -37,8 +37,7 @@ public class CategoryController : BaseController
     [Authorize(Roles = AdminRole)]
     public IActionResult Create()
     {
-        CreateCategoryViewModel categoryModel = this
-            ._categoryService
+        CreateCategoryViewModel categoryModel = _categoryService
             .GetCategoryForCreate();
 
         return View(categoryModel);
@@ -76,8 +75,7 @@ public class CategoryController : BaseController
             return NotFound();
         }
 
-        EditCategoryViewModel categoryModel = await this
-            ._categoryService
+        EditCategoryViewModel categoryModel = await _categoryService
             .GetCategoryForEditAsync((int)id);
 
         return View(categoryModel);
@@ -115,8 +113,7 @@ public class CategoryController : BaseController
             return NotFound();
         }
 
-        DeleteCategoryViewModel categoryModel = await this
-            ._categoryService
+        DeleteCategoryViewModel categoryModel = await _categoryService
             .GetCategoryForDeleteAsync((int)id);
 
         return View(categoryModel);

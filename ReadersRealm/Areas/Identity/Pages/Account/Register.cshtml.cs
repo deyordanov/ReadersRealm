@@ -48,7 +48,7 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
         {
             this.userManager = userManager;
             this.userStore = userStore;
-            this.emailStore = GetEmailStore();
+            emailStore = GetEmailStore();
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this.logger = logger;
@@ -164,17 +164,16 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            await this.EnsureRolesAreCreatedAsync();
+            await EnsureRolesAreCreatedAsync();
 
-            List<AllCompaniesListViewModel> companies = await this
-                .companyService
+            List<AllCompaniesListViewModel> companies = await companyService
                 .GetAllListAsync();
 
             Input = new()
             {
                 FirstName = string.Empty,
                 LastName = string.Empty,
-                Roles = this.roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
+                Roles = roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
                 Companies = companies.Select(c => new SelectListItem(c.Name, c.Id.ToString())),
             };
 
@@ -297,10 +296,10 @@ namespace ReadersRealm.Areas.Identity.Pages.Account
 
             foreach (string role in roles)
             {
-                bool roleExists = await this.roleManager.RoleExistsAsync(role);
+                bool roleExists = await roleManager.RoleExistsAsync(role);
                 if (!roleExists)
                 {
-                    await this.roleManager.CreateAsync(new IdentityRole(role));
+                    await roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
         }

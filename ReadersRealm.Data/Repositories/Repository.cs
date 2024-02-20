@@ -12,15 +12,15 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
 
     protected Repository(ReadersRealmDbContext dbContext)
     {
-        this._dbContext = dbContext;
-        this._dbSet = this._dbContext.Set<TEntity>();
+        _dbContext = dbContext;
+        _dbSet = _dbContext.Set<TEntity>();
     }
 
     public Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter, 
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy, 
         string properties)
     {
-        IQueryable<TEntity> query = this._dbSet.AsNoTracking();
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
 
         if (filter != null)
         {
@@ -29,7 +29,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
 
         string[] propertiesToAdd = properties.Split(", ", StringSplitOptions.RemoveEmptyEntries);
 
-        if (!this.ArePropertiesPresentInEntity(propertiesToAdd))
+        if (!ArePropertiesPresentInEntity(propertiesToAdd))
         {
             throw new PropertyNotFoundException();
         }
@@ -49,28 +49,28 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
 
     public void DetachEntity(TEntity entity)
     {
-        this._dbContext.Entry(entity).State = EntityState.Detached;
+        _dbContext.Entry(entity).State = EntityState.Detached;
     }
 
     public async Task AddAsync(TEntity entity)
     {
-        await this._dbSet.AddAsync(entity);
+        await _dbSet.AddAsync(entity);
     }
 
     public void Update(TEntity entity)
     {
-        this._dbSet.Attach(entity);
-        this._dbContext.Entry(entity).State = EntityState.Modified;
+        _dbSet.Attach(entity);
+        _dbContext.Entry(entity).State = EntityState.Modified;
     }
 
     public void Delete(TEntity entity)
     {
-        this._dbSet.Remove(entity);
+        _dbSet.Remove(entity);
     }
 
     public void DeleteRange(IEnumerable<TEntity> entities)
     {
-        this._dbSet.RemoveRange(entities);
+        _dbSet.RemoveRange(entities);
     }
 
     /// <summary>

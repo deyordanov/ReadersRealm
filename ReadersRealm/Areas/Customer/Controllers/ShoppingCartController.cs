@@ -1,26 +1,26 @@
-﻿namespace ReadersRealm.Areas.Customer.Controllers;
+﻿namespace ReadersRealm.Web.Areas.Customer.Controllers;
 
 using Data.Models;
 using DataTransferObjects.OrderDetails;
 using DataTransferObjects.OrderHeader;
-using Extensions.ClaimsPrincipal;
+using Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
-using ReadersRealm.Extensions.HttpContextAccessor;
+using ReadersRealm.Areas;
+using ReadersRealm.ViewModels.ApplicationUser;
+using ReadersRealm.ViewModels.OrderDetails;
+using ReadersRealm.ViewModels.OrderHeader;
+using ReadersRealm.ViewModels.ShoppingCart;
 using Services.Contracts;
 using Stripe.Checkout;
 using System.Text;
-using ViewModels.ApplicationUser;
-using ViewModels.OrderDetails;
-using ViewModels.OrderHeader;
-using ViewModels.ShoppingCart;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.OrderHeader;
 using static Common.Constants.Constants.Roles;
+using static Common.Constants.Constants.SessionKeys;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
 using static Common.Constants.Constants.StripeSettings;
-using static Common.Constants.Constants.SessionKeys;
 
 [Area(Customer)]
 public class ShoppingCartController : BaseController
@@ -40,12 +40,12 @@ public class ShoppingCartController : BaseController
         IOrderDetailsService orderDetailsService,
         IHttpContextAccessor httpContextAccessor)
     {
-        this._shoppingCartService = shoppingCartService;
-        this._applicationUserService = applicationUserService;
-        this._orderService = orderService;
-        this._orderHeaderService = orderHeaderService;
-        this._orderDetailsService = orderDetailsService;
-        this._httpContextAccessor = httpContextAccessor;
+        _shoppingCartService = shoppingCartService;
+        _applicationUserService = applicationUserService;
+        _orderService = orderService;
+        _orderHeaderService = orderHeaderService;
+        _orderDetailsService = orderDetailsService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpGet]
@@ -53,8 +53,7 @@ public class ShoppingCartController : BaseController
     {
         string userId = User.GetId();
 
-        AllShoppingCartsListViewModel shoppingCartModel = await this
-            ._shoppingCartService
+        AllShoppingCartsListViewModel shoppingCartModel = await _shoppingCartService
             .GetAllListAsync(userId);
 
         return View(shoppingCartModel);
@@ -65,8 +64,7 @@ public class ShoppingCartController : BaseController
     {
         string userId = User.GetId();
 
-        AllShoppingCartsListViewModel shoppingCartModel = await this
-            ._shoppingCartService
+        AllShoppingCartsListViewModel shoppingCartModel = await _shoppingCartService
             .GetAllListAsync(userId);
 
         return View(shoppingCartModel);
@@ -78,25 +76,21 @@ public class ShoppingCartController : BaseController
         string userId = User.GetId();
         if (!ModelState.IsValid)
         {
-            shoppingCartModel = await this
-                ._shoppingCartService
+            shoppingCartModel = await _shoppingCartService
                 .GetAllListAsync(userId);
 
             return View(shoppingCartModel);
         }
 
-        OrderHeaderViewModel? orderHeaderModel = await this
-            ._orderHeaderService
+        OrderHeaderViewModel? orderHeaderModel = await _orderHeaderService
             .GetByApplicationUserIdAndOrderStatusAsync(shoppingCartModel.OrderHeader.ApplicationUserId, OrderStatusPending);
 
         if (orderHeaderModel != null)
         {
-            await this
-                ._orderDetailsService
+            await _orderDetailsService
                 .DeleteOrderDetailsRangeByOrderHeaderIdAsync(orderHeaderModel.Id);
 
-            await this
-                ._orderHeaderService
+            await _orderHeaderService
                 .DeleteOrderHeaderAsync(orderHeaderModel);
         }
 
@@ -112,12 +106,10 @@ public class ShoppingCartController : BaseController
             PhoneNumber = shoppingCartModel.OrderHeader.PhoneNumber,
         };
 
-        await this
-            ._applicationUserService
+        await _applicationUserService
             .UpdateApplicationUserAsync(applicationUserModel);
 
-        shoppingCartModel = await this
-            ._shoppingCartService
+        shoppingCartModel = await _shoppingCartService
             .GetAllListAsync(userId);
 
         bool isUserInCompanyRole = User.IsInRole(CompanyRole);
@@ -135,8 +127,7 @@ public class ShoppingCartController : BaseController
         }
 
         shoppingCartModel.OrderHeader.OrderDate = DateTime.Now;
-        (Guid orderHeaderId, Guid orderId) orderHeaderData = await this
-            ._orderHeaderService
+        (Guid orderHeaderId, Guid orderId) orderHeaderData = await _orderHeaderService
             .CreateOrderHeaderAsync(shoppingCartModel.OrderHeader);
 
         foreach (ShoppingCartViewModel shoppingCart in shoppingCartModel.ShoppingCartsList)
@@ -147,20 +138,18 @@ public class ShoppingCartController : BaseController
                 OrderHeaderId = orderHeaderData.orderHeaderId,
                 Count = shoppingCart.Count,
                 Price = shoppingCart.TotalPrice,
-                Order = await this._orderService.GetOrderForSummaryAsync(orderHeaderData.orderId)
+                Order = await _orderService.GetOrderForSummaryAsync(orderHeaderData.orderId)
             };
 
-            await this
-                ._orderDetailsService
+            await _orderDetailsService
                 .CreateOrderDetailsAsync(orderDetailsModel);
         }
 
         if (!isUserInCompanyRole)
         {
-            Session session = await this.ConfigureStripe(orderHeaderData.orderHeaderId, shoppingCartModel);
+            Session session = await ConfigureStripe(orderHeaderData.orderHeaderId, shoppingCartModel);
 
-            await this
-                ._orderHeaderService
+            await _orderHeaderService
                 .UpdateOrderHeaderPaymentIntentIdAsync(orderHeaderData.orderHeaderId, session.Id, session.PaymentIntentId);
 
             Response.Headers.Add("Location", session.Url);
@@ -173,11 +162,10 @@ public class ShoppingCartController : BaseController
     [HttpGet]
     public async Task<IActionResult> OrderConfirmation(Guid orderHeaderId)
     {
-        OrderHeaderViewModel orderHeaderModel = await this
-            ._orderHeaderService
+        OrderHeaderViewModel orderHeaderModel = await _orderHeaderService
             .GetByIdAsyncWithNavPropertiesAsync(orderHeaderId);
 
-        bool isUserInCompanyRole = this.User.IsInRole(CompanyRole);
+        bool isUserInCompanyRole = User.IsInRole(CompanyRole);
         if (!isUserInCompanyRole)
         {
             SessionService service = new SessionService();
@@ -191,15 +179,13 @@ public class ShoppingCartController : BaseController
                 orderHeaderModel.OrderStatus = OrderStatusApproved;
                 orderHeaderModel.PaymentStatus = PaymentStatusApproved;
 
-                await this
-                    ._orderHeaderService
+                await _orderHeaderService
                     .UpdateOrderHeaderAsync(orderHeaderModel);
             }
         }
 
-        string applicationUserId = this.User.GetId();
-        await this
-            ._shoppingCartService
+        string applicationUserId = User.GetId();
+        await _shoppingCartService
             .DeleteAllShoppingCartsApplicationUserIdAsync(applicationUserId);
 
         return View(orderHeaderId);
@@ -213,8 +199,7 @@ public class ShoppingCartController : BaseController
             return NotFound();
         }
 
-        OrderHeaderReceiptDto orderHeaderDto = await this
-            ._orderHeaderService
+        OrderHeaderReceiptDto orderHeaderDto = await _orderHeaderService
             .GetOrderHeaderForReceiptAsync((Guid)orderHeaderId);
 
         StringBuilder sb = new StringBuilder();
@@ -237,7 +222,7 @@ public class ShoppingCartController : BaseController
             sb.AppendLine($"    Total Price: {(orderDetailsDto.Book.Price * orderDetailsDto.Count).ToString("c")}");
         }
 
-        this._httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.ContentDisposition, "attachment;filename=receipt.txt");
+        _httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.ContentDisposition, "attachment;filename=receipt.txt");
 
         byte[] textBytes = Encoding.UTF8.GetBytes(sb.ToString().TrimEnd());
 
@@ -252,8 +237,7 @@ public class ShoppingCartController : BaseController
             return NotFound();
         }
 
-        await this
-            ._shoppingCartService
+        await _shoppingCartService
             .IncreaseQuantityForShoppingCartAsync((Guid)id);
 
         return RedirectToAction(nameof(Index));
@@ -267,13 +251,12 @@ public class ShoppingCartController : BaseController
             return NotFound();
         }
 
-        bool isItemDeleted = await this
-            ._shoppingCartService
+        bool isItemDeleted = await _shoppingCartService
             .DecreaseQuantityForShoppingCartAsync((Guid)id);
 
         if (isItemDeleted)
         {
-            await this.SetShoppingCartItemsCountInSession();
+            await SetShoppingCartItemsCountInSession();
         }
 
         return RedirectToAction(nameof(Index));
@@ -282,11 +265,10 @@ public class ShoppingCartController : BaseController
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)
     {
-        await this
-            ._shoppingCartService
+        await _shoppingCartService
             .DeleteShoppingCartAsync(id);
 
-        await this.SetShoppingCartItemsCountInSession();
+        await SetShoppingCartItemsCountInSession();
 
         TempData[Success] = ShoppingCartItemHasBeenDeletedSuccessfully;
 
@@ -295,7 +277,7 @@ public class ShoppingCartController : BaseController
 
     private async Task<Session> ConfigureStripe(Guid orderHeaderId, AllShoppingCartsListViewModel shoppingCartModel)
     {
-        string domain = this._httpContextAccessor.GetDomain();
+        string domain = _httpContextAccessor.GetDomain();
         SessionCreateOptions options = new SessionCreateOptions
         {
             LineItems = new List<SessionLineItemOptions>(),
@@ -332,8 +314,7 @@ public class ShoppingCartController : BaseController
     {
         string userId = User.GetId();
 
-        int itemsCount = await this
-            ._shoppingCartService
+        int itemsCount = await _shoppingCartService
             .GetShoppingCartCountByApplicationUserIdAsync(userId);
 
         HttpContext.Session.SetInt32(ShoppingCartSessionKey, itemsCount);

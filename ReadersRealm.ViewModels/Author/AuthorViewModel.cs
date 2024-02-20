@@ -7,7 +7,7 @@ public class AuthorViewModel
 {
     public AuthorViewModel()
     {
-        this.Books = new HashSet<BookViewModel>();
+        Books = new HashSet<BookViewModel>();
     }
 
     public Guid Id { get; set; }

@@ -3,7 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Models;
-using ReadersRealm.Data.Models.Enums;
+using Models.Enums;
 
 public class BookConfiguration : IEntityTypeConfiguration<Book>
 {

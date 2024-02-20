@@ -1,10 +1,10 @@
 ﻿namespace ReadersRealm.Data;
 
-using Common.Extensions.ModelBuilderExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Extensions;
 
 public class ReadersRealmDbContext : IdentityDbContext<IdentityUser>
 {

@@ -1,17 +1,17 @@
-﻿namespace ReadersRealm.Areas.Admin.Controllers;
+﻿namespace ReadersRealm.Web.Areas.Admin.Controllers;
 
 using Common;
 using Data.Models;
-using Extensions.ClaimsPrincipal;
-using Extensions.HttpContextAccessor;
+using Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ReadersRealm.Areas;
+using ReadersRealm.ViewModels.Order;
+using ReadersRealm.ViewModels.OrderDetails;
 using ReadersRealm.ViewModels.OrderHeader;
 using Services.Contracts;
 using Stripe;
 using Stripe.Checkout;
-using ViewModels.Order;
-using ViewModels.OrderDetails;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Order;
 using static Common.Constants.Constants.OrderHeader;
@@ -35,10 +35,10 @@ public class OrderController : BaseController
         IOrderDetailsService orderDetailsService,
         IHttpContextAccessor httpContextAccessor)
     {
-        this._orderService = orderService;
-        this._orderHeaderService = orderHeaderService;
-        this._orderDetailsService = orderDetailsService;
-        this._httpContextAccessor = httpContextAccessor;
+        _orderService = orderService;
+        _orderHeaderService = orderHeaderService;
+        _orderDetailsService = orderDetailsService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpGet]
@@ -48,15 +48,13 @@ public class OrderController : BaseController
         bool isUserAdminOrEmployee = User.IsInRole(AdminRole) || User.IsInRole(EmployeeRole);
         if (isUserAdminOrEmployee)
         {
-            allOrders = await this
-                ._orderService
+            allOrders = await _orderService
                 .GetAllAsync(pageIndex, 5, searchTerm);
         }
         else
         {
             string userId = User.GetId();
-            allOrders = await this
-                ._orderService
+            allOrders = await _orderService
                 .GetAllByUserIdAsync(pageIndex, 5, searchTerm, userId);
         }
 
@@ -71,8 +69,7 @@ public class OrderController : BaseController
             return NotFound();
         }
 
-        DetailsOrderViewModel orderModel = await this
-            ._orderService
+        DetailsOrderViewModel orderModel = await _orderService
             .GetOrderForDetailsAsync((Guid)id);
 
         ViewBag.PageIndex = pageIndex;
@@ -87,21 +84,18 @@ public class OrderController : BaseController
     {
         if (!ModelState.IsValid)
         {
-            orderModel = await this
-                ._orderService
+            orderModel = await _orderService
                 .GetOrderForDetailsAsync((Guid)orderModel.Id);
 
             return View(orderModel);
         }
 
-        await this
-            ._orderService
+        await _orderService
             .UpdateOrderAsync(orderModel);
 
         TempData[Success] = OrderHasSuccessfullyBeenUpdated;
 
-        orderModel = await this
-            ._orderService
+        orderModel = await _orderService
             .GetOrderForDetailsAsync((Guid)orderModel.Id);
 
         return View(orderModel);
@@ -111,14 +105,12 @@ public class OrderController : BaseController
     [Authorize(Roles = AuthorizeAdminAndEmployeeRoles)]
     public async Task<IActionResult> StartProcessingOrder(Guid orderHeaderId, int pageIndex, string? searchTerm)
     {
-        await this
-            ._orderHeaderService
+        await _orderHeaderService
             .UpdateOrderHeaderStatusAsync(orderHeaderId, OrderStatusInProcess, null);
 
         TempData[Success] = OrderStatusHasSuccessfullyBeenUpdated;
 
-        Guid orderId = await this
-            ._orderService
+        Guid orderId = await _orderService
             .GetOrderIdByOrderHeaderIdAsync(orderHeaderId);
 
         return RedirectToAction(nameof(Details), nameof(Order), new { id = orderId, pageIndex, searchTerm });
@@ -128,8 +120,7 @@ public class OrderController : BaseController
     [Authorize(Roles = AuthorizeAdminAndEmployeeRoles)]
     public async Task<IActionResult> ShipOrder(DetailsOrderViewModel orderModel, int pageIndex, string? searchTerm)
     {
-        Guid orderId = await this
-            ._orderService
+        Guid orderId = await _orderService
             .GetOrderIdByOrderHeaderIdAsync(orderModel.OrderHeaderId);
 
         if (orderModel.OrderHeader.TrackingNumber == null ||
@@ -147,8 +138,7 @@ public class OrderController : BaseController
             orderModel.OrderHeader.PaymentDueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(30));
         }
 
-        await this
-            ._orderHeaderService
+        await _orderHeaderService
             .UpdateOrderHeaderAsync(orderModel.OrderHeader);
 
         TempData[Success] = OrderStatusHasSuccessfullyBeenUpdated;
@@ -162,23 +152,20 @@ public class OrderController : BaseController
     {
         if (orderModel.OrderHeader.PaymentStatus == PaymentStatusApproved)
         {
-            await this.InitiateStripeRefund(orderModel);
+            await InitiateStripeRefund(orderModel);
 
-            await this
-                ._orderHeaderService
+            await _orderHeaderService
                 .UpdateOrderHeaderStatusAsync(orderModel.OrderHeader.Id, OrderStatusCancelled, PaymentStatusRefunded);
         }
         else
         {
-            await this
-                ._orderHeaderService
+            await _orderHeaderService
                 .UpdateOrderHeaderStatusAsync(orderModel.OrderHeader.Id, OrderStatusCancelled, PaymentStatusCancelled);
         }
 
         TempData[Success] = OrderStatusHasSuccessfullyBeenUpdated;
 
-        Guid orderId = await this
-            ._orderService
+        Guid orderId = await _orderService
             .GetOrderIdByOrderHeaderIdAsync(orderModel.OrderHeader.Id);
 
         return RedirectToAction(nameof(Details), nameof(Order), new { id = orderId, pageIndex, searchTerm });
@@ -187,14 +174,12 @@ public class OrderController : BaseController
     [HttpPost]
     public async Task<IActionResult> PayForOrder(DetailsOrderViewModel orderModel, int pageIndex, string? searchTerm)
     {
-        orderModel.OrderDetailsList = await this
-            ._orderDetailsService
+        orderModel.OrderDetailsList = await _orderDetailsService
             .GetAllByOrderHeaderIdAsync(orderModel.OrderHeader.Id);
 
-        Session session = await this.ConfigureStripe(orderModel);
+        Session session = await ConfigureStripe(orderModel);
 
-        await this
-        ._orderHeaderService
+        await _orderHeaderService
             .UpdateOrderHeaderPaymentIntentIdAsync(orderModel.OrderHeader.Id, session.Id, session.PaymentIntentId);
 
         Response.Headers.Add("Location", session.Url);
@@ -205,8 +190,7 @@ public class OrderController : BaseController
     [HttpGet]
     public async Task<IActionResult> OrderConfirmation(Guid orderHeaderId)
     {
-        OrderHeaderViewModel orderHeaderModel = await this
-            ._orderHeaderService
+        OrderHeaderViewModel orderHeaderModel = await _orderHeaderService
             .GetByIdAsyncWithNavPropertiesAsync(orderHeaderId);
 
         SessionService service = new SessionService();
@@ -220,8 +204,7 @@ public class OrderController : BaseController
             orderHeaderModel.OrderStatus = orderHeaderModel.OrderStatus;
             orderHeaderModel.PaymentStatus = PaymentStatusApproved;
 
-            await this
-                ._orderHeaderService
+            await _orderHeaderService
                 .UpdateOrderHeaderAsync(orderHeaderModel);
         }
 
@@ -242,7 +225,7 @@ public class OrderController : BaseController
 
     private async Task<Session> ConfigureStripe(DetailsOrderViewModel orderModel)
     {
-        string domain = this._httpContextAccessor.GetDomain();
+        string domain = _httpContextAccessor.GetDomain();
         SessionCreateOptions options = new SessionCreateOptions
         {
             LineItems = new List<SessionLineItemOptions>(),

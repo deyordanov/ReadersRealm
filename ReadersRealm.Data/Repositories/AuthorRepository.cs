@@ -9,13 +9,12 @@ public class AuthorRepository : Repository<Author>, IAuthorRepository
     private readonly ReadersRealmDbContext _dbContext;
     public AuthorRepository(ReadersRealmDbContext dbContext) : base(dbContext)
     {
-        this._dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<Author?> GetByIdAsync(Guid id)
     {
-        return await this
-            ._dbContext
+        return await _dbContext
             .Authors
             .FirstAsync(author => author.Id == id);
     }

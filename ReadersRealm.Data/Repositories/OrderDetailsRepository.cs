@@ -9,13 +9,12 @@ public class OrderDetailsRepository : Repository<OrderDetails>, IOrderDetailsRep
     private readonly ReadersRealmDbContext _dbContext;
     public OrderDetailsRepository(ReadersRealmDbContext dbContext) : base(dbContext)
     {
-        this._dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<OrderDetails?> GetByIdAsync(Guid id)
     {
-        return await this
-            ._dbContext
+        return await _dbContext
             .OrdersDetails
             .FirstOrDefaultAsync(orderDetail => orderDetail.Id == id);
     }

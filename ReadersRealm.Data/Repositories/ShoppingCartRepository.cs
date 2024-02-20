@@ -11,24 +11,23 @@ public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRep
     private readonly ReadersRealmDbContext _dbContext;
     public ShoppingCartRepository(ReadersRealmDbContext dbContext) : base(dbContext)
     {
-        this._dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<ShoppingCart?> GetByIdAsync(Guid id)
     {
-        return await this
-            ._dbContext
+        return await _dbContext
             .ShoppingCarts
             .FirstOrDefaultAsync(shoppingCart => shoppingCart.Id == id);
     }
 
     public Task<ShoppingCart?> GetByIdWithNavPropertiesAsync(Guid id, string properties)
     {
-        IQueryable<ShoppingCart> query = this._dbContext.ShoppingCarts;
+        IQueryable<ShoppingCart> query = _dbContext.ShoppingCarts;
 
         string[] propertiesToAdd = properties.Split(", ", StringSplitOptions.RemoveEmptyEntries);
 
-        if (!this.ArePropertiesPresentInEntity(propertiesToAdd))
+        if (!ArePropertiesPresentInEntity(propertiesToAdd))
         {
             throw new PropertyNotFoundException();
         }
@@ -43,8 +42,7 @@ public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRep
 
     public Task<ShoppingCart?> GetFirstOrDefaultWithFilterAsync(Expression<Func<ShoppingCart, bool>> filter)
     {
-        return this
-            ._dbContext
+        return _dbContext
             .ShoppingCarts
             .AsNoTracking()
             .FirstOrDefaultAsync(filter);
@@ -52,8 +50,7 @@ public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRep
 
     public Task<ShoppingCart?> GetByApplicationUserIdAndBookIdAsync(string applicationUserId, Guid bookId)
     {
-        return this
-            ._dbContext
+        return _dbContext
             .ShoppingCarts
             .FirstOrDefaultAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId &&
                                                  shoppingCart.BookId == bookId);
@@ -61,8 +58,7 @@ public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRep
 
     public async Task<List<ShoppingCart>> GetAllByApplicationUserIdAsync(string applicationUserId)
     {
-        return await this
-            ._dbContext
+        return await _dbContext
             .ShoppingCarts
             .Where(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId)
             .ToListAsync();

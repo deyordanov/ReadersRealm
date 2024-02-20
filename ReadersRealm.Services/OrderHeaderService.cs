@@ -1,13 +1,11 @@
-﻿namespace ReadersRealm.Services;
+﻿namespace ReadersRealm.Services.Data;
 
 using Common.Exceptions;
+using ReadersRealm.Data.Models;
+using ReadersRealm.Data.Repositories.Contracts;
+using DataTransferObjects.OrderHeader;
 using Contracts;
-using Data.Models;
-using Data.Repositories.Contracts;
-using DataTransferObjects.OrderDetails;
-using ReadersRealm.DataTransferObjects.OrderHeader;
 using ViewModels.ApplicationUser;
-using ViewModels.Order;
 using ViewModels.OrderHeader;
 
 public class OrderHeaderService : IOrderHeaderService
@@ -21,13 +19,12 @@ public class OrderHeaderService : IOrderHeaderService
         IUnitOfWork unitOfWork, 
         IOrderDetailsService orderDetailsService)
     {
-        this._unitOfWork = unitOfWork;
-        this._orderDetailsService = orderDetailsService;
+        _unitOfWork = unitOfWork;
+        _orderDetailsService = orderDetailsService;
     }
     public async Task<OrderHeaderViewModel> GetByIdAsyncWithNavPropertiesAsync(Guid id)
     {
-        OrderHeader? orderHeader = await this
-            ._unitOfWork
+        OrderHeader? orderHeader = await _unitOfWork
             .OrderHeaderRepository
             .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
 
@@ -76,8 +73,7 @@ public class OrderHeaderService : IOrderHeaderService
 
     public async Task<OrderHeaderViewModel?> GetByApplicationUserIdAndOrderStatusAsync(string applicationUserId, string orderStatus)
     {
-        IEnumerable<OrderHeader> orderHeaders = await this
-            ._unitOfWork
+        IEnumerable<OrderHeader> orderHeaders = await _unitOfWork
             .OrderHeaderRepository
             .GetAsync(orderHeader => orderHeader.ApplicationUserId == applicationUserId &&
                                      orderHeader.OrderStatus == orderStatus, null, PropertiesToInclude);
@@ -118,8 +114,7 @@ public class OrderHeaderService : IOrderHeaderService
 
     public async Task<OrderHeaderReceiptDto> GetOrderHeaderForReceiptAsync(Guid orderHeaderId)
     {
-        OrderHeader? orderHeader = await this
-            ._unitOfWork
+        OrderHeader? orderHeader = await _unitOfWork
             .OrderHeaderRepository
             .GetByIdAsync(orderHeaderId);
 
@@ -135,7 +130,7 @@ public class OrderHeaderService : IOrderHeaderService
             PaymentIntentId = orderHeader.PaymentIntentId!,
             OrderDate = orderHeader.OrderDate,
             PaymentDate = orderHeader.PaymentDate,
-            OrderDetails = await this._orderDetailsService.GetAllOrderDetailsForReceiptAsDtosAsync(orderHeaderId),
+            OrderDetails = await _orderDetailsService.GetAllOrderDetailsForReceiptAsDtosAsync(orderHeaderId),
         };
 
         return orderHeaderModel;
@@ -164,13 +159,11 @@ public class OrderHeaderService : IOrderHeaderService
             OrderHeaderId = orderHeader.Id,
         };
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .OrderHeaderRepository
             .AddAsync(orderHeader);
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
 
         return (orderHeader.Id, orderHeader.Order.Id);
@@ -178,8 +171,7 @@ public class OrderHeaderService : IOrderHeaderService
 
     public async Task UpdateOrderHeaderAsync(OrderHeaderViewModel orderHeaderModel)
     {
-        OrderHeader? orderHeader = await this
-            ._unitOfWork
+        OrderHeader? orderHeader = await _unitOfWork
             .OrderHeaderRepository
             .GetByIdAsync(orderHeaderModel.Id);
 
@@ -201,15 +193,13 @@ public class OrderHeaderService : IOrderHeaderService
         orderHeader.PaymentIntentId = orderHeaderModel.PaymentIntentId;
         orderHeader.PaymentDate = orderHeaderModel.PaymentDate;
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 
     public async Task UpdateOrderHeaderStatusAsync(Guid id, string? orderStatus, string? paymentStatus)
     {
-        OrderHeader? orderHeader = await this
-            ._unitOfWork
+        OrderHeader? orderHeader = await _unitOfWork
             .OrderHeaderRepository
             .GetByIdAsync(id);
 
@@ -221,15 +211,13 @@ public class OrderHeaderService : IOrderHeaderService
         orderHeader.OrderStatus = orderStatus ?? orderHeader.OrderStatus;
         orderHeader.PaymentStatus = paymentStatus ?? orderHeader.PaymentStatus;
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 
     public async Task UpdateOrderHeaderPaymentIntentIdAsync(Guid id, string? sessionId, string? paymentIntentId)
     {
-        OrderHeader? orderHeader = await this
-            ._unitOfWork
+        OrderHeader? orderHeader = await _unitOfWork
             .OrderHeaderRepository
             .GetByIdAsync(id);
 
@@ -241,15 +229,13 @@ public class OrderHeaderService : IOrderHeaderService
         orderHeader.SessionId = sessionId ?? orderHeader.SessionId;
         orderHeader.PaymentIntentId = paymentIntentId ?? orderHeader.PaymentIntentId;
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteOrderHeaderAsync(OrderHeaderViewModel orderHeaderModel)
     {
-        OrderHeader? orderHeaderToDelete = await this
-            ._unitOfWork
+        OrderHeader? orderHeaderToDelete = await _unitOfWork
             .OrderHeaderRepository
             .GetByIdAsync(orderHeaderModel.Id);
 
@@ -258,13 +244,11 @@ public class OrderHeaderService : IOrderHeaderService
             throw new OrderHeaderNotFoundException();
         }
 
-        this
-            ._unitOfWork
+        _unitOfWork
             .OrderHeaderRepository
             .Delete(orderHeaderToDelete);
 
-        await this
-            ._unitOfWork
+        await _unitOfWork
             .SaveAsync();
     }
 }

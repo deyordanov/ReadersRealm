@@ -23,7 +23,7 @@ public class Book
 {
     public Book()
     {
-        this.Id = Guid.NewGuid();
+        Id = Guid.NewGuid();
     }
 
     /// <summary>

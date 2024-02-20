@@ -9,18 +9,18 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(ReadersRealmDbContext dbContext)
     {
-        this._disposed = false;
-        this._dbContext = dbContext;
+        _disposed = false;
+        _dbContext = dbContext;
 
-        this.CategoryRepository = new CategoryRepository(dbContext);
-        this.BookRepository = new BookRepository(dbContext);
-        this.AuthorRepository = new AuthorRepository(dbContext);
-        this.CompanyRepository = new CompanyRepository(dbContext);
-        this.ShoppingCartRepository = new ShoppingCartRepository(dbContext);
-        this.ApplicationUserRepository = new ApplicationUserRepository(dbContext);
-        this.OrderHeaderRepository = new OrderHeaderRepository(dbContext);
-        this.OrderDetailsRepository = new OrderDetailsRepository(dbContext);
-        this.OrderRepository = new OrderRepository(dbContext);
+        CategoryRepository = new CategoryRepository(dbContext);
+        BookRepository = new BookRepository(dbContext);
+        AuthorRepository = new AuthorRepository(dbContext);
+        CompanyRepository = new CompanyRepository(dbContext);
+        ShoppingCartRepository = new ShoppingCartRepository(dbContext);
+        ApplicationUserRepository = new ApplicationUserRepository(dbContext);
+        OrderHeaderRepository = new OrderHeaderRepository(dbContext);
+        OrderDetailsRepository = new OrderDetailsRepository(dbContext);
+        OrderRepository = new OrderRepository(dbContext);
     }
 
     public ICategoryRepository CategoryRepository { get; private set; }
@@ -35,20 +35,20 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task SaveAsync()
     {
-        await this._dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
     }
 
     public void Dispose(bool disposing)
     {
-        if (!this._disposed)
+        if (!_disposed)
         {
             if (disposing)
             {
-                this._dbContext.Dispose();
+                _dbContext.Dispose();
             }
         }
 
-        this._disposed = true;
+        _disposed = true;
     }
 
     public void Dispose()
