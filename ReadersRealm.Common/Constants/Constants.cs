@@ -1,5 +1,7 @@
 ﻿namespace ReadersRealm.Common.Constants;
 
+using System.Text;
+
 public static class Constants
 {
     public static class Shared
@@ -105,6 +107,7 @@ public static class Constants
         public const string AdminUserPostalCode = "2343";
         public const string AdminUserPhoneNumber = "0893453255";
         public const string AdminUserPassword = "Admin123!";
+        public const bool AdminUserEmailConfirmed = true;
     }
 
     public static class Roles
@@ -131,6 +134,24 @@ public static class Constants
 
         public const string FullSuccessUrlOrder = "{0}/Admin/Order/OrderConfirmation?orderHeaderId={1}";
         public const string FullCancelUrlOrder = "{0}/Admin/Order/Index";
+    }
+
+    public static class SenderGridSettings
+    {
+        public const string ApiKey = "SendGrid:SecretKey";
+
+        //Email Configuration
+        public const string FromEmail = "deyordanov@students.softuni.bg";
+        public const string FromUserName = "Readers Realm";
+
+        public const string EmailSubject = "Welcome to Readers Realm! Please Confirm Your Email Address.";
+
+        public const string EmailHeaderMessage = "Dear {0},";
+
+        public const string EmailBodyMessage =
+            $"We're thrilled to have you on board! Before you dive into the exciting world of our book collection, there's just one small step we need to complete. To activate your account and start your journey with us, please confirm your email address by <a href='{{0}}'>clicking here</a>.This ensures that we can communicate important updates and offers to you without a hitch.";
+
+        public const string EmailFooterMessage = $"Welcome aboard, and happy shopping! Warmest regards, The Readers Realm Team.";
     }
 
     public static class SessionKeys

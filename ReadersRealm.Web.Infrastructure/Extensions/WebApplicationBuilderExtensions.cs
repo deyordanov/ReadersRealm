@@ -36,7 +36,8 @@ public static class WebApplicationBuilderExtensions
                         PostalCode = AdminUserPostalCode,
                         State = AdminUserState,
                         StreetAddress = AdminUserStreetAddress,
-                        UserName = AdminUserEmail
+                        UserName = AdminUserEmail,
+                        EmailConfirmed = AdminUserEmailConfirmed,
                     }, AdminUserPassword);
 
             if (!result.Succeeded)

@@ -4,6 +4,7 @@
 
 using static ReadersRealm.Common.Constants.Constants.Roles;
 using static ReadersRealm.Common.Constants.Constants.Shared;
+using static ReadersRealm.Common.Constants.Constants.SenderGridSettings;
 using static ReadersRealm.Common.Constants.Constants.User;
 using static ReadersRealm.Common.Constants.ValidationConstants.RegisterModel;
 using static ReadersRealm.Common.Constants.ValidationMessageConstants.RegisterModel;
@@ -227,9 +228,16 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
-                    
-                    await emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    string mainPageUrl = Url.Page(
+                        "/Home/Index",
+                        pageHandler: null,
+                        values: new { area = "Customer" },
+                        protocol: Request.Scheme);
+
+                    await emailSender.SendEmailAsync(Input.Email, 
+                        EmailSubject, 
+                        this.BuildEmailMessage(callbackUrl));
 
                     if (userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -281,6 +289,17 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)userStore;
+        }
+
+        private string BuildEmailMessage(string callbackUrl)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine(string.Format(EmailHeaderMessage, this.Input.FirstName));
+            sb.AppendLine(string.Format(EmailBodyMessage, HtmlEncoder.Default.Encode(callbackUrl)));
+            sb.AppendLine(EmailFooterMessage);
+
+            return sb.ToString().TrimEnd();
         }
     }
 }

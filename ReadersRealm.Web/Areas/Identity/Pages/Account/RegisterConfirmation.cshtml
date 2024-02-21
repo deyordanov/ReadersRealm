@@ -4,20 +4,10 @@
     ViewData["Title"] = "Register confirmation";
 }
 
-<h1>@ViewData["Title"]</h1>
-@{
-    if (@Model.DisplayConfirmAccountLink)
-    {
-<p>
-    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-    Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
+<h1 style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; color: #333333;">Confirm Your Registration</h1>
+<p style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; color: #555555;">
+    Thank you for signing up with Readers Realm! You're just one click away from activating your account and starting your journey with us.
 </p>
-    }
-    else
-    {
-<p>
-        Please check your email to confirm your account.
+<p style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; color: #555555;">
+    Please check your email for a message with your account confirmation link. If you don't receive the email within a few minutes, check your spam folder or contact our support team for assistance.
 </p>
-    }
-}
-
