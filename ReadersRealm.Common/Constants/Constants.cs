@@ -136,7 +136,7 @@ public static class Constants
         public const string FullCancelUrlOrder = "{0}/Admin/Order/Index";
     }
 
-    public static class SenderGridSettings
+    public static class SendGridSettings
     {
         public const string ApiKey = "SendGrid:SecretKey";
 
@@ -144,14 +144,18 @@ public static class Constants
         public const string FromEmail = "deyordanov@students.softuni.bg";
         public const string FromUserName = "Readers Realm";
 
-        public const string EmailSubject = "Welcome to Readers Realm! Please Confirm Your Email Address.";
-
-        public const string EmailHeaderMessage = "Dear {0},";
-
-        public const string EmailBodyMessage =
+        //Email Confirmation
+        public const string EmailConfirmationSubject = "Welcome to Readers Realm! Please Confirm Your Email Address.";
+        public const string EmailConfirmationHeaderMessage = "Dear {0},";
+        public const string EmailConfirmationBodyMessage =
             $"We're thrilled to have you on board! Before you dive into the exciting world of our book collection, there's just one small step we need to complete. To activate your account and start your journey with us, please confirm your email address by <a href='{{0}}'>clicking here</a>.This ensures that we can communicate important updates and offers to you without a hitch.";
+        public const string EmailConfirmationFooterMessage = $"Welcome aboard, and happy shopping! Warmest regards, The Readers Realm Team.";
 
-        public const string EmailFooterMessage = $"Welcome aboard, and happy shopping! Warmest regards, The Readers Realm Team.";
+        //Order
+        public const string EmailOrderSubject = "Your order has been received.";
+        public const string EmailOrderHeaderMessage = "Dear {0},";
+        public const string EmailOrderBodyMessage = "A new order has been created, with id: {0}.";
+        public const string EmailOrderFooterMessage = "Welcome aboard, and happy shopping! Warmest regards, The Readers Realm Team.";
     }
 
     public static class SessionKeys

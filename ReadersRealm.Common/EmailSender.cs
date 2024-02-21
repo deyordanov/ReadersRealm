@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using static Common.Constants.Constants.SenderGridSettings;
+using static Common.Constants.Constants.SendGridSettings;
 
 public class EmailSender : IEmailSender
 {

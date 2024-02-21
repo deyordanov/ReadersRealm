@@ -29,6 +29,9 @@ public class ApplicationUser : IdentityUser
     [StringLength(ApplicationUserPostalCodeMaxLength)]
     public string? PostalCode { get; set; }
 
+    [ValidateNever]
+    public string Email { get; set; } = string.Empty;
+
     public Guid? CompanyId { get; set; }
 
     [ValidateNever]

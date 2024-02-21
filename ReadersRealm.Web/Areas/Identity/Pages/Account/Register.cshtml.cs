@@ -4,7 +4,7 @@
 
 using static ReadersRealm.Common.Constants.Constants.Roles;
 using static ReadersRealm.Common.Constants.Constants.Shared;
-using static ReadersRealm.Common.Constants.Constants.SenderGridSettings;
+using static ReadersRealm.Common.Constants.Constants.SendGridSettings;
 using static ReadersRealm.Common.Constants.Constants.User;
 using static ReadersRealm.Common.Constants.ValidationConstants.RegisterModel;
 using static ReadersRealm.Common.Constants.ValidationMessageConstants.RegisterModel;
@@ -236,7 +236,7 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await emailSender.SendEmailAsync(Input.Email, 
-                        EmailSubject, 
+                        EmailConfirmationSubject, 
                         this.BuildEmailMessage(callbackUrl));
 
                     if (userManager.Options.SignIn.RequireConfirmedAccount)
@@ -295,9 +295,9 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine(string.Format(EmailHeaderMessage, this.Input.FirstName));
-            sb.AppendLine(string.Format(EmailBodyMessage, HtmlEncoder.Default.Encode(callbackUrl)));
-            sb.AppendLine(EmailFooterMessage);
+            sb.AppendLine(string.Format(EmailConfirmationHeaderMessage, this.Input.FirstName));
+            sb.AppendLine(string.Format(EmailConfirmationBodyMessage, HtmlEncoder.Default.Encode(callbackUrl)));
+            sb.AppendLine(EmailConfirmationFooterMessage);
 
             return sb.ToString().TrimEnd();
         }

@@ -36,6 +36,7 @@ public class ApplicationUserService : IApplicationUserService
             State = applicationUser.State,
             StreetAddress = applicationUser.StreetAddress,
             PhoneNumber = applicationUser.PhoneNumber,
+            Email = applicationUser.Email,
         };
 
         return applicationUserModel;

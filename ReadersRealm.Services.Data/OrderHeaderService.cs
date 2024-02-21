@@ -47,6 +47,7 @@ public class OrderHeaderService : IOrderHeaderService
                 PostalCode = orderHeader.ApplicationUser.PostalCode,
                 State = orderHeader.ApplicationUser.State,
                 StreetAddress = orderHeader.ApplicationUser.StreetAddress,
+                Email = orderHeader.ApplicationUser.UserName!,
             },
             FirstName = orderHeader.ApplicationUser.FirstName,
             LastName = orderHeader.ApplicationUser.LastName,
