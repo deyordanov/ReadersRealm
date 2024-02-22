@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.ViewModels.Author;
+﻿namespace ReadersRealm.Web.ViewModels.Author;
 
 using Book;
 using Data.Models.Enums;

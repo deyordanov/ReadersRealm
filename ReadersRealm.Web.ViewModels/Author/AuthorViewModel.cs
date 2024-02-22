@@ -1,7 +1,7 @@
-﻿namespace ReadersRealm.ViewModels.Author;
+﻿namespace ReadersRealm.Web.ViewModels.Author;
 
-using Data.Models.Enums;
 using Book;
+using Data.Models.Enums;
 
 public class AuthorViewModel
 {

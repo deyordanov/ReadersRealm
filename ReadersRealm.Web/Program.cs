@@ -1,11 +1,10 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ReadersRealm.Common;
 using ReadersRealm.Data;
 using ReadersRealm.Data.Repositories;
 using ReadersRealm.Data.Repositories.Contracts;
-using ReadersRealm.Services.Data;
+using ReadersRealm.Services.Data.ApplicationUserServices.Contracts;
 using ReadersRealm.Web.Infrastructure.Extensions;
 using Stripe;
 
@@ -15,7 +14,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddApplicationServices(typeof(ApplicationUserService));
+builder.Services.AddApplicationServices(typeof(IApplicationUserRetrievalService));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();

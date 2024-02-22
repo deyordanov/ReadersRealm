@@ -1,10 +1,10 @@
-﻿namespace ReadersRealm.Areas.Admin.Controllers;
+﻿namespace ReadersRealm.Web.Areas.Admin.Controllers;
 
-using Common;
-using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services.Data.Contracts;
+using Common;
+using Data.Models;
+using Services.Data.CompanyServices.Contracts;
 using ViewModels.Company;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Company;
@@ -14,18 +14,23 @@ using static Common.Constants.Constants.Shared;
 [Area(Admin)]
 public class CompanyController : BaseController
 {
-    private readonly ICompanyService _companyService;
+    private readonly ICompanyCrudService _companyCrudService;
+    private readonly ICompanyRetrievalService _companyRetrievalService;
 
-    public CompanyController(ICompanyService companyService)
+    public CompanyController(
+        ICompanyCrudService companyCrudService, 
+        ICompanyRetrievalService companyRetrievalService)
     {
-        _companyService = companyService;
+        this._companyCrudService = companyCrudService;
+        this._companyRetrievalService = companyRetrievalService;
     }
 
     [HttpGet]
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
-        PaginatedList<AllCompaniesViewModel> allCompanies = await _companyService
+        PaginatedList<AllCompaniesViewModel> allCompanies = await this
+            ._companyRetrievalService
             .GetAllAsync(pageIndex, 5, searchTerm);
 
         ViewBag.SearchTerm = searchTerm ?? string.Empty;
@@ -37,7 +42,8 @@ public class CompanyController : BaseController
     [Authorize(Roles = AdminRole)]
     public IActionResult Create()
     {
-        CreateCompanyViewModel companyModel = _companyService
+        CreateCompanyViewModel companyModel = this
+            ._companyRetrievalService
             .GetCompanyForCreate();
 
         return View(companyModel);
@@ -52,7 +58,8 @@ public class CompanyController : BaseController
             return View(companyModel);
         }
 
-        await _companyService
+        await this
+            ._companyCrudService
             .CreateCompanyAsync(companyModel);
 
         TempData[Success] = CompanyHasBeenSuccessfullyCreated;
@@ -69,7 +76,8 @@ public class CompanyController : BaseController
             return NotFound();
         }
 
-        EditCompanyViewModel companyModel = await _companyService
+        EditCompanyViewModel companyModel = await this
+            ._companyRetrievalService
             .GetCompanyForEditAsync((Guid)id);
 
         ViewBag.PageIndex = pageIndex;
@@ -87,7 +95,8 @@ public class CompanyController : BaseController
             return View(companyModel);
         }
 
-        await _companyService
+        await this
+            ._companyCrudService
             .EditCompanyAsync(companyModel);
 
         TempData[Success] = CompanyHasBeenSuccessfullyEdited;
@@ -104,7 +113,8 @@ public class CompanyController : BaseController
             return NotFound();
         }
 
-        DeleteCompanyViewModel companyModel = await _companyService
+        DeleteCompanyViewModel companyModel = await this
+            ._companyRetrievalService
             .GetCompanyForDeleteAsync((Guid)id);
 
         return View(companyModel);
@@ -114,7 +124,8 @@ public class CompanyController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(DeleteCompanyViewModel companyModel)
     {
-        await _companyService
+        await this
+            ._companyCrudService
             .DeleteCompanyAsync(companyModel);
 
         TempData[Success] = CompanyHasBeenSuccessfullyDeleted;

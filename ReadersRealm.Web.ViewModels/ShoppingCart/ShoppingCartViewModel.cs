@@ -1,10 +1,10 @@
-﻿namespace ReadersRealm.ViewModels.ShoppingCart;
+﻿namespace ReadersRealm.Web.ViewModels.ShoppingCart;
 
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ApplicationUser;
 using Book;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static Common.Constants.ValidationConstants.ShoppingCart;
 using static Common.Constants.ValidationMessageConstants.ShoppingCart;
 

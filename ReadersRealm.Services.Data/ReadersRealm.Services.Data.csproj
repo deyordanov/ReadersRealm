@@ -17,4 +17,14 @@
     <ProjectReference Include="..\ReadersRealm.Services.Data.Models\ReadersRealm.Services.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AuthorServices\Contracts\" />
+    <Folder Include="BookServices\Contracts\" />
+    <Folder Include="CategoryServices\Contracts\" />
+    <Folder Include="CompanyServices\Contracts\" />
+    <Folder Include="OrderDetailsServices\Contracts\" />
+    <Folder Include="OrderHeaderServices\Contracts\" />
+    <Folder Include="OrderServices\Contracts\" />
+  </ItemGroup>
+
 </Project>

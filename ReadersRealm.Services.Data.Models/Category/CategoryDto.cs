@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.DataTransferObjects.Category;
+﻿namespace ReadersRealm.Services.Data.Models.Category;
 
 public class CategoryDto
 {

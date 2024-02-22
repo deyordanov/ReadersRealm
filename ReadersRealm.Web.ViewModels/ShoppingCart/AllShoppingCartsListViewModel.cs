@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.ViewModels.ShoppingCart;
+﻿namespace ReadersRealm.Web.ViewModels.ShoppingCart;
 
 using OrderHeader;
 

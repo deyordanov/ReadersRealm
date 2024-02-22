@@ -1,9 +1,9 @@
-﻿namespace ReadersRealm.Areas.Admin.Controllers;
+﻿namespace ReadersRealm.Web.Areas.Admin.Controllers;
 
-using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services.Data.Contracts;
+using Data.Models;
+using Services.Data.CategoryServices.Contracts;
 using ViewModels.Category;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Category;
@@ -15,19 +15,22 @@ using static Common.Constants.ValidationMessageConstants.Category;
 [Area(Admin)]
 public class CategoryController : BaseController
 {
-    private readonly ICategoryService _categoryService;
-
-    public CategoryController(ICategoryService categoryService)
+    private readonly ICategoryCrudService _categoryCrudService;
+    private readonly ICategoryRetrievalService _categoryRetrievalService;
+    public CategoryController(
+        ICategoryCrudService categoryCrudService, 
+        ICategoryRetrievalService categoryRetrievalService)
     {
-        _categoryService = categoryService;
+        this._categoryCrudService = categoryCrudService;
+        this._categoryRetrievalService = categoryRetrievalService;
     }
 
     [HttpGet]
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
-        IEnumerable<AllCategoriesViewModel> allCategories = await 
-            _categoryService
+        IEnumerable<AllCategoriesViewModel> allCategories = await
+            _categoryRetrievalService
             .GetAllAsync();
 
         return View(allCategories);
@@ -37,7 +40,7 @@ public class CategoryController : BaseController
     [Authorize(Roles = AdminRole)]
     public IActionResult Create()
     {
-        CreateCategoryViewModel categoryModel = _categoryService
+        CreateCategoryViewModel categoryModel = _categoryRetrievalService
             .GetCategoryForCreate();
 
         return View(categoryModel);
@@ -57,8 +60,8 @@ public class CategoryController : BaseController
             return View(categoryModel);
         }
 
-        await 
-            _categoryService
+        await
+            _categoryCrudService
             .CreateCategoryAsync(categoryModel);
 
         TempData[Success] = CategoryHasBeenSuccessfullyCreated;
@@ -75,7 +78,7 @@ public class CategoryController : BaseController
             return NotFound();
         }
 
-        EditCategoryViewModel categoryModel = await _categoryService
+        EditCategoryViewModel categoryModel = await _categoryRetrievalService
             .GetCategoryForEditAsync((int)id);
 
         return View(categoryModel);
@@ -95,8 +98,8 @@ public class CategoryController : BaseController
             return View(categoryModel);
         }
 
-        await 
-            _categoryService
+        await
+            _categoryCrudService
             .EditCategoryAsync(categoryModel);
 
         TempData[Success] = CategoryHasBeenSuccessfullyEdited;
@@ -113,7 +116,7 @@ public class CategoryController : BaseController
             return NotFound();
         }
 
-        DeleteCategoryViewModel categoryModel = await _categoryService
+        DeleteCategoryViewModel categoryModel = await _categoryRetrievalService
             .GetCategoryForDeleteAsync((int)id);
 
         return View(categoryModel);
@@ -123,8 +126,8 @@ public class CategoryController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(DeleteCategoryViewModel categoryModel)
     {
-        await 
-            _categoryService
+        await
+            _categoryCrudService
             .DeleteCategoryAsync(categoryModel);
 
         TempData[Success] = CategoryHasBeenSuccessfullyDeleted;

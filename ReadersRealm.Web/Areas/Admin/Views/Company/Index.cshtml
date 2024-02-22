@@ -1,6 +1,7 @@
 ﻿ @model PaginatedList<AllCompaniesViewModel>
+ @using ReadersRealm.Web.ViewModels.Company
 
-<partial name="_NotificationPartialView" />
+ <partial name="_NotificationPartialView" />
 <div class="row mb-2">
     <form asp-controller="Company" asp-action="Index" method="get" class="col-8" style="display: flex">
         <div class="col-3 px-0">

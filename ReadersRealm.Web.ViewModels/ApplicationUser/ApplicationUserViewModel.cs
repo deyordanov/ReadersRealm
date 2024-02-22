@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.ViewModels.ApplicationUser;
+﻿namespace ReadersRealm.Web.ViewModels.ApplicationUser;
 
 public class ApplicationUserViewModel
 {

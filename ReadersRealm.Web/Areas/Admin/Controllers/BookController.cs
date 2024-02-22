@@ -1,10 +1,12 @@
-﻿namespace ReadersRealm.Areas.Admin.Controllers;
+﻿namespace ReadersRealm.Web.Areas.Admin.Controllers;
 
-using Common;
-using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services.Data.Contracts;
+using Common;
+using Data.Models;
+using ReadersRealm.Services.Data.AuthorServices.Contracts;
+using ReadersRealm.Services.Data.BookServices.Contracts;
+using ReadersRealm.Services.Data.CategoryServices.Contracts;
 using ViewModels.Book;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Book;
@@ -16,28 +18,32 @@ using static Common.Constants.ValidationMessageConstants.Book;
 [Area(Admin)]
 public class BookController : BaseController
 {
-    private readonly IBookService _bookService;
-    private readonly ICategoryService _categoryService;
-    private readonly IAuthorService _authorService;
+    private readonly IBookRetrievalService _bookRetrievalService;
+    private readonly IBookCrudService _bookCrudService;
+    private readonly IAuthorRetrievalService _authorRetrievalService;
+    private readonly ICategoryRetrievalService _categoryRetrievalService;
     private readonly IWebHostEnvironment _webHost;
 
     public BookController(
-        IBookService bookService, 
-        ICategoryService categoryService, 
-        IAuthorService authorService,
-        IWebHostEnvironment webHost)
+        IWebHostEnvironment webHost, 
+        IBookRetrievalService bookRetrievalService, 
+        IBookCrudService bookCrudService, 
+        IAuthorRetrievalService authorRetrievalService, 
+        ICategoryRetrievalService categoryRetrievalService)
     {
-        _bookService = bookService;
-        _categoryService = categoryService;
-        _authorService = authorService;
-        _webHost = webHost;
+        this._webHost = webHost;
+        this._bookRetrievalService = bookRetrievalService;
+        this._bookCrudService = bookCrudService;
+        this._authorRetrievalService = authorRetrievalService;
+        this._categoryRetrievalService = categoryRetrievalService;
     }
 
     [HttpGet]
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
-        PaginatedList<AllBooksViewModel> allBooks = await _bookService
+        PaginatedList<AllBooksViewModel> allBooks = await this
+            ._bookRetrievalService
             .GetAllAsync(pageIndex ,5, searchTerm);
 
         ViewBag.SearchTerm = searchTerm ?? "";
@@ -49,7 +55,8 @@ public class BookController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Create()
     {
-        CreateBookViewModel bookModel = await _bookService
+        CreateBookViewModel bookModel = await this
+            ._bookRetrievalService
             .GetBookForCreateAsync();
 
         return View(bookModel);
@@ -71,10 +78,12 @@ public class BookController : BaseController
 
         if (!ModelState.IsValid)
         {
-            bookModel.AuthorsList = await _authorService
+            bookModel.AuthorsList = await this
+                ._authorRetrievalService
                 .GetAllListAsync();
 
-            bookModel.CategoriesList = await _categoryService
+            bookModel.CategoriesList = await this
+                ._categoryRetrievalService
                 .GetAllListAsync();
 
             return View(bookModel);
@@ -87,8 +96,8 @@ public class BookController : BaseController
             bookModel.ImageUrl = PathToSaveImage + fileName;
         }
 
-        await
-            _bookService
+        await this
+                ._bookCrudService
                 .CreateBookAsync(bookModel);
 
         TempData[Success] = BookHasBeenSuccessfullyCreated;
@@ -105,7 +114,8 @@ public class BookController : BaseController
             return NotFound();
         }
 
-        EditBookViewModel bookModel = await _bookService
+        EditBookViewModel bookModel = await this
+            ._bookRetrievalService
             .GetBookForEditAsync((Guid)id);
 
         ViewBag.PageIndex = pageIndex;
@@ -120,10 +130,12 @@ public class BookController : BaseController
     {
         if (!ModelState.IsValid)
         {
-            bookModel.AuthorsList = await _authorService
+            bookModel.AuthorsList = await this
+                ._authorRetrievalService
                 .GetAllListAsync();
 
-            bookModel.CategoriesList = await _categoryService
+            bookModel.CategoriesList = await this
+                ._categoryRetrievalService
                 .GetAllListAsync();
 
             return View(bookModel);
@@ -136,7 +148,8 @@ public class BookController : BaseController
             bookModel.ImageUrl = PathToSaveImage + fileName;
         }
 
-        await _bookService
+        await this
+            ._bookCrudService
             .EditBookAsync(bookModel);
 
         TempData[Success] = BookHasBeenSuccessfullyEdited;
@@ -153,7 +166,8 @@ public class BookController : BaseController
             return NotFound();
         }
 
-        DeleteBookViewModel bookModel = await _bookService
+        DeleteBookViewModel bookModel = await this
+            ._bookRetrievalService
             .GetBookForDeleteAsync((Guid)id);
 
         return View(bookModel);
@@ -165,7 +179,8 @@ public class BookController : BaseController
     {
         DeleteImageIfPresent(bookModel.ImageUrl, _webHost.WebRootPath);
 
-        await _bookService
+        await this
+            ._bookCrudService
             .DeleteBookAsync(bookModel);
 
         TempData[Success] = BookHasBeenSuccessfullyDeleted;

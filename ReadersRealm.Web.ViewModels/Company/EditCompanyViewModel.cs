@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.ViewModels.Company;
+﻿namespace ReadersRealm.Web.ViewModels.Company;
 
 using System.ComponentModel.DataAnnotations;
 using static Common.Constants.ValidationConstants.Company;

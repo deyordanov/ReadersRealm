@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.ViewModels.Category;
+﻿namespace ReadersRealm.Web.ViewModels.Category;
 
 /// <summary>
 /// A ViewModel representing a collection of all categories in the Readers Realm application.

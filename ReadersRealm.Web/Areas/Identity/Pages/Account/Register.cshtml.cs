@@ -22,9 +22,9 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.WebUtilities;
-    using ReadersRealm.Data.Models;
-    using ReadersRealm.Services.Data.Contracts;
-    using ReadersRealm.ViewModels.Company;
+    using Data.Models;
+    using Services.Data.CompanyServices.Contracts;
+    using ViewModels.Company;
 
     public class RegisterModel : PageModel
     {
@@ -35,7 +35,7 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> emailStore;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
-        private readonly ICompanyService companyService;
+        private readonly ICompanyRetrievalService companyRetrievalService;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -44,16 +44,16 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account
             RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender, 
-            ICompanyService companyService)
+            ICompanyRetrievalService companyRetrievalService)
         {
             this.userManager = userManager;
             this.userStore = userStore;
-            emailStore = GetEmailStore();
+            this.emailStore = GetEmailStore();
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this.logger = logger;
             this.emailSender = emailSender;
-            this.companyService = companyService;
+            this.companyRetrievalService = companyRetrievalService;
         }   
 
         /// <summary>
@@ -164,7 +164,8 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            List<AllCompaniesListViewModel> companies = await companyService
+            List<AllCompaniesListViewModel> companies = await this
+                .companyRetrievalService
                 .GetAllListAsync();
 
             Input = new()

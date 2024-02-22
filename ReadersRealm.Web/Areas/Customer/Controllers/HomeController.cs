@@ -1,16 +1,16 @@
 namespace ReadersRealm.Web.Areas.Customer.Controllers;
 
+using System.Diagnostics;
 using Common;
 using Duende.IdentityServer.Extensions;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ReadersRealm.Areas;
-using ReadersRealm.ViewModels.Book;
-using ReadersRealm.ViewModels.ShoppingCart;
-using System.Diagnostics;
-using Infrastructure.Extensions;
-using Services.Data.Contracts;
+using Services.Data.BookServices.Contracts;
+using Services.Data.ShoppingCartServices.Contracts;
 using ViewModels;
+using ViewModels.Book;
+using ViewModels.ShoppingCart;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.SessionKeys;
 using static Common.Constants.Constants.Shared;
@@ -19,13 +19,18 @@ using static Common.Constants.Constants.ShoppingCart;
 [Area(Customer)]
 public class HomeController : BaseController
 {
-    private readonly IBookService _bookService;
-    private readonly IShoppingCartService _shoppingCartService;
+    private readonly IShoppingCartCrudService _shoppingCartCrudService;
+    private readonly IShoppingCartRetrievalService _shoppingCartRetrievalService;
+    private readonly IBookRetrievalService _bookRetrievalService;
 
-    public HomeController(IBookService bookService, IShoppingCartService shoppingCartService)
+    public HomeController(
+        IShoppingCartCrudService shoppingCartCrudService, 
+        IShoppingCartRetrievalService shoppingCartRetrievalService, 
+        IBookRetrievalService bookRetrievalService)
     {
-        _bookService = bookService;
-        _shoppingCartService = shoppingCartService;
+        this._shoppingCartCrudService = shoppingCartCrudService;
+        this._shoppingCartRetrievalService = shoppingCartRetrievalService;
+        this._bookRetrievalService = bookRetrievalService;
     }
 
     [HttpGet]
@@ -37,7 +42,8 @@ public class HomeController : BaseController
             await SetShoppingCartItemsCountInSession();
         }
 
-        PaginatedList<AllBooksViewModel> allBooks = await _bookService
+        PaginatedList<AllBooksViewModel> allBooks = await this
+            ._bookRetrievalService
             .GetAllAsync(pageIndex, 8, searchTerm);
 
 
@@ -53,10 +59,12 @@ public class HomeController : BaseController
             return NotFound();
         }
 
-        DetailsBookViewModel bookModel = await _bookService
+        DetailsBookViewModel bookModel = await this
+            ._bookRetrievalService
             .GetBookForDetailsAsync((Guid)id);
 
-        ShoppingCartViewModel shoppingCartModel = _shoppingCartService
+        ShoppingCartViewModel shoppingCartModel = this
+            ._shoppingCartRetrievalService
             .GetShoppingCart(bookModel);
 
         return View(shoppingCartModel);
@@ -67,7 +75,8 @@ public class HomeController : BaseController
     {
         if (!ModelState.IsValid)
         {
-            DetailsBookViewModel bookModel = await _bookService
+            DetailsBookViewModel bookModel = await this
+                ._bookRetrievalService
                 .GetBookForDetailsAsync(shoppingCartModel.BookId);
 
             shoppingCartModel.Book = bookModel;
@@ -78,18 +87,21 @@ public class HomeController : BaseController
         string userId = User.GetId();
         shoppingCartModel.ApplicationUserId = userId;
 
-        bool shoppingCartExists = await _shoppingCartService
+        bool shoppingCartExists = await this
+            ._shoppingCartRetrievalService
             .ShoppingCartExistsAsync(userId, shoppingCartModel.BookId);
 
 
         if (!shoppingCartExists)
         {
-            await _shoppingCartService
+            await this
+                ._shoppingCartCrudService
                 .CreateShoppingCartAsync(shoppingCartModel);
         }
         else
         {
-            await _shoppingCartService
+            await this
+                ._shoppingCartCrudService
                 .UpdateShoppingCartCountAsync(shoppingCartModel);
         }
 
@@ -117,7 +129,8 @@ public class HomeController : BaseController
     {
         string userId = User.GetId();
 
-        int itemsCount = await _shoppingCartService
+        int itemsCount = await this
+            ._shoppingCartRetrievalService
             .GetShoppingCartCountByApplicationUserIdAsync(userId);
 
         HttpContext.Session.SetInt32(ShoppingCartSessionKey, itemsCount);

@@ -1,9 +1,9 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace ReadersRealm.DataTransferObjects.Book;
+namespace ReadersRealm.Services.Data.Models.Book;
 
 using Author;
 using Category;
-using Data.Models.Enums;
+using ReadersRealm.Data.Models.Enums;
 
 public class BookDto
 {

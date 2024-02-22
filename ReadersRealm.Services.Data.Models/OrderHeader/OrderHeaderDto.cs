@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
-
-namespace ReadersRealm.DataTransferObjects.OrderHeader;
+﻿namespace ReadersRealm.Services.Data.Models.OrderHeader;
 
 using ApplicationUser;
 

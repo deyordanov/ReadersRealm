@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Areas;
+﻿namespace ReadersRealm.Web.Areas;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

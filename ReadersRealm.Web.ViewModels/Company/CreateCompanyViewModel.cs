@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace ReadersRealm.Web.ViewModels.Company;
 
-namespace ReadersRealm.ViewModels.Company;
+using System.ComponentModel.DataAnnotations;
 using static Common.Constants.ValidationConstants.Company;
 using static Common.Constants.ValidationMessageConstants.Company;
 

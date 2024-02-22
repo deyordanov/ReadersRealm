@@ -1,4 +1,5 @@
-﻿@model AllShoppingCartsListViewModel
+﻿@using ReadersRealm.Web.ViewModels.ShoppingCart
+@model ReadersRealm.Web.ViewModels.ShoppingCart.AllShoppingCartsListViewModel
 <form method="post">
     <input asp-for="OrderHeader.ApplicationUserId" value="@Model.OrderHeader.ApplicationUserId" hidden/>
     <input asp-for="OrderHeader.Id" value="@Model.OrderHeader.Id" hidden/>

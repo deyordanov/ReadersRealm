@@ -1,6 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 
-namespace ReadersRealm.ViewModels.Company;
+namespace ReadersRealm.Web.ViewModels.Company;
 
 public class AllCompaniesViewModel
 {

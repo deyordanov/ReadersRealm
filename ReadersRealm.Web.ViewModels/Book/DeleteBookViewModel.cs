@@ -1,9 +1,9 @@
-﻿namespace ReadersRealm.ViewModels.Book;
+﻿namespace ReadersRealm.Web.ViewModels.Book;
 
+using System.ComponentModel.DataAnnotations;
 using Author;
 using Category;
 using Data.Models.Enums;
-using System.ComponentModel.DataAnnotations;
 
 public class DeleteBookViewModel
 {

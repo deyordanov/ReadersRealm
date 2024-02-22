@@ -1,7 +1,7 @@
-﻿namespace ReadersRealm.DataTransferObjects.Author;
+﻿namespace ReadersRealm.Services.Data.Models.Author;
 
 using Book;
-using Data.Models.Enums;
+using ReadersRealm.Data.Models.Enums;
 
 public class AuthorDto
 {

@@ -1,11 +1,11 @@
-﻿namespace ReadersRealm.ViewModels.Book;
+﻿namespace ReadersRealm.Web.ViewModels.Book;
 
+using System.ComponentModel.DataAnnotations;
 using Author;
 using Category;
 using Data.Models.Enums;
-using System.ComponentModel.DataAnnotations;
-using static ReadersRealm.Common.Constants.ValidationConstants.Book;
-using static ReadersRealm.Common.Constants.ValidationMessageConstants.Book;
+using static Common.Constants.ValidationConstants.Book;
+using static Common.Constants.ValidationMessageConstants.Book;
 
 public class CreateBookViewModel
 {

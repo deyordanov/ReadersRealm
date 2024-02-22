@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.ViewModels.OrderDetails;
+﻿namespace ReadersRealm.Web.ViewModels.OrderDetails;
 
 using Book;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;

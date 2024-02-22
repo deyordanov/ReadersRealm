@@ -1,8 +1,8 @@
-﻿namespace ReadersRealm.ViewModels.OrderHeader;
+﻿namespace ReadersRealm.Web.ViewModels.OrderHeader;
 
+using System.ComponentModel.DataAnnotations;
 using ApplicationUser;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
 using static Common.Constants.ValidationConstants.ApplicationUser;
 using static Common.Constants.ValidationMessageConstants.ApplicationUser;
 

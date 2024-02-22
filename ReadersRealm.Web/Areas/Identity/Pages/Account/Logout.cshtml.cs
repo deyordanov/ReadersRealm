@@ -7,23 +7,19 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Services.Data.Contracts;
 using static Common.Constants.Constants.SessionKeys;
 
 public class LogoutModel : PageModel
 {
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly ILogger<LogoutModel> _logger;
-    private readonly IShoppingCartService _shoppingCartService;
 
     public LogoutModel(
         SignInManager<IdentityUser> signInManager, 
-        ILogger<LogoutModel> logger, 
-        IShoppingCartService shoppingCartService)
+        ILogger<LogoutModel> logger)
     {
         _signInManager = signInManager;
         _logger = logger;
-        _shoppingCartService = shoppingCartService;
     }
 
     public async Task<IActionResult> OnPost(string returnUrl = null)

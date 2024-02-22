@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.ViewModels.Order;
+﻿namespace ReadersRealm.Web.ViewModels.Order;
 
 using OrderDetails;
 using OrderHeader;

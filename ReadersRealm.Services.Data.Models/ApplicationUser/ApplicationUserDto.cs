@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.DataTransferObjects.ApplicationUser;
+﻿namespace ReadersRealm.Services.Data.Models.ApplicationUser;
 
 public class ApplicationUserDto
 {

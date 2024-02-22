@@ -1,5 +1,5 @@
-﻿@using ReadersRealm.ViewModels.OrderDetails
-@model DetailsOrderViewModel
+﻿@using ReadersRealm.Web.ViewModels.OrderDetails
+@model ReadersRealm.Web.ViewModels.Order.DetailsOrderViewModel
 
 @{
     bool isUserEmployeeOrAdmin = User.IsInRole(AdminRole) || User.IsInRole(EmployeeRole);

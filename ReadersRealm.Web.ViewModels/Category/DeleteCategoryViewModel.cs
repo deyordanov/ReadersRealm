@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.ViewModels.Category;
+﻿namespace ReadersRealm.Web.ViewModels.Category;
 /// <summary>
 /// ViewModel for deleting a category in the Readers Realm application.
 /// This model is used to represent the category that is intended to be deleted.

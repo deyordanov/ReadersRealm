@@ -1,5 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace ReadersRealm.ViewModels.Book;
+namespace ReadersRealm.Web.ViewModels.Book;
 
 using Author;
 using Category;

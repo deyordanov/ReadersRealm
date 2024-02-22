@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.DataTransferObjects.OrderHeader;
+﻿namespace ReadersRealm.Services.Data.Models.OrderHeader;
 
 using OrderDetails;
 
