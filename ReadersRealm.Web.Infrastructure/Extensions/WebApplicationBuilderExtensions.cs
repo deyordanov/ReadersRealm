@@ -1,5 +1,7 @@
 ﻿namespace ReadersRealm.Web.Infrastructure.Extensions;
 
+using System.Reflection;
+using Common.Exceptions.Services;
 using Common.Exceptions.User;
 using Data.Models;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.User;
 using static Common.Constants.ExceptionMessages.ApplicationUserExceptionMessages;
+using static Common.Constants.ExceptionMessages.ServiceExceptionMessages;
 
 public static class WebApplicationBuilderExtensions
 {
@@ -86,6 +89,39 @@ public static class WebApplicationBuilderExtensions
             {
                 await roleManager.CreateAsync(new IdentityRole(role));
             }
+        }
+    }
+
+    public static void AddApplicationServices(
+        this IServiceCollection serviceCollection, 
+        Type getAssemblyServiceType)
+    {
+        Assembly? assembly = Assembly.GetAssembly(getAssemblyServiceType);
+
+        if (assembly == null)
+        {
+            throw new ServiceTypeNotFoundException(string.Format(ServiceInterfaceNotFoundExceptionMessage,
+                getAssemblyServiceType.Name));
+        }
+
+        ICollection<Type> serviceTypes = assembly
+            .GetTypes()
+            .Where(t => t.Name.EndsWith("Service") &&
+                        !t.IsInterface)
+            .ToList();
+
+        foreach (Type serviceType in serviceTypes)
+        {
+            Type? interfaceType = serviceType.GetInterface($"I{serviceType.Name}");
+
+            if (interfaceType == null)
+            {
+                throw new ServiceInterfaceNotFound(
+                    string.Format(ServiceInterfaceNotFoundExceptionMessage,
+                        serviceType.Name));
+            }
+
+            serviceCollection.AddScoped(interfaceType, serviceType);
         }
     }
 }

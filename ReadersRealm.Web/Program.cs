@@ -6,7 +6,6 @@ using ReadersRealm.Data;
 using ReadersRealm.Data.Repositories;
 using ReadersRealm.Data.Repositories.Contracts;
 using ReadersRealm.Services.Data;
-using ReadersRealm.Services.Data.Contracts;
 using ReadersRealm.Web.Infrastructure.Extensions;
 using Stripe;
 
@@ -16,15 +15,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IBookService, BookService>();
-builder.Services.AddScoped<IAuthorService, AuthorService>();
-builder.Services.AddScoped<ICompanyService, CompanyService>();
-builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
-builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IOrderHeaderService, OrderHeaderService>();
-builder.Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
+builder.Services.AddApplicationServices(typeof(ApplicationUserService));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
