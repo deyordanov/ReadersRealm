@@ -3,9 +3,11 @@
 using System.Reflection;
 using Common.Exceptions.Services;
 using Common.Exceptions.User;
+using Data;
 using Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.User;
@@ -93,7 +95,7 @@ public static class WebApplicationBuilderExtensions
     }
 
     public static void AddApplicationServices(
-        this IServiceCollection serviceCollection, 
+        this IServiceCollection services, 
         Type getAssemblyServiceType)
     {
         Assembly? assembly = Assembly.GetAssembly(getAssemblyServiceType);
@@ -121,7 +123,31 @@ public static class WebApplicationBuilderExtensions
                         serviceType.Name));
             }
 
-            serviceCollection.AddScoped(interfaceType, serviceType);
+            services.AddScoped(interfaceType, serviceType);
         }
+    }
+
+    public static void AddApplicationIdentity(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = configuration
+                    .GetValue<bool>("Identity:RequireConfirmedAccount");
+
+                options.Password.RequireDigit = configuration
+                    .GetValue<bool>("Identity:RequireDigit");
+
+                options.Password.RequireNonAlphanumeric = configuration
+                    .GetValue<bool>("Identity:RequireNonAlphanumeric");
+
+                options.Password.RequireLowercase = configuration
+                    .GetValue<bool>("Identity:RequireLowercase");
+
+                options.Password.RequireUppercase = configuration
+                    .GetValue<bool>("Identity:RequireUppercase");
+            }).AddEntityFrameworkStores<ReadersRealmDbContext>()
+            .AddDefaultTokenProviders();
     }
 }
