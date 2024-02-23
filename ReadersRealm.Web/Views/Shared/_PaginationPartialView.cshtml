@@ -1,0 +1,39 @@
+﻿@{
+    string controllerName = ViewBag.ControllerName;
+    string actionName = ViewBag.ActionName;
+    bool prevDisabled = ViewBag.PrevDisabled;
+    bool nextDisabled = ViewBag.NextDisabled;
+}
+
+<nav>
+    <ul class="row p-0">
+        <li class="page-item col-6" style="display: flex; justify-content: start">
+            @if (prevDisabled)
+            {
+                <button asp-controller="@controllerName" asp-action="@actionName" class="page-link" disabled>
+                    <span style="font-size: 1rem" class="btn btn-outline-danger">Previous</span>
+                </button>
+            }
+            else
+            {
+                <a asp-controller="@controllerName" asp-action="@actionName" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-searchTerm="@ViewBag.SearchTerm" class="page-link">
+                    <span style="font-size: 1rem" class="btn btn-outline-dark">Previous</span>
+                </a>
+            }
+        </li>
+        <li class="page-item col-6" style="display: flex; justify-content: end">
+            @if (nextDisabled)
+            {
+                <button asp-controller="@controllerName" asp-action="@actionName" class="page-link" disabled>
+                    <span style="font-size: 1rem" class="btn btn-outline-danger">Next</span>
+                </button>
+            }
+            else
+            {
+                <a asp-controller="@controllerName" asp-action="@actionName" asp-route-pageIndex="@(Model.PageIndex + 1)" asp-route-searchTerm="@ViewBag.SearchTerm" class="page-link">
+                    <span style="font-size: 1rem" class="btn btn-outline-dark">Next</span>
+                </a>
+            }
+        </li>
+    </ul>
+</nav>
