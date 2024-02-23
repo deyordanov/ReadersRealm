@@ -19,6 +19,8 @@ using static Common.Constants.Constants.ShoppingCart;
 [Area(Customer)]
 public class HomeController : BaseController
 {
+    private const string Controller = "controller";
+
     private readonly IShoppingCartCrudService _shoppingCartCrudService;
     private readonly IShoppingCartRetrievalService _shoppingCartRetrievalService;
     private readonly IBookRetrievalService _bookRetrievalService;
@@ -46,6 +48,10 @@ public class HomeController : BaseController
             ._bookRetrievalService
             .GetAllAsync(pageIndex, 8, searchTerm);
 
+        ViewBag.PrevDisabled = !allBooks.HasPreviousPage;
+        ViewBag.NextDisabled = !allBooks.HasNextPage;
+        ViewBag.ControllerName = this.ControllerContext.RouteData.Values[Controller]!;
+        ViewBag.ActionName = nameof(Index);
 
         return View(allBooks);
     }

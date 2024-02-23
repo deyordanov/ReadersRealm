@@ -30,171 +30,131 @@
                             <div class="row my-1">
                                 <div class="col-3">Name</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.FirstName" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.FirstName" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.FirstName" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)" 
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Name</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.LastName" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.LastName" class="form-control" disabled/>
-                                    }
+                                    <input type="text" asp-for="OrderHeader.LastName" asp-is-disabled="@(!isUserEmployeeOrAdmin)" class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Phone</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PhoneNumber" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PhoneNumber" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.PhoneNumber" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)" 
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Address</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.StreetAddress" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.StreetAddress" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.StreetAddress"
+                                           asp-is-disabled="@(!isUserEmployeeOrAdmin)"
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">City</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.City" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.City" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.City" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)" 
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">State</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.State" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.State" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.State" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)" 
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Zip Code</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PostalCode" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PostalCode" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.PostalCode" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)" 
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Order Date</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.OrderDate" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.OrderDate" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.OrderDate" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)" 
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Carrier</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.Carrier" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.Carrier" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.Carrier" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)" 
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Tracking Number</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.TrackingNumber" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.TrackingNumber" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.TrackingNumber" 
+                                        asp-is-disabled="(!isUserEmployeeOrAdmin)" 
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Shipping Date</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.ShippingDate" readonly class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.ShippingDate" readonly class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.ShippingDate" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)" 
+                                        readonly
+                                        class="form-control" />
                                 </div>
                             </div>
 
                             <div class="row my-1">
                                 <div class="col-3">Session ID</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.SessionId" readonly class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.SessionId" readonly class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.SessionId" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)" 
+                                        readonly 
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Payment Intent ID</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PaymentIntentId" readonly class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PaymentIntentId" readonly class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.PaymentIntentId" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)" 
+                                        readonly 
+                                        class="form-control" />
                                 </div>
                             </div>
 
@@ -202,44 +162,38 @@
 
                                 <div class="col-3">Payment Due Date</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PaymentDueDate" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PaymentDueDate" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.PaymentDueDate"
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)"
+                                        readonly
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
 
                                 <div class="col-3">Payment Date</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PaymentDate" class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PaymentDate" class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.PaymentDate"
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)"
+                                        readonly
+                                        class="form-control" />
                                 </div>
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">Payment Status</div>
                                 <div class="col-9">
-                                    @if (isUserEmployeeOrAdmin)
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PaymentStatus" readonly class="form-control"/>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" asp-for="OrderHeader.PaymentStatus" readonly class="form-control" disabled/>
-                                    }
+                                    <input 
+                                        type="text" 
+                                        asp-for="OrderHeader.PaymentStatus" 
+                                        asp-is-disabled="@(!isUserEmployeeOrAdmin)"
+                                        readonly 
+                                        class="form-control" />
                                 </div>
                             </div>
-                            @if (isUserEmployeeOrAdmin)
+                            @if ((!isUserEmployeeOrAdmin))
                             {
                                 <input type="submit" class="btn btn-warning form-control my-1" value="Update Order Details"/>
                             }
@@ -280,7 +234,7 @@
                                 <button asp-action="PayForOrder" type="submit" class="btn btn-success form-control my-1 rounded-2">Pay Now</button>
                             }
 
-                            @if (isUserEmployeeOrAdmin)
+                            @if ((!isUserEmployeeOrAdmin))
                             {
                                 @if (Model.OrderHeader.OrderStatus == OrderStatusApproved)
                                 {

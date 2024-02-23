@@ -47,6 +47,7 @@
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Order\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Customer\Views\ShoppingCart\OrderConfirmation.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\_NotificationPartialView.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Shared\_PaginationPartialView.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -90,6 +91,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Areas\Admin\Views\Order\OrderConfirmation.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Shared\_PaginationPartialView.cshtml" />
   </ItemGroup>
 
 </Project>

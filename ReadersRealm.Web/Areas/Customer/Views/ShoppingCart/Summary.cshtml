@@ -1,96 +1,82 @@
 ﻿@using ReadersRealm.Web.ViewModels.ShoppingCart
 @model ReadersRealm.Web.ViewModels.ShoppingCart.AllShoppingCartsListViewModel
 <form method="post">
-    <input asp-for="OrderHeader.ApplicationUserId" value="@Model.OrderHeader.ApplicationUserId" hidden/>
-    <input asp-for="OrderHeader.Id" value="@Model.OrderHeader.Id" hidden/>
-    <div class="container">
-        <div class="card shadow border-0">
-            <div class="card-body">
+    <input asp-for="OrderHeader.ApplicationUserId" value="@Model.OrderHeader.ApplicationUserId" type="hidden">
+    <input asp-for="OrderHeader.Id" value="@Model.OrderHeader.Id" type="hidden">
+    <section class="container">
+        <article class="card shadow border-0">
+            <section class="card-body">
                 <div class="col-12 col-md-12" style="margin: 1rem 0 0 1rem">
                     <a asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-outline-dark text-uppercase">
                         <small>Back to cart</small>
                     </a>
                 </div>
-                <div class="container rounded p-2">
+                <section class="container rounded p-2">
                     <div class="row">
-                        <div class="col-12 col-lg-6 pb-4">
-                            <div class="row">
+                        <aside class="col-12 col-lg-6 pb-4">
+                            <header>
                                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                                     <span class="text-info">Shipping Details:</span>
                                 </h4>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3">
-                                    <label>First Name</label>
+                            </header>
+                            <fieldset>
+                                <div class="form-group row my-1">
+                                    <label class="col-3">First Name</label>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.FirstName" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.FirstName"></span>
+                                    </div>
                                 </div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.FirstName" class="form-control"/>
-                                    <span asp-validation-for="OrderHeader.FirstName"></span>
+                                <div class="form-group row my-1">
+                                    <label class="col-3">Last Name</label>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.LastName" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.LastName"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3">
-                                    <label>Last Name</label>
+                                <div class="form-group row my-1">
+                                    <label class="col-3">Phone</label>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.PhoneNumber" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.PhoneNumber"></span>
+                                    </div>
                                 </div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.LastName" class="form-control"/>
-                                    <span asp-validation-for="OrderHeader.LastName"></span>
+                                <div class="form-group row my-1">
+                                    <label class="col-3">Street Address</label>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.StreetAddress" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.StreetAddress"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3">
-                                    <label>Phone</label>
+                                <div class="form-group row my-1">
+                                    <label class="col-3">City</label>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.City" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.City"></span>
+                                    </div>
                                 </div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.PhoneNumber" class="form-control"/>
-                                    <span asp-validation-for="OrderHeader.PhoneNumber"></span>
-
+                                <div class="form-group row my-1">
+                                    <label class="col-3">State</label>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.State" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.State"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3">
-                                    <label>Street Address</label>
+                                <div class="form-group row my-1">
+                                    <label class="col-3">Postal Code</label>
+                                    <div class="col-9">
+                                        <input asp-for="OrderHeader.PostalCode" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.PostalCode"></span>
+                                    </div>
                                 </div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.StreetAddress" class="form-control"/>
-                                    <span asp-validation-for="OrderHeader.StreetAddress"></span>
-
-                                </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3">
-                                    <label>City</label>
-                                </div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.City" class="form-control"/>
-                                    <span asp-validation-for="OrderHeader.City"></span>
-                                </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3">
-                                    <label>State</label>
-                                </div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.State" class="form-control"/>
-                                    <span asp-validation-for="OrderHeader.State"></span>
-
-                                </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3">
-                                    <label>Postal Code</label>
-                                </div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.PostalCode" class="form-control"/>
-                                    <span asp-validation-for="OrderHeader.PostalCode"></span>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-5 offset-lg-1">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-info">Order Summary:</span>
-                            </h4>
+                            </fieldset>
+                        </aside>
+                        <aside class="col-12 col-lg-5 offset-lg-1">
+                            <header>
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-info">Order Summary:</span>
+                                </h4>
+                            </header>
                             <ul class="list-group mb-3">
                                 @foreach (ShoppingCartViewModel shoppingCartModel in Model.ShoppingCartsList)
                                 {
@@ -103,15 +89,15 @@
                                     </li>
                                 }
                                 <li class="list-group-item d-flex justify-content-between bg-light">
-                                    <small class="text-info">Total (USD)</small>
-                                    <strong class="text-info">@Model.OrderHeader.OrderTotal.ToString("c")</strong>
+                                    <span class="text-info">Total (USD)</span>
+                                    <strong>@Model.OrderHeader.OrderTotal.ToString("c")</strong>
                                 </li>
                             </ul>
-                        </div>
+                        </aside>
                     </div>
-                </div>
-            </div>
-            <div class="card-footer">
+                </section>
+            </section>
+            <footer class="card-footer">
                 <div class="row">
                     <div class="col-12 col-md-8 pt-2">
                         <p style="color: maroon; font-size: 14px;">
@@ -122,7 +108,7 @@
                         <button asp-area="Customer" asp-controller="ShoppingCart" asp-action="Summary" type="submit" value="Place Order" class="btn btn-primary form-control">Place Order</button>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+            </footer>
+        </article>
+    </section>
 </form>

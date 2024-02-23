@@ -33,6 +33,11 @@ public class CompanyController : BaseController
             ._companyRetrievalService
             .GetAllAsync(pageIndex, 5, searchTerm);
 
+        ViewBag.PrevDisabled = !allCompanies.HasPreviousPage;
+        ViewBag.NextDisabled = !allCompanies.HasNextPage;
+        ViewBag.ControllerName = nameof(Company);
+        ViewBag.ActionName = nameof(Index);
+
         ViewBag.SearchTerm = searchTerm ?? string.Empty;
 
         return View(allCompanies);

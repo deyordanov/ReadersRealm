@@ -93,6 +93,7 @@ public class ShoppingCartController : BaseController
     public async Task<IActionResult> Summary(AllShoppingCartsListViewModel shoppingCartModel)
     {
         string userId = User.GetId();
+
         if (!ModelState.IsValid)
         {
             shoppingCartModel = await this

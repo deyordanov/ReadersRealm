@@ -1,126 +1,143 @@
 ﻿@model ReadersRealm.Web.ViewModels.ShoppingCart.ShoppingCartViewModel
 
 <form method="post" data-price="@Model.Book.Price" id="details-form">
-    <input asp-for="Id" value="@Model.Id"  hidden/>
-    <input asp-for="BookId" value="@Model.BookId" hidden/>
-    <div class="card shadow border-0 mt-4">
-        <div class="card-body">
+    <input asp-for="Id" value="@Model.Id" hidden />
+    <input asp-for="BookId" value="@Model.BookId" hidden />
+    <section class="card shadow border-0 mt-4">
+        <section class="card-body">
             <div class="py-3">
                 <div class="row">
                     <div class="col-6 col-md-2 offset-lg-1 pb-1">
-                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-outline-dark text-uppercase">
-                            <small>Back to home</small>
-                        </a>
+                        <nav>
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-outline-dark text-uppercase">
+                                <small>Back to home</small>
+                            </a>
+                        </nav>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                        @if (Model.Book.ImageUrl != null)
-                        {
-                            <img src="@Model.Book.ImageUrl" width="100%" class="rounded"/>
-                        }
-                        else
-                        {
-                            <img src="https://placehold.co/500x600" width="100%" class="rounded"/>
-                        }
-                        <div class="card-body pb-0">
-                            <div>
-                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@Model.Book.Title</p>
-                                <p class="card-title text-warning text-center">by <b>@(Model.Book.Author.FirstName + " " + Model.Book.Author.LastName)</b></p>
-                            </div>
+                <article>
+                    <div class="row">
+                        <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
+                            @if (Model.Book.ImageUrl != null)
+                            {
+                                <figure>
+                                    <img src="@Model.Book.ImageUrl" width="100%" class="rounded" />
+                                    <figcaption class="mt-2">
+                                        <h5 class="card-title h4 text-dark opacity-75 text-uppercase text-center">@Model.Book.Title</h5>
+                                        <p class="card-title text-warning text-center">by <strong>@(Model.Book.Author.FirstName + " " + Model.Book.Author.LastName)</strong></p>
+                                    </figcaption>
+                                </figure>
+                            }
+                            else
+                            {
+                                <figure>
+                                    <img src="https://placehold.co/500x600" width="100%" class="rounded" />
+                                    <figcaption class="mt-2">
+                                        <h5 class="card-title h5 text-dark opacity-75 text-uppercase text-center">@Model.Book.Title</h5>
+                                        <p class="card-title text-warning text-center">by <strong>@(Model.Book.Author.FirstName + " " + Model.Book.Author.LastName)</strong></p>
+                                    </figcaption>
+                                </figure>
+                            }
+                            <footer class="col-12">
+                                <div class="pb-1">
+                                    <button type="submit" class="btn btn-primary bg-gradient w-100 py-2 text-uppercase fw-semibold">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </footer>
                         </div>
-                        <div class="col-12">
-                            <div class=" pb-1">
-                                <button type="submit" class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div>
+                        <aside class="col-12 col-lg-6 offset-lg-1">
+                            <section>
+                                <div style="display: flex; flex-direction: column; gap: 0.4rem">
+                                    <div class="row ps-2">
+                                        <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Category : <strong>@Model.Book.Category.Name</strong></h6>
+                                    </div>
+                                    <div class="row ps-2">
+                                        <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">ISBN : <strong>@Model.Book.ISBN</strong></h6>
+                                    </div>
+                                    <div class="row ps-2">
+                                        <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Page count : <strong>@Model.Book.Pages</strong></h6>
+                                    </div>
+                                    <div class="row ps-2">
+                                        <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Book cover : <strong>@Model.Book.BookCover</strong></h6>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div>
+                                    <div class="row text-center ps-2">
+                                        <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                            <div class="text-dark text-opacity-50 fw-semibold">Quantity</div>
+                                        </div>
+                                        <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                            <div class="text-dark text-opacity-50 fw-semibold">1-50</div>
+                                        </div>
+                                        <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                            <div class="text-dark text-opacity-50 fw-semibold">51-100</div>
+                                        </div>
+                                        <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                            <div class="text-dark text-opacity-50 fw-semibold">100+</div>
+                                        </div>
+                                    </div>
+                                    <div class="row text-center ps-2">
+                                        <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                            <div class="text-success text-opacity-50 fw-semibold">Discount</div>
+                                        </div>
+                                        <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                            <div class="text-success text-opacity-50 fw-semibold">0%</div>
+                                        </div>
+                                        <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                            <div class="text-success text-opacity-50 fw-semibold">10%</div>
+                                        </div>
+                                        <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                                            <div class="text-success text-opacity-50 fw-semibold">20%</div>
+                                        </div>
+                                    </div>
+                                    <div class="row text-center ps-2">
+                                        <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
+                                            <div>Price</div>
+                                        </div>
+                                        <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
+                                            <div id="priceBase">@Model.Book.Price.ToString("c")</div>
+                                        </div>
+                                        <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
+                                            <div id="price50">@Model.Book.Price.ToString("c")</div>
+                                        </div>
+                                        <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
+                                            <div id="price100">@Model.Book.Price.ToString("c")</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="row my-3">
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-primary text-white border-0 fw-semibold"
+                                                  id="inputGroup-sizing-default">
+                                                Count
+                                            </span>
+                                            <input asp-for="Count" type="number" min="1" class="form-control text-end" id="quantity" aria-describedby="inputGroup-sizing-default" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="row">
+                                    <header>
+                                        <p class="text-secondary lh-sm" style="font-weight: bold">Description:</p>
+                                    </header>
+                                    <p>@Html.Raw(@Model.Book.Description)</p>
+                                </div>
+                            </section>
+                        </aside>
                     </div>
-                    <div class="col-12 col-lg-6 offset-lg-1" style="display: flex; flex-direction: column; justify-content: space-between; margin: 0 0 0rem 5rem; font-size: 1.2rem; gap: 1rem">
-                        <div style="display: flex; flex-direction: column; gap: 0.4rem">
-                            <div class="row ps-2">
-                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Category : <b>@Model.Book.Category.Name</b></h6>
-                            </div>
-                            <div class="row ps-2">
-                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">ISBN : <b>@Model.Book.ISBN</b></h6>
-                            </div>
-                            <div class="row ps-2">
-                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Page count : <b>@Model.Book.Pages</b></h6>
-                            </div>
-                            <div class="row ps-2">
-                                <h6 class="text-dark text-opacity-50" style="font-size: 0.8rem">Book cover : <b>@Model.Book.BookCover</b></h6>
-                            </div>
-                        </div>
-                        <div>
-                            <div>
-                                <div class="row text-center ps-2">
-                                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                        <div class="text-dark text-opacity-50 fw-semibold">Quantity</div>
-                                    </div>
-                                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                        <div class="text-dark text-opacity-50 fw-semibold">1-50</div>
-                                    </div>
-                                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                        <div class="text-dark text-opacity-50 fw-semibold">51-100</div>
-                                    </div>
-                                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                        <div class="text-dark text-opacity-50 fw-semibold">100+</div>
-                                    </div>
-                                </div>
-                                <div class="row text-center ps-2">
-                                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                        <div class="text-success text-opacity-50 fw-semibold">Discount</div>
-                                    </div>
-                                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                        <div class="text-success text-opacity-50 fw-semibold">0%</div>
-                                    </div>
-                                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                        <div class="text-success text-opacity-50 fw-semibold">10%</div>
-                                    </div>
-                                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
-                                        <div class="text-success text-opacity-50 fw-semibold">20%</div>
-                                    </div>
-                                </div>
-                                <div class="row text-center ps-2">
-                                    <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                        <div>Price</div>
-                                    </div>
-                                    <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                        <div id="priceBase">@Model.Book.Price.ToString("c")</div>
-                                    </div>
-                                    <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                        <div id="price50">@Model.Book.Price.ToString("c")</div>
-                                    </div>
-                                    <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                        <div id="price100">@Model.Book.Price.ToString("c")</div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="row my-3">
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-primary text-white border-0 fw-semibold"
-                                              id="inputGroup-sizing-default">
-                                            Count
-                                        </span>
-                                        <input asp-for="Count" type="number" min="1" class="form-control text-end" id="quantity" aria-describedby="inputGroup-sizing-default"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <p class="text-secondary lh-sm" style="font-weight: bold">Description:</p>
-                            <p>@Html.Raw(@Model.Book.Description)</p>
-                        </div>
-                    </div>
-                </div>
+                </article>
             </div>
-        </div>
-    </div>
+        </section>
+    </section>
 </form>
 
-@section Scripts{
+@section Scripts {
     <script src="~/js/bookPrice.js"></script>
 }

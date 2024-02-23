@@ -46,6 +46,11 @@ public class BookController : BaseController
             ._bookRetrievalService
             .GetAllAsync(pageIndex ,5, searchTerm);
 
+        ViewBag.PrevDisabled = !allBooks.HasPreviousPage;
+        ViewBag.NextDisabled = !allBooks.HasNextPage;
+        ViewBag.ControllerName = nameof(Book);
+        ViewBag.ActionName = nameof(Index);
+
         ViewBag.SearchTerm = searchTerm ?? "";
 
         return View(allBooks);

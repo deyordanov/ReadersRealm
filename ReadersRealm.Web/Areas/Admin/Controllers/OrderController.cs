@@ -52,6 +52,7 @@ public class OrderController : BaseController
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
         PaginatedList<AllOrdersViewModel> allOrders;
+
         bool isUserAdminOrEmployee = User.IsInRole(AdminRole) || User.IsInRole(EmployeeRole);
         if (isUserAdminOrEmployee)
         {
@@ -66,6 +67,11 @@ public class OrderController : BaseController
                 ._orderRetrievalService
                 .GetAllByUserIdAsync(pageIndex, 5, searchTerm, userId);
         }
+
+        ViewBag.PrevDisabled = !allOrders.HasPreviousPage;
+        ViewBag.NextDisabled = !allOrders.HasNextPage;
+        ViewBag.ControllerName = nameof(Order);
+        ViewBag.ActionName = nameof(Index);
 
         return View(allOrders);
     }
