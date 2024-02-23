@@ -6,12 +6,19 @@ using ReadersRealm.Data.Repositories;
 using ReadersRealm.Data.Repositories.Contracts;
 using ReadersRealm.Services.Data.ApplicationUserServices.Contracts;
 using ReadersRealm.Web.Infrastructure.Extensions;
+using ReadersRealm.Web.Infrastructure.ModelBinders;
 using Stripe;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddMvcOptions(options =>
+    {
+        options
+            .ModelBinderProviders
+            .Insert(0, new DecimalModelBinderProvider());
+    });
 builder.Services.AddRazorPages();
 
 builder.Services.AddApplicationServices(typeof(IApplicationUserRetrievalService));
