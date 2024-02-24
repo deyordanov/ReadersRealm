@@ -5,4 +5,5 @@ using Web.ViewModels.ApplicationUser;
 public interface IApplicationUserCrudService
 {
     Task UpdateApplicationUserAsync(OrderApplicationUserViewModel applicationUserModel);
+    Task UpdateApplicationUserRolesAsync(RolesApplicationUserViewModel applicationUserModel);
 }

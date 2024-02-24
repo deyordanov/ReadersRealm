@@ -92,6 +92,7 @@ public static class Constants
         public const string PaymentStatusCancelled = "Cancelled";
     }
 
+    // Used when creating an admin
     public static class User
     {
         //Action Results
@@ -108,6 +109,14 @@ public static class Constants
         public const string AdminUserPhoneNumber = "0893453255";
         public const string AdminUserPassword = "Admin123!";
         public const bool AdminUserEmailConfirmed = true;
+    }
+
+    public static class ApplicationUser
+    {
+        //Display Names
+        public const string FirstNameDisplay = "First Name";
+        public const string LastNameDisplay = "Last Name";
+        public const string UserRolesDisplay = "User's Roles";
     }
 
     public static class Roles

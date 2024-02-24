@@ -6,6 +6,11 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 public class AllApplicationUsersViewModel
 {
+    public AllApplicationUsersViewModel()
+    {
+        this.Roles = new List<string>();
+    }
+
     public required Guid Id { get; set; }
 
     public required string FirstName { get; set; }
@@ -16,7 +21,7 @@ public class AllApplicationUsersViewModel
 
     public required string Email { get; set; }
 
-    public required string Role { get; set; }
+    public required IList<string> Roles { get; set; }
 
     public Guid? CompanyId { get; set; }
 

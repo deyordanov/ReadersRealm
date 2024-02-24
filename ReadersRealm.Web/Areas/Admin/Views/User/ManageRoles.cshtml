@@ -1,0 +1,51 @@
+﻿@model RolesApplicationUserViewModel
+<form method="post" class="w-100" style="display: flex; -o-justify-content: center; -webkit-justify-content: center; justify-content: center">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 mt-4 w-50 px-4 border-black">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Category</h2>
+            <hr />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="FirstName"></label>
+            <input type="text" class="form-control" asp-for="FirstName" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="LastName"></label>
+            <input type="text" class="form-control" asp-for="LastName" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="NewRoles"></label>
+            <select asp-for="NewRoles" name="NewRoles" multiple>
+                @foreach (string role in Model.AllRoles)
+                {
+                    <option
+                        value="@role"
+                        asp-is-selected="@(Model.OldRoles.Contains(role))">
+                        @role
+                    </option>
+                }
+            </select>
+            <span asp-validation-for="NewRoles" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <a asp-controller="User" asp-action="Index" class="btn btn-outline-secondary form-control">
+                    Back To List
+                </a>
+            </div>
+            <div class="col-6">
+                <button type="submit" class="btn btn-outline-primary bg-black text-white form-control">Update</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

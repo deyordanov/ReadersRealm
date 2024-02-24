@@ -22,11 +22,10 @@
     <table class="table table-bordered table-striped border-black" style="width: 100%">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
-                <th>Role</th>
+                <th>Role(s)</th>
                 <th>Company</th>
             </tr>
         </thead>
@@ -34,9 +33,6 @@
             @foreach (AllApplicationUsersViewModel applicationUserModel in @Model)
             {
                 <tr>
-                    <td>
-                        @applicationUserModel.Id
-                    </td>
                     <td>
                         @(applicationUserModel.FirstName + " " + applicationUserModel.LastName)
                     </td>
@@ -47,11 +43,14 @@
                         @applicationUserModel.PhoneNumber
                     </td>
                     <td>
+                        @(string.Join(", ", applicationUserModel.Roles))
+                    </td>
+                    <td>
                         @(applicationUserModel.Company?.Name ?? "The user does not belong to a company.")
                     </td>
                     <td>
                         <div class="w-100">
-                            <a asp-controller="User" asp-action="Edit" asp-route-id="@applicationUserModel.Id" asp-route-pageIndex=@Model.PageIndex asp-route-searchTerm="@ViewBag.SearchTerm" class="btn btn-primary btn-sm" style="font-size: 13px">
+                            <a asp-controller="User" asp-action="ManageRoles" asp-route-applicationUserId="@applicationUserModel.Id" asp-route-pageIndex=@Model.PageIndex asp-route-searchTerm="@ViewBag.SearchTerm" class="btn btn-primary btn-sm" style="font-size: 13px">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
                             <a asp-controller="User" asp-action="Delete" asp-route-id="@applicationUserModel.Id" class="btn btn-danger btn-sm" style="font-size: 13px">

@@ -1,7 +1,7 @@
 ﻿namespace ReadersRealm.Data.Repositories;
 
 using System.Linq.Expressions;
-using Common.Exceptions.EntityProperty;
+using Common.Exceptions.GeneralExceptions;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
 

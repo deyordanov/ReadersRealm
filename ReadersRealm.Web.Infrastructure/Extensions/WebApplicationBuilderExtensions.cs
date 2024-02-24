@@ -102,7 +102,7 @@ public static class WebApplicationBuilderExtensions
 
         if (assembly == null)
         {
-            throw new ServiceTypeNotFoundException(string.Format(ServiceInterfaceNotFoundExceptionMessage,
+            throw new ServiceTypeNotFoundException(string.Format(ServiceTypeNotFoundExceptionMessage,
                 getAssemblyServiceType.Name));
         }
 
