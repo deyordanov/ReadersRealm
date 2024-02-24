@@ -20,11 +20,11 @@ public static class WebApplicationBuilderExtensions
     {
         using IServiceScope serviceScope = app.ApplicationServices.CreateScope();
 
-        UserManager<IdentityUser> userManager = serviceScope
+        UserManager<ApplicationUser> userManager = serviceScope
             .ServiceProvider
-            .GetRequiredService<UserManager<IdentityUser>>();
+            .GetRequiredService<UserManager<ApplicationUser>>();
 
-        IdentityUser? existentUser = await
+        ApplicationUser? existentUser = await  
             userManager
                 .FindByEmailAsync(AdminUserEmail);
 
@@ -55,7 +55,7 @@ public static class WebApplicationBuilderExtensions
             }
             else
             {
-                IdentityUser? adminUser = await userManager
+                ApplicationUser? adminUser = await userManager
                     .FindByEmailAsync(AdminUserEmail);
 
                 if (adminUser == null)
@@ -72,9 +72,9 @@ public static class WebApplicationBuilderExtensions
     {
         IServiceScope serviceScope = app.ApplicationServices.CreateScope();
 
-        RoleManager<IdentityRole> roleManager = serviceScope
+        RoleManager<IdentityRole<Guid>> roleManager = serviceScope
                 .ServiceProvider
-                .GetRequiredService<RoleManager<IdentityRole>>();
+                .GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         IList<string> roles = new List<string>()
         {
@@ -89,7 +89,7 @@ public static class WebApplicationBuilderExtensions
             bool roleExists = await roleManager.RoleExistsAsync(role);
             if (!roleExists)
             {
-                await roleManager.CreateAsync(new IdentityRole(role));
+                await roleManager.CreateAsync(new IdentityRole<Guid>(role));
             }
         }
     }
@@ -131,7 +131,7 @@ public static class WebApplicationBuilderExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddIdentity<IdentityUser, IdentityRole>(options =>
+        services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = configuration
                     .GetValue<bool>("Identity:RequireConfirmedAccount");
@@ -147,7 +147,9 @@ public static class WebApplicationBuilderExtensions
 
                 options.Password.RequireUppercase = configuration
                     .GetValue<bool>("Identity:RequireUppercase");
-            }).AddEntityFrameworkStores<ReadersRealmDbContext>()
+            })
+            .AddRoles<IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<ReadersRealmDbContext>()
             .AddDefaultTokenProviders();
     }
 }

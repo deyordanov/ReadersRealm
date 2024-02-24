@@ -6,7 +6,7 @@ using Web.ViewModels.ShoppingCart;
 public interface IShoppingCartRetrievalService
 {
     ShoppingCartViewModel GetShoppingCart(DetailsBookViewModel bookModel);
-    Task<int> GetShoppingCartCountByApplicationUserIdAsync(string applicationUserId);
-    Task<bool> ShoppingCartExistsAsync(string applicationUserId, Guid bookId);
-    Task<AllShoppingCartsListViewModel> GetAllListAsync(string applicationUserId);
+    Task<int> GetShoppingCartCountByApplicationUserIdAsync(Guid applicationUserId);
+    Task<bool> ShoppingCartExistsAsync(Guid applicationUserId, Guid bookId);
+    Task<AllShoppingCartsListViewModel> GetAllListAsync(Guid applicationUserId);
 }

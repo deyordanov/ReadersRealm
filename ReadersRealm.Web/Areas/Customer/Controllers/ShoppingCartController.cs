@@ -68,7 +68,7 @@ public class ShoppingCartController : BaseController
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        string userId = User.GetId();
+        Guid userId = User.GetId();
 
         AllShoppingCartsListViewModel shoppingCartModel = await this
             ._shoppingCartRetrievalService
@@ -80,7 +80,7 @@ public class ShoppingCartController : BaseController
     [HttpGet]
     public async Task<IActionResult> Summary()
     {
-        string userId = User.GetId();
+        Guid userId = User.GetId();
 
         AllShoppingCartsListViewModel shoppingCartModel = await this
             ._shoppingCartRetrievalService
@@ -92,7 +92,7 @@ public class ShoppingCartController : BaseController
     [HttpPost]
     public async Task<IActionResult> Summary(AllShoppingCartsListViewModel shoppingCartModel)
     {
-        string userId = User.GetId();
+        Guid userId = User.GetId();
 
         if (!ModelState.IsValid)
         {
@@ -225,7 +225,7 @@ public class ShoppingCartController : BaseController
             }
         }
 
-        string applicationUserId = User.GetId();
+        Guid applicationUserId = User.GetId();
         await this
             ._shoppingCartCrudService
             .DeleteAllShoppingCartsApplicationUserIdAsync(applicationUserId);
@@ -358,7 +358,7 @@ public class ShoppingCartController : BaseController
 
     private async Task SetShoppingCartItemsCountInSession()
     {
-        string userId = User.GetId();
+        Guid userId = User.GetId();
 
         int itemsCount = await this
             ._shoppingCartRetrievalService

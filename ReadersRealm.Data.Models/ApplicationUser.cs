@@ -6,8 +6,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using static Common.Constants.ValidationConstants.ApplicationUser;
 
-public class ApplicationUser : IdentityUser
+public sealed class ApplicationUser : IdentityUser<Guid>
 {
+    public ApplicationUser()
+    {
+        this.Id = Guid.NewGuid();
+    }
 
     [Required]
     [StringLength(ApplicationUserFirstNameMaxLength)]
@@ -33,5 +37,5 @@ public class ApplicationUser : IdentityUser
 
     [ValidateNever]
     [ForeignKey(nameof(CompanyId))]
-    public Company Company { get; set; } = null!;
+    public Company? Company { get; set; }
 }

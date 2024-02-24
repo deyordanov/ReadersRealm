@@ -75,12 +75,12 @@ public class OrderHeaderRetrievalService : IOrderHeaderRetrievalService
         return orderHeaderModel;
     }
 
-    public async Task<OrderHeaderViewModel?> GetByApplicationUserIdAndOrderStatusAsync(string applicationUserId, string orderStatus)
+    public async Task<OrderHeaderViewModel?> GetByApplicationUserIdAndOrderStatusAsync(Guid applicationUserId, string orderStatus)
     {
         IEnumerable<OrderHeader> orderHeaders = await this
             ._unitOfWork
             .OrderHeaderRepository
-            .GetAsync(orderHeader => orderHeader.ApplicationUserId == applicationUserId &&
+            .GetAsync(orderHeader => orderHeader.ApplicationUserId.Equals(applicationUserId) &&
                                      orderHeader.OrderStatus == orderStatus, null, PropertiesToInclude);
 
         OrderHeader? orderHeader = orderHeaders.FirstOrDefault();

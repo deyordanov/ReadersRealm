@@ -35,7 +35,12 @@ public class BookRetrievalService : IBookRetrievalService
         List<Book> allBooks = await this
             ._unitOfWork
             .BookRepository
-            .GetAsync(book => book.Title.ToLower().StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty), null, PropertiesToInclude);
+            .GetAsync(book => book
+                .Title
+                .ToLower()
+                .StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty), 
+                null, 
+                PropertiesToInclude);
 
         return PaginatedList<AllBooksViewModel>.Create(allBooks
             .Select(book => new AllBooksViewModel()

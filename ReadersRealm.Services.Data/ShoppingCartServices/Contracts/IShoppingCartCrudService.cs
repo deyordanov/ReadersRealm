@@ -7,5 +7,5 @@ public interface IShoppingCartCrudService
     Task CreateShoppingCartAsync(ShoppingCartViewModel shoppingCartModel);
     Task UpdateShoppingCartCountAsync(ShoppingCartViewModel shoppingCartModel);
     Task DeleteShoppingCartAsync(Guid id);
-    Task DeleteAllShoppingCartsApplicationUserIdAsync(string applicationUserId);
+    Task DeleteAllShoppingCartsApplicationUserIdAsync(Guid applicationUserId);
 }

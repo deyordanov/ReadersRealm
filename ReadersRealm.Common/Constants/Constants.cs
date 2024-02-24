@@ -162,4 +162,9 @@ public static class Constants
     {
         public const string ShoppingCartSessionKey = "ShoppingCartSession";
     }
+
+    public static class Error
+    {
+        public const string NotFound404Path = "/Customer/Error/404";
+    }
 }

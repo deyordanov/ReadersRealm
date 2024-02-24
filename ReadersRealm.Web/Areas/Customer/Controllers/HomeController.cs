@@ -90,7 +90,7 @@ public class HomeController : BaseController
             return View(shoppingCartModel);
         }
 
-        string userId = User.GetId();
+        Guid userId = User.GetId();
         shoppingCartModel.ApplicationUserId = userId;
 
         bool shoppingCartExists = await this
@@ -133,7 +133,7 @@ public class HomeController : BaseController
 
     private async Task SetShoppingCartItemsCountInSession()
     {
-        string userId = User.GetId();
+        Guid userId = User.GetId();
 
         int itemsCount = await this
             ._shoppingCartRetrievalService

@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace ReadersRealm.Data.Migrations
 {
     /// <inheritdoc />
@@ -17,7 +15,7 @@ namespace ReadersRealm.Data.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -86,7 +84,7 @@ namespace ReadersRealm.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -139,10 +137,9 @@ namespace ReadersRealm.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     StreetAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     State = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -179,7 +176,7 @@ namespace ReadersRealm.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -198,10 +195,10 @@ namespace ReadersRealm.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,8 +215,8 @@ namespace ReadersRealm.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -242,9 +239,9 @@ namespace ReadersRealm.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -263,7 +260,7 @@ namespace ReadersRealm.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ShippingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrderTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -294,7 +291,7 @@ namespace ReadersRealm.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Count = table.Column<int>(type: "int", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -363,37 +360,6 @@ namespace ReadersRealm.Data.Migrations
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.InsertData(
-                table: "Authors",
-                columns: new[] { "Id", "Age", "Email", "FirstName", "Gender", "LastName", "MiddleName", "PhoneNumber" },
-                values: new object[,]
-                {
-                    { new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"), 59, "rriordan@gmail.com", "Rick", 0, "Riordan", null, "098-765-4321" },
-                    { new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"), 49, "kmasashi@gmail.com", "Masashi", 0, "Kishimoto", null, "123-456-7890" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "DisplayOrder", "Name" },
-                values: new object[,]
-                {
-                    { 1, 1, "Manga" },
-                    { 2, 2, "Action" },
-                    { 3, 3, "SciFi" },
-                    { 4, 4, "History" },
-                    { 5, 5, "Fantasy" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Books",
-                columns: new[] { "Id", "AuthorId", "BookCover", "CategoryId", "Description", "ISBN", "ImageUrl", "Pages", "Price", "Title", "Used" },
-                values: new object[,]
-                {
-                    { new Guid("5672cad9-043f-44f7-9d81-abb080377a4c"), new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"), 1, 1, "\"Naruto Vol 1\" introduces readers to Naruto Uzumaki, a young ninja with dreams of becoming the strongest ninja and leader of his village, the Hokage. Despite being ostracized by the village for housing a fearsome nine-tailed fox that attacked the village years ago, Naruto is determined to gain the village's recognition through his accomplishments and hard work. The volume covers his struggles in the Ninja Academy, his formation of friendships and rivalries, and the beginning of his journey to becoming a skilled ninja. It sets the stage for an expansive story of growth, battles, and the pursuit of dreams amidst the complexities of the ninja world.", "9797415363864", "images\\bookSeedData\\9e84aff9-028a-4cd7-8e31-2e73eddce1d5.jpg", 192, 19.99m, "Naruto Vol 1", false },
-                    { new Guid("593ee34f-a1a8-493e-93c2-a235cb16695c"), new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"), 1, 1, "In \"Naruto Vol 8\" the Chunin Exam's second phase plunges Naruto, Sasuke, and Sakura into the perilous Forest of Death. Amidst treacherous battles and survival challenges, the team confronts formidable rivals and their own fears. As hidden dangers emerge, Naruto's resolve is tested, unveiling new powers and deepening bonds. This volume is a thrilling journey of growth, teamwork, and unyielding spirit against life-and-death stakes.", "9785421961182", "images\\bookSeedData\\b2f6e888-402f-4851-9392-8931a567ea9a.jpg", 192, 19.99m, "Naruto Vol 8", false },
-                    { new Guid("e7a0f13d-2eb2-4aa4-b196-31b73008a930"), new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"), 1, 1, "\"Naruto Vol 35\" shifts the focus to the aftermath of Naruto's intense training under Jiraiya and the looming threat of the Akatsuki. Naruto returns to Konoha, showcasing newfound strengths and techniques. Meanwhile, the story delves into the formation of new alliances and the preparation for a confrontation that could shake the ninja world to its core. This volume encapsulates themes of evolution and anticipation, setting the stage for epic battles and strategic mind games.", "9799667150078", "images\\bookSeedData\\3ba49236-d6a4-43ec-b9d7-d77eeff8e812.webp", 200, 19.99m, "Naruto Vol 35", false }
                 });
 
             migrationBuilder.CreateIndex(

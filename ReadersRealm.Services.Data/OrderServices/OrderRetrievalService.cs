@@ -54,12 +54,12 @@ public class OrderRetrievalService : IOrderRetrievalService
         return PaginatedList<AllOrdersViewModel>.Create(allOrderModelsList, pageIndex, pageSize);
     }
 
-    public async Task<PaginatedList<AllOrdersViewModel>> GetAllByUserIdAsync(int pageIndex, int pageSize, string? searchTerm, string userId)
+    public async Task<PaginatedList<AllOrdersViewModel>> GetAllByUserIdAsync(int pageIndex, int pageSize, string? searchTerm, Guid userId)
     {
         List<Order> allOrders = await this
             ._unitOfWork
             .OrderRepository
-            .GetAsync(order => order.OrderHeader.ApplicationUserId == userId, null, PropertiesToInclude);
+            .GetAsync(order => order.OrderHeader.ApplicationUserId.Equals(userId), null, PropertiesToInclude);
 
         List<AllOrdersViewModel> allOrderModelsList = new List<AllOrdersViewModel>();
 

@@ -34,33 +34,33 @@ public class ShoppingCartRetrievalService : IShoppingCartRetrievalService
         };
     }
 
-    public async Task<int> GetShoppingCartCountByApplicationUserIdAsync(string applicationUserId)
+    public async Task<int> GetShoppingCartCountByApplicationUserIdAsync(Guid applicationUserId)
     {
         IEnumerable<ShoppingCart> shoppingCarts = await this
             ._unitOfWork
             .ShoppingCartRepository
-            .GetAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId,
+            .GetAsync(shoppingCart => shoppingCart.ApplicationUserId.Equals(applicationUserId),
                 null,
                 "");
 
         return shoppingCarts.Count();
     }
 
-    public async Task<bool> ShoppingCartExistsAsync(string applicationUserId, Guid bookId)
+    public async Task<bool> ShoppingCartExistsAsync(Guid applicationUserId, Guid bookId)
     {
         return await this
             ._unitOfWork
             .ShoppingCartRepository
-            .GetFirstOrDefaultWithFilterAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId &&
+            .GetFirstOrDefaultWithFilterAsync(shoppingCart => shoppingCart.ApplicationUserId.Equals(applicationUserId) &&
                                                               shoppingCart.BookId == bookId) != null;
     }
 
-    public async Task<AllShoppingCartsListViewModel> GetAllListAsync(string applicationUserId)
+    public async Task<AllShoppingCartsListViewModel> GetAllListAsync(Guid applicationUserId)
     {
         IEnumerable<ShoppingCart> allShoppingCarts = await this
             ._unitOfWork
             .ShoppingCartRepository
-        .GetAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId, null, PropertiesToInclude);
+        .GetAsync(shoppingCart => shoppingCart.ApplicationUserId.Equals(applicationUserId), null, PropertiesToInclude);
 
         OrderApplicationUserViewModel applicationUser = await this
             ._applicationUserRetrievalService

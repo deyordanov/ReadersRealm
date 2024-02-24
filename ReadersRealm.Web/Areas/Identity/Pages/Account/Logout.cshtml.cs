@@ -4,6 +4,7 @@
 
 namespace ReadersRealm.Web.Areas.Identity.Pages.Account;
 
+using Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,11 +12,11 @@ using static Common.Constants.Constants.SessionKeys;
 
 public class LogoutModel : PageModel
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ILogger<LogoutModel> _logger;
 
     public LogoutModel(
-        SignInManager<IdentityUser> signInManager, 
+        SignInManager<ApplicationUser> signInManager, 
         ILogger<LogoutModel> logger)
     {
         _signInManager = signInManager;

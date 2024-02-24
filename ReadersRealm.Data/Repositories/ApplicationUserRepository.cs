@@ -12,10 +12,11 @@ public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicati
         _dbContext = dbContext;
     }
 
-    public async Task<ApplicationUser?> GetByIdAsync(string id)
+    public async Task<ApplicationUser?> GetByIdAsync(Guid id)
     {
-        return await _dbContext
+        return await this
+            ._dbContext
             .ApplicationUsers
-            .FirstOrDefaultAsync(applicationUser => applicationUser.Id == id);
+            .FirstOrDefaultAsync(applicationUser => applicationUser.Id.Equals(id));
     }
 }

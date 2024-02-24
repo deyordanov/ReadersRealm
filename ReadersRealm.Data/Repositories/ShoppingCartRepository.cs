@@ -48,19 +48,19 @@ public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRep
             .FirstOrDefaultAsync(filter);
     }
 
-    public Task<ShoppingCart?> GetByApplicationUserIdAndBookIdAsync(string applicationUserId, Guid bookId)
+    public Task<ShoppingCart?> GetByApplicationUserIdAndBookIdAsync(Guid applicationUserId, Guid bookId)
     {
         return _dbContext
             .ShoppingCarts
-            .FirstOrDefaultAsync(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId &&
+            .FirstOrDefaultAsync(shoppingCart => shoppingCart.ApplicationUserId.Equals(applicationUserId) &&
                                                  shoppingCart.BookId == bookId);
     }
 
-    public async Task<List<ShoppingCart>> GetAllByApplicationUserIdAsync(string applicationUserId)
+    public async Task<List<ShoppingCart>> GetAllByApplicationUserIdAsync(Guid applicationUserId)
     {
         return await _dbContext
             .ShoppingCarts
-            .Where(shoppingCart => shoppingCart.ApplicationUserId == applicationUserId)
+            .Where(shoppingCart => shoppingCart.ApplicationUserId.Equals(applicationUserId))
             .ToListAsync();
     }
 }

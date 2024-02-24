@@ -28,19 +28,19 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account
 
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IUserStore<IdentityUser> userStore;
-        private readonly IUserEmailStore<IdentityUser> emailStore;
+        private readonly IUserStore<ApplicationUser> userStore;
+        private readonly IUserEmailStore<ApplicationUser> emailStore;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
         private readonly ICompanyRetrievalService companyRetrievalService;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
+            SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender, 
@@ -283,13 +283,13 @@ namespace ReadersRealm.Web.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
             if (!userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)userStore;
+            return (IUserEmailStore<ApplicationUser>)userStore;
         }
 
         private string BuildEmailMessage(string callbackUrl)

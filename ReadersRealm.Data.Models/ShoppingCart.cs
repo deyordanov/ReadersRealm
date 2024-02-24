@@ -23,7 +23,7 @@ public class ShoppingCart
     public int Count { get; set; }
 
     [Required]
-    public string ApplicationUserId { get; set; } = null!;
+    public Guid ApplicationUserId { get; set; }
 
     [ForeignKey(nameof(ApplicationUserId))]
     public ApplicationUser ApplicationUser { get; set; } = null!;

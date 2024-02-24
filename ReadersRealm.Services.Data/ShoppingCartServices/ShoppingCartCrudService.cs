@@ -69,7 +69,7 @@ public class ShoppingCartCrudService : IShoppingCartCrudService
             .SaveAsync();
     }
 
-    public async Task DeleteAllShoppingCartsApplicationUserIdAsync(string applicationUserId)
+    public async Task DeleteAllShoppingCartsApplicationUserIdAsync(Guid applicationUserId)
     {
         List<ShoppingCart> shoppingCartsToDelete = await _unitOfWork
             .ShoppingCartRepository

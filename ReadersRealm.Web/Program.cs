@@ -21,7 +21,6 @@ builder.Services.AddControllersWithViews()
     });
 builder.Services.AddRazorPages();
 
-builder.Services.AddApplicationServices(typeof(IApplicationUserRetrievalService));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
@@ -35,6 +34,8 @@ builder.Services.AddDbContext<ReadersRealmDbContext>(options =>
 });
 
 builder.Services.AddApplicationIdentity(builder.Configuration);
+builder.Services.AddApplicationServices(typeof(IApplicationUserRetrievalService));
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

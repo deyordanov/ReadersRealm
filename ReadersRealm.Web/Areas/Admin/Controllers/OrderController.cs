@@ -62,7 +62,7 @@ public class OrderController : BaseController
         }
         else
         {
-            string userId = User.GetId();
+            Guid userId = User.GetId();
             allOrders = await this
                 ._orderRetrievalService
                 .GetAllByUserIdAsync(pageIndex, 5, searchTerm, userId);

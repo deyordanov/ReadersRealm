@@ -12,7 +12,7 @@ using ReadersRealm.Data;
 namespace ReadersRealm.Data.Migrations
 {
     [DbContext(typeof(ReadersRealmDbContext))]
-    [Migration("20240220194501_Initial")]
+    [Migration("20240224092047_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,10 +25,11 @@ namespace ReadersRealm.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -52,7 +53,7 @@ namespace ReadersRealm.Data.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,9 +67,8 @@ namespace ReadersRealm.Data.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -77,22 +77,108 @@ namespace ReadersRealm.Data.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ReadersRealm.Data.Models.ApplicationUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("City")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -100,6 +186,16 @@ namespace ReadersRealm.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -124,8 +220,20 @@ namespace ReadersRealm.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("StreetAddress")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -136,6 +244,8 @@ namespace ReadersRealm.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -145,91 +255,6 @@ namespace ReadersRealm.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.Author", b =>
@@ -281,28 +306,6 @@ namespace ReadersRealm.Data.Migrations
                     b.ToTable("Authors", t =>
                         {
                             t.HasComment("Readers Realm Author");
-                        });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
-                            Age = 49,
-                            Email = "kmasashi@gmail.com",
-                            FirstName = "Masashi",
-                            Gender = 0,
-                            LastName = "Kishimoto",
-                            PhoneNumber = "123-456-7890"
-                        },
-                        new
-                        {
-                            Id = new Guid("72fc4a67-9b6d-44e0-a21a-cc78ba323dea"),
-                            Age = 59,
-                            Email = "rriordan@gmail.com",
-                            FirstName = "Rick",
-                            Gender = 0,
-                            LastName = "Riordan",
-                            PhoneNumber = "098-765-4321"
                         });
                 });
 
@@ -368,50 +371,6 @@ namespace ReadersRealm.Data.Migrations
                         {
                             t.HasComment("Readers Realm Book");
                         });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("5672cad9-043f-44f7-9d81-abb080377a4c"),
-                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
-                            BookCover = 1,
-                            CategoryId = 1,
-                            Description = "\"Naruto Vol 1\" introduces readers to Naruto Uzumaki, a young ninja with dreams of becoming the strongest ninja and leader of his village, the Hokage. Despite being ostracized by the village for housing a fearsome nine-tailed fox that attacked the village years ago, Naruto is determined to gain the village's recognition through his accomplishments and hard work. The volume covers his struggles in the Ninja Academy, his formation of friendships and rivalries, and the beginning of his journey to becoming a skilled ninja. It sets the stage for an expansive story of growth, battles, and the pursuit of dreams amidst the complexities of the ninja world.",
-                            ISBN = "9797415363864",
-                            ImageUrl = "images\\bookSeedData\\9e84aff9-028a-4cd7-8e31-2e73eddce1d5.jpg",
-                            Pages = 192,
-                            Price = 19.99m,
-                            Title = "Naruto Vol 1",
-                            Used = false
-                        },
-                        new
-                        {
-                            Id = new Guid("593ee34f-a1a8-493e-93c2-a235cb16695c"),
-                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
-                            BookCover = 1,
-                            CategoryId = 1,
-                            Description = "In \"Naruto Vol 8\" the Chunin Exam's second phase plunges Naruto, Sasuke, and Sakura into the perilous Forest of Death. Amidst treacherous battles and survival challenges, the team confronts formidable rivals and their own fears. As hidden dangers emerge, Naruto's resolve is tested, unveiling new powers and deepening bonds. This volume is a thrilling journey of growth, teamwork, and unyielding spirit against life-and-death stakes.",
-                            ISBN = "9785421961182",
-                            ImageUrl = "images\\bookSeedData\\b2f6e888-402f-4851-9392-8931a567ea9a.jpg",
-                            Pages = 192,
-                            Price = 19.99m,
-                            Title = "Naruto Vol 8",
-                            Used = false
-                        },
-                        new
-                        {
-                            Id = new Guid("e7a0f13d-2eb2-4aa4-b196-31b73008a930"),
-                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
-                            BookCover = 1,
-                            CategoryId = 1,
-                            Description = "\"Naruto Vol 35\" shifts the focus to the aftermath of Naruto's intense training under Jiraiya and the looming threat of the Akatsuki. Naruto returns to Konoha, showcasing newfound strengths and techniques. Meanwhile, the story delves into the formation of new alliances and the preparation for a confrontation that could shake the ninja world to its core. This volume encapsulates themes of evolution and anticipation, setting the stage for epic battles and strategic mind games.",
-                            ISBN = "9799667150078",
-                            ImageUrl = "images\\bookSeedData\\3ba49236-d6a4-43ec-b9d7-d77eeff8e812.webp",
-                            Pages = 200,
-                            Price = 19.99m,
-                            Title = "Naruto Vol 35",
-                            Used = false
-                        });
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.Category", b =>
@@ -438,38 +397,6 @@ namespace ReadersRealm.Data.Migrations
                     b.ToTable("Categories", t =>
                         {
                             t.HasComment("Readers Realm Category");
-                        });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DisplayOrder = 1,
-                            Name = "Manga"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DisplayOrder = 2,
-                            Name = "Action"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DisplayOrder = 3,
-                            Name = "SciFi"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DisplayOrder = 4,
-                            Name = "History"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            DisplayOrder = 5,
-                            Name = "Fantasy"
                         });
                 });
 
@@ -574,9 +501,8 @@ namespace ReadersRealm.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Carrier")
                         .HasMaxLength(20)
@@ -630,9 +556,8 @@ namespace ReadersRealm.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BookId")
                         .HasColumnType("uniqueidentifier");
@@ -649,93 +574,64 @@ namespace ReadersRealm.Data.Migrations
                     b.ToTable("ShoppingCarts");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.HasOne("ReadersRealm.Data.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("ReadersRealm.Data.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReadersRealm.Data.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("ReadersRealm.Data.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ReadersRealm.Data.Models.ApplicationUser", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
-
-                    b.Property<string>("State")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("StreetAddress")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("ReadersRealm.Data.Models.Company", "Company")
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                        .HasForeignKey("CompanyId");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.Book", b =>
@@ -823,15 +719,6 @@ namespace ReadersRealm.Data.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Book");
-                });
-
-            modelBuilder.Entity("ReadersRealm.Data.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("ReadersRealm.Data.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId");
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("ReadersRealm.Data.Models.Author", b =>

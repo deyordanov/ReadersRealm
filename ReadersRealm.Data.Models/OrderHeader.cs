@@ -14,7 +14,7 @@ public class OrderHeader
     [Key]
     public Guid Id { get; set; }
 
-    public string ApplicationUserId { get; set; } = string.Empty;
+    public Guid ApplicationUserId { get; set; }
 
     [ForeignKey(nameof(ApplicationUserId))]
     [ValidateNever]

@@ -10,7 +10,7 @@ public class OrderHeaderViewModel
 {
     public Guid Id { get; set; }
 
-    public string ApplicationUserId { get; set; } = string.Empty;
+    public Guid ApplicationUserId { get; set; }
 
     [ValidateNever]
     public OrderApplicationUserViewModel ApplicationUser { get; set; } = null!;

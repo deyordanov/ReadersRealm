@@ -1,12 +1,12 @@
 ﻿namespace ReadersRealm.Data;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Extensions;
+using Microsoft.AspNetCore.Identity;
 
-public class ReadersRealmDbContext : IdentityDbContext<IdentityUser>
+public class ReadersRealmDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
     public ReadersRealmDbContext(DbContextOptions<ReadersRealmDbContext> options)
         : base(options) { }

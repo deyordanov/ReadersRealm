@@ -2,7 +2,7 @@
 
 public class ApplicationUserViewModel
 {
-    public required string Id { get; set; }
+    public required Guid Id { get; set; }
 
     public required string FirstName { get; set; }
 

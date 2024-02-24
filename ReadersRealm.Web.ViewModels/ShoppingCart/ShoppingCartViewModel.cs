@@ -12,7 +12,7 @@ public class ShoppingCartViewModel
 {
     public ShoppingCartViewModel()
     {
-        Id = Guid.NewGuid();
+        this.Id = Guid.NewGuid();
     }
     public Guid Id { get; set; }
 
@@ -28,7 +28,7 @@ public class ShoppingCartViewModel
         ErrorMessage = ShoppingCartCountRangeMessage)]
     public int Count { get; set; }
 
-    public string ApplicationUserId { get; set; } = string.Empty;
+    public Guid ApplicationUserId { get; set; }
     
     [ForeignKey(nameof(ApplicationUserId))]
     [ValidateNever]
