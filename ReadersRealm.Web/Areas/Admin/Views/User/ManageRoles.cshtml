@@ -8,17 +8,15 @@
         </div>
         <div class="mb-3 row p-1">
             <label class="p-0" asp-for="FirstName"></label>
-            <input type="text" class="form-control" asp-for="FirstName" />
-            <span asp-validation-for="FirstName" class="text-danger"></span>
+            <input type="text" class="form-control" asp-for="FirstName" disabled />
         </div>
         <div class="mb-3 row p-1">
             <label class="p-0" asp-for="LastName"></label>
-            <input type="text" class="form-control" asp-for="LastName" />
-            <span asp-validation-for="LastName" class="text-danger"></span>
+            <input type="text" class="form-control" asp-for="LastName" disabled />
         </div>
         <div class="mb-3 row p-1">
             <label class="p-0" asp-for="NewRoles"></label>
-            <select asp-for="NewRoles" name="NewRoles" multiple>
+            <select asp-for="NewRoles" name="NewRoles" multiple id="roles">
                 @foreach (string role in Model.AllRoles)
                 {
                     <option
@@ -29,6 +27,19 @@
                 }
             </select>
             <span asp-validation-for="NewRoles" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="CompanyId" id="companies-label"></label>
+            <select asp-for="CompanyId" class="form-select" id="companies">
+                @foreach (var item in Model.Companies)
+                {
+                    <option
+                        value="@item.Value"
+                        asp-is-selected="@((Model.CompanyId.ToString() ?? "").Equals(item.Value))">
+                        @item.Text
+                    </option>
+                }
+            </select>
         </div>
         <div class="row">
             <div class="col-6">
@@ -43,9 +54,9 @@
     </div>
 </form>
 
-@section Scripts
+@section Scripts 
 {
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
+    <script src="~/js/manageRolesCompanies.js"></script>
+
+    <partial name="_ValidationScriptsPartial" />
 }

@@ -51,10 +51,10 @@
                     <td>
                         <div class="w-100">
                             <a asp-controller="User" asp-action="ManageRoles" asp-route-applicationUserId="@applicationUserModel.Id" asp-route-pageIndex=@Model.PageIndex asp-route-searchTerm="@ViewBag.SearchTerm" class="btn btn-primary btn-sm" style="font-size: 13px">
-                                <i class="bi bi-pencil-square"></i> Edit
+                                <i class="bi bi-person-gear"></i> Manage Roles
                             </a>
-                            <a asp-controller="User" asp-action="Delete" asp-route-id="@applicationUserModel.Id" class="btn btn-danger btn-sm" style="font-size: 13px">
-                                <i class="bi bi-trash"></i> Delete
+                            <a asp-controller="User" asp-action="@(applicationUserModel.IsLocked ? "Unlock" : "Lock")" asp-route-applicationUserId="@applicationUserModel.Id" class="btn btn-danger btn-sm" style="font-size: 13px">
+                                <i class="bi bi-lock"></i> @(applicationUserModel.IsLocked ? "Unlock" : "Lock")
                             </a>
                         </div>
                     </td>

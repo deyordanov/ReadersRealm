@@ -89,4 +89,24 @@ public class UserController : BaseController
     
         return RedirectToAction(nameof(Index), nameof(User));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Lock(Guid applicationUserId)
+    {
+        await this
+            ._applicationUserCrudService
+            .UpdateApplicationUserLockoutAsync(applicationUserId, true);
+
+        return RedirectToAction(nameof(Index), nameof(User));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Unlock(Guid applicationUserId)
+    {
+        await this
+            ._applicationUserCrudService
+            .UpdateApplicationUserLockoutAsync(applicationUserId, false);
+
+        return RedirectToAction(nameof(Index), nameof(User));
+    }
 }

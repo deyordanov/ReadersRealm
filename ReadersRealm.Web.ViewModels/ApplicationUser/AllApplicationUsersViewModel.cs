@@ -21,6 +21,8 @@ public class AllApplicationUsersViewModel
 
     public required string Email { get; set; }
 
+    public required bool IsLocked { get; set; }
+
     public required IList<string> Roles { get; set; }
 
     public Guid? CompanyId { get; set; }

@@ -117,6 +117,7 @@ public static class Constants
         public const string FirstNameDisplay = "First Name";
         public const string LastNameDisplay = "Last Name";
         public const string UserRolesDisplay = "User's Roles";
+        public const string CompanyIdDisplay = "Company";
     }
 
     public static class Roles

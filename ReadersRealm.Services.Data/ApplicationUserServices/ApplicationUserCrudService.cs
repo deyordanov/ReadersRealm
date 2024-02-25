@@ -1,9 +1,7 @@
 ﻿namespace ReadersRealm.Services.Data.ApplicationUserServices;
 
-using Common.Exceptions.User;
 using Contracts;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using ReadersRealm.Common.Exceptions.ApplicationUser;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
@@ -74,6 +72,41 @@ public class ApplicationUserCrudService : IApplicationUserCrudService
         {
             await _userManager.AddToRoleAsync(applicationUser, newRole);
         }
+
+        if (applicationUserModel.CompanyId != null)
+        {
+            applicationUser.CompanyId = applicationUserModel.CompanyId;
+
+            await this
+                ._unitOfWork
+                .SaveAsync();
+        }
+    }
+
+    public async Task UpdateApplicationUserLockoutAsync(Guid applicationUserId, bool status)
+    {
+        ApplicationUser? applicationUser = await this
+            ._unitOfWork
+            .ApplicationUserRepository
+            .GetByIdAsync(applicationUserId);
+
+        if (applicationUser == null)
+        {
+            throw new ApplicationUserNotFoundException(string.Format(ApplicationUserNotFoundExceptionMessage, applicationUserId, nameof(this.UpdateApplicationUserLockoutAsync)));
+        }
+
+        if (status)
+        {
+            applicationUser.LockoutEnd = DateTime.UtcNow.AddYears(3);
+        }
+        else
+        {
+            applicationUser.LockoutEnd = null;
+        }
+
+        await this
+            ._unitOfWork
+            .SaveAsync();
     }
 
     private async Task<IList<string>> GetUserRoles(ApplicationUser applicationUser)

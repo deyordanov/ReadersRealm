@@ -6,4 +6,5 @@ public interface IApplicationUserCrudService
 {
     Task UpdateApplicationUserAsync(OrderApplicationUserViewModel applicationUserModel);
     Task UpdateApplicationUserRolesAsync(RolesApplicationUserViewModel applicationUserModel);
+    Task UpdateApplicationUserLockoutAsync(Guid applicationUserId, bool status);
 }
