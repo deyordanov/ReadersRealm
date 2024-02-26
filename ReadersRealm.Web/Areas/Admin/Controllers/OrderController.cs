@@ -18,6 +18,7 @@ using static Common.Constants.Constants.Order;
 using static Common.Constants.Constants.OrderHeader;
 using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.Shared;
+using static Common.Constants.Constants.Error;
 using static Common.Constants.Constants.StripeSettings;
 
 [Area(Admin)]
@@ -79,17 +80,17 @@ public class OrderController : BaseController
     [HttpGet]
     public async Task<IActionResult> Details(Guid? id, int pageIndex, string? searchTerm)
     {
-        if (id == null || id == Guid.Empty)
+        if (id is not { } orderId || id == Guid.Empty)
         {
-            return NotFound();
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
         DetailsOrderViewModel orderModel = await this
             ._orderRetrievalService
-            .GetOrderForDetailsAsync((Guid)id);
+            .GetOrderForDetailsAsync(orderId);
 
         ViewBag.PageIndex = pageIndex;
-        ViewBag.SearchTerm = searchTerm;
+        ViewBag.SearchTerm = searchTerm ?? string.Empty;
 
         return View(orderModel);
     }
@@ -102,7 +103,7 @@ public class OrderController : BaseController
         {
             orderModel = await this
                 ._orderRetrievalService
-                .GetOrderForDetailsAsync((Guid)orderModel.Id);
+                .GetOrderForDetailsAsync(orderModel.Id);
 
             return View(orderModel);
         }
@@ -122,8 +123,13 @@ public class OrderController : BaseController
 
     [HttpPost]
     [Authorize(Roles = AuthorizeAdminAndEmployeeRoles)]
-    public async Task<IActionResult> StartProcessingOrder(Guid orderHeaderId, int pageIndex, string? searchTerm)
+    public async Task<IActionResult> StartProcessingOrder(Guid? id, int pageIndex, string? searchTerm)
     {
+        if (id is not { } orderHeaderId || id == Guid.Empty)
+        {
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
+        }
+
         await this
             ._orderHeaderCrudService
             .UpdateOrderHeaderStatusAsync(orderHeaderId, OrderStatusInProcess, null);
@@ -216,8 +222,13 @@ public class OrderController : BaseController
 
 
     [HttpGet]
-    public async Task<IActionResult> OrderConfirmation(Guid orderHeaderId)
+    public async Task<IActionResult> OrderConfirmation(Guid? id)
     {
+        if (id is not { } orderHeaderId || id == Guid.Empty)
+        {
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
+        }
+
         OrderHeaderViewModel orderHeaderModel = await this
             ._orderHeaderRetrievalService
             .GetByIdAsyncWithNavPropertiesAsync(orderHeaderId);

@@ -1,15 +1,16 @@
 ﻿namespace ReadersRealm.Web.Areas.Admin.Controllers;
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Common;
 using Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReadersRealm.Services.Data.AuthorServices.Contracts;
 using ReadersRealm.Services.Data.BookServices.Contracts;
 using ReadersRealm.Services.Data.CategoryServices.Contracts;
 using ViewModels.Book;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Book;
+using static Common.Constants.Constants.Error;
 using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.ValidationMessageConstants.Book;
@@ -51,7 +52,7 @@ public class BookController : BaseController
         ViewBag.ControllerName = nameof(Book);
         ViewBag.ActionName = nameof(Index);
 
-        ViewBag.SearchTerm = searchTerm ?? "";
+        ViewBag.SearchTerm = searchTerm ?? string.Empty;
 
         return View(allBooks);
     }
@@ -114,17 +115,17 @@ public class BookController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Edit(Guid? id, int pageIndex, string? searchTerm)
     {
-        if (id == null || id == Guid.Empty)
+        if (id is not { } bookId || id == Guid.Empty)
         {
-            return NotFound();
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
         EditBookViewModel bookModel = await this
             ._bookRetrievalService
-            .GetBookForEditAsync((Guid)id);
+            .GetBookForEditAsync(bookId);
 
         ViewBag.PageIndex = pageIndex;
-        ViewBag.SearchTerm = searchTerm;
+        ViewBag.SearchTerm = searchTerm!;
 
         return View(bookModel);
     }
@@ -166,14 +167,14 @@ public class BookController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(Guid? id)
     {
-        if (id == null || id == Guid.Empty)
+        if (id is not { } bookId || id == Guid.Empty)
         {
-            return NotFound();
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
         DeleteBookViewModel bookModel = await this
             ._bookRetrievalService
-            .GetBookForDeleteAsync((Guid)id);
+            .GetBookForDeleteAsync(bookId);
 
         return View(bookModel);
     }

@@ -10,6 +10,7 @@ using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Company;
 using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.Shared;
+using static Common.Constants.Constants.Error;
 
 [Area(Admin)]
 public class CompanyController : BaseController
@@ -76,14 +77,14 @@ public class CompanyController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Edit(Guid? id, int pageIndex, string? searchTerm)
     {
-        if (id == null || id == Guid.Empty)
+        if (id is not { } companyId || id == Guid.Empty)
         {
-            return NotFound();
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
         EditCompanyViewModel companyModel = await this
             ._companyRetrievalService
-            .GetCompanyForEditAsync((Guid)id);
+            .GetCompanyForEditAsync(companyId);
 
         ViewBag.PageIndex = pageIndex;
         ViewBag.SearchTerm = searchTerm ?? string.Empty;
@@ -113,14 +114,14 @@ public class CompanyController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(Guid? id)
     {
-        if (id == null || id == Guid.Empty)
+        if (id is not { } companyId || id == Guid.Empty)
         {
-            return NotFound();
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
         DeleteCompanyViewModel companyModel = await this
             ._companyRetrievalService
-            .GetCompanyForDeleteAsync((Guid)id);
+            .GetCompanyForDeleteAsync(companyId);
 
         return View(companyModel);
     }

@@ -1,12 +1,15 @@
 ﻿namespace ReadersRealm.Web.Areas.Admin.Controllers;
 
 using Common;
+using Common.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Services.Data.ApplicationUserServices.Contracts;
 using ViewModels.ApplicationUser;
 using static Common.Constants.Constants.Areas;
+using static Common.Constants.Constants.Error;
+using static Common.Constants.Constants.Shared;
 
 [Area(Admin)]
 public class UserController : BaseController
@@ -91,8 +94,13 @@ public class UserController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Lock(Guid applicationUserId)
+    public async Task<IActionResult> Lock(Guid? id)
     {
+        if (id is not { } applicationUserId || id == Guid.Empty)
+        {
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
+        }
+
         await this
             ._applicationUserCrudService
             .UpdateApplicationUserLockoutAsync(applicationUserId, true);
@@ -101,8 +109,13 @@ public class UserController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Unlock(Guid applicationUserId)
+    public async Task<IActionResult> Unlock(Guid? id)
     {
+        if (id is not { } applicationUserId || id == Guid.Empty)
+        {
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
+        }
+
         await this
             ._applicationUserCrudService
             .UpdateApplicationUserLockoutAsync(applicationUserId, false);

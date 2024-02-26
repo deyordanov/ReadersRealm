@@ -26,6 +26,7 @@ using static Common.Constants.Constants.SessionKeys;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
 using static Common.Constants.Constants.StripeSettings;
+using static Common.Constants.Constants.Error;
 
 [Area(Customer)]
 public class ShoppingCartController : BaseController
@@ -193,8 +194,13 @@ public class ShoppingCartController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> OrderConfirmation(Guid orderHeaderId)
+    public async Task<IActionResult> OrderConfirmation(Guid? id)
     {
+        if (id is not { } orderHeaderId || id == Guid.Empty)
+        {
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
+        }
+
         OrderHeaderViewModel orderHeaderModel = await this
             ._orderHeaderRetrievalService
             .GetByIdAsyncWithNavPropertiesAsync(orderHeaderId);
@@ -234,16 +240,16 @@ public class ShoppingCartController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> DownloadReceipt(Guid? orderHeaderId)
+    public async Task<IActionResult> DownloadReceipt(Guid? id)
     {
-        if (orderHeaderId == null || orderHeaderId == Guid.Empty)
+        if (id is not { } orderHeaderId || id == Guid.Empty)
         {
-            return NotFound();
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
         OrderHeaderReceiptDto orderHeaderDto = await this
             ._orderHeaderRetrievalService
-            .GetOrderHeaderForReceiptAsync((Guid)orderHeaderId);
+            .GetOrderHeaderForReceiptAsync(orderHeaderId);
 
         StringBuilder sb = new StringBuilder();
 
@@ -275,14 +281,14 @@ public class ShoppingCartController : BaseController
     [HttpGet]
     public async Task<IActionResult> IncreaseQuantity(Guid? id)
     {
-        if (id == null || id == Guid.Empty)
+        if (id is not { } shoppingCartId || id == Guid.Empty)
         {
-            return NotFound();
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
         await this
             ._shoppingCartModificationService
-            .IncreaseShoppingCartQuantityAsync((Guid)id);
+            .IncreaseShoppingCartQuantityAsync(shoppingCartId);
 
         return RedirectToAction(nameof(Index));
     }
@@ -290,14 +296,14 @@ public class ShoppingCartController : BaseController
     [HttpGet]
     public async Task<IActionResult> DecreaseQuantity(Guid? id)
     {
-        if (id == null || id == Guid.Empty)
+        if (id is not { } shoppingCartId || id == Guid.Empty)
         {
-            return NotFound();
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
         bool isItemDeleted = await this
             ._shoppingCartModificationService
-            .DecreaseShoppingCartQuantityAsync((Guid)id);
+            .DecreaseShoppingCartQuantityAsync(shoppingCartId);
 
         if (isItemDeleted)
         {
@@ -308,11 +314,16 @@ public class ShoppingCartController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid? id)
     {
+        if (id is not { } shoppingCartId || id == Guid.Empty)
+        {
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
+        }
+
         await this
             ._shoppingCartCrudService
-            .DeleteShoppingCartAsync(id);
+            .DeleteShoppingCartAsync(shoppingCartId);
 
         await SetShoppingCartItemsCountInSession();
 

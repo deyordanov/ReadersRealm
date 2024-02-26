@@ -175,6 +175,10 @@ public static class Constants
 
     public static class Error
     {
+        //Paths
         public const string NotFound404Path = "/Customer/Error/404";
+        
+        //Action Names
+        public const string ErrorPageNotFoundAction = "NotFound404";
     }
 }

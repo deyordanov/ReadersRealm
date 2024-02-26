@@ -15,6 +15,7 @@ using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.SessionKeys;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
+using static Common.Constants.Constants.Error;
 
 [Area(Customer)]
 public class HomeController : BaseController
@@ -60,14 +61,14 @@ public class HomeController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> Details(Guid? id)
     {
-        if (id == null || id == Guid.Empty)
+        if (id is not { } bookId || id == Guid.Empty)
         {
-            return NotFound();
+            return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
         DetailsBookViewModel bookModel = await this
             ._bookRetrievalService
-            .GetBookForDetailsAsync((Guid)id);
+            .GetBookForDetailsAsync(bookId);
 
         ShoppingCartViewModel shoppingCartModel = this
             ._shoppingCartRetrievalService
