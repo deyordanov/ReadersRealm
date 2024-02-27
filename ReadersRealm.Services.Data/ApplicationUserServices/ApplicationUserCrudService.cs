@@ -2,7 +2,7 @@
 
 using Contracts;
 using Microsoft.AspNetCore.Identity;
-using ReadersRealm.Common.Exceptions.ApplicationUser;
+using Common.Exceptions.ApplicationUser;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.ApplicationUser;

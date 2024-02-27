@@ -27,6 +27,9 @@ public static class ValidationConstants
 
         public const int BookPagesMaxRange = 2000;
         public const int BookPagesMinRange = 15;
+
+        public const int BookImageIdMaxLength = 24;
+        public const int BookImageIdMinLength = 24;
     }
 
     public static class Author

@@ -1,21 +1,15 @@
-﻿@model PaginatedList<ReadersRealm.Web.ViewModels.Book.AllBooksViewModel>
+﻿@using ReadersRealm.Web.ViewModels.Book
+@model PaginatedList<AllBooksViewModel>
 
 <partial name="_NotificationPartialView" />
 <section class="row pb-3">
-    @foreach (var book in Model)
+    @foreach (AllBooksViewModel book in Model)
     {
         <article class="col-lg-3 col-sm-6">
             <section class="row p-2">
                 <div class="col-12 p-1">
                     <div class="card border-0 p-3 shadow border-top border-5 rounded">
-                        @if (book.ImageUrl != null)
-                        {
-                            <img src="@book.ImageUrl" class="card-img-top rounded" alt="@book.Title cover image" />
-                        }
-                        else
-                        {
-                            <img src="https://placehold.co/500x600/png" class="card-img-top rounded" alt="Default book cover image" />
-                        }
+                        <img src="@Url.Action("GetImage", "Home", new { id = book.ImageId })" width="100%" class="card-img-top rounded" alt="@book.Title cover image">
                         <div class="card-body pb-0">
                             <header>
                                 <h3 class="card-title text-dark opacity-75 text-uppercase text-center h4">@book.Title</h3>

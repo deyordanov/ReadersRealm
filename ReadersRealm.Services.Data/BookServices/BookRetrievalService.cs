@@ -72,7 +72,7 @@ public class BookRetrievalService : IBookRetrievalService
                 Pages = book.Pages,
                 Price = book.Price,
                 Used = book.Used,
-                ImageUrl = book.ImageUrl,
+                ImageId = book.ImageId,
             })
             .ToList(), pageIndex, pageSize);
     }
@@ -107,7 +107,7 @@ public class BookRetrievalService : IBookRetrievalService
             Pages = book.Pages,
             Price = book.Price,
             Used = book.Used,
-            ImageUrl = book.ImageUrl,
+            ImageId = book.ImageId,
             AuthorId = book.AuthorId,
             CategoryId = book.CategoryId,
             AuthorsList = authorsList,
@@ -139,7 +139,7 @@ public class BookRetrievalService : IBookRetrievalService
             Pages = book.Pages,
             Price = book.Price,
             Used = book.Used,
-            ImageUrl = book.ImageUrl,
+            ImageId = book.ImageId,
             Author = new AuthorViewModel()
             {
                 Id = book.Author.Id,
@@ -186,7 +186,7 @@ public class BookRetrievalService : IBookRetrievalService
             Pages = book.Pages,
             Price = book.Price,
             Used = book.Used,
-            ImageUrl = book.ImageUrl,
+            ImageId = book.ImageId,
             Author = new AuthorViewModel()
             {
                 Id = book.Author.Id,

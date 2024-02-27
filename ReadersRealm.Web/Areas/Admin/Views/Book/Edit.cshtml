@@ -93,14 +93,11 @@
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
         <div class="mb-3 row p-1">
-            <label asp-for="ImageUrl" class="row"></label>
-            <input type="file" name="file" class="form-control" value=@Model.ImageUrl>
-            @if (Model.ImageUrl != null)
-            {
-                <img src=@(Model.ImageUrl) width="100%" class="col-4 mt-3" style="-ms-border-radius: 5px; border-radius: 5px; border: 1px solid #bbb9b9" />
-            }
+            <label asp-for="ImageId" class="row"></label>
+            <input type="file" name="file" class="form-control" value=@Model.ImageId>
+            <img src="@Url.Action("GetImage", "Book", new { id = Model.ImageId })" width="100%" class="col-4 mt-3" style="-ms-border-radius: 5px; border-radius: 5px; border: 1px solid #bbb9b9">
         </div>
-        <input asp-for="ImageUrl" value=@Model.ImageUrl hidden/>    
+        <input asp-for="ImageId" value=@Model.ImageId hidden/>    
         <div class="row">
             <div class="col-6">
                 <a asp-controller="Book" asp-action="Index" asp-route-pageIndex="@ViewBag.Index" asp-route-searchTerm="@ViewBag.SearchTerm" class="btn btn-outline-secondary form-control">

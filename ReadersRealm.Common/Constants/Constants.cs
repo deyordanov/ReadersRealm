@@ -133,6 +133,21 @@ public static class Constants
         public const string Admin = "Admin";
         public const string Customer = "Customer";
     }
+    public static class Error
+    {
+        //Paths
+        public const string NotFound404Path = "/Customer/Error/404";
+
+        //Action Names
+        public const string ErrorPageNotFoundAction = "NotFound404";
+    }
+
+    public static class Image
+    {
+        public const string DefaultImage = "DefaultImage";
+
+        public const string ContentType = "image/jpeg";
+    }
 
     public static class StripeSettings
     {
@@ -168,17 +183,14 @@ public static class Constants
         public const string EmailOrderFooterMessage = "Welcome aboard, and happy shopping! Warmest regards, The Readers Realm Team.";
     }
 
+    public static class Configuration
+    {
+        //Configuration Section Keys
+        public const string MongoDbSettingsKey = "MongoDb";
+    }
+
     public static class SessionKeys
     {
         public const string ShoppingCartSessionKey = "ShoppingCartSession";
-    }
-
-    public static class Error
-    {
-        //Paths
-        public const string NotFound404Path = "/Customer/Error/404";
-        
-        //Action Names
-        public const string ErrorPageNotFoundAction = "NotFound404";
     }
 }

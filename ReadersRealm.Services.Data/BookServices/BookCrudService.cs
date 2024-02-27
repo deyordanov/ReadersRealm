@@ -28,7 +28,7 @@ public class BookCrudService : IBookCrudService
             Pages = bookModel.Pages,
             Price = bookModel.Price,
             Used = bookModel.Used,
-            ImageUrl = bookModel.ImageUrl,
+            ImageId = bookModel.ImageId,
         };
 
         await this
@@ -63,7 +63,7 @@ public class BookCrudService : IBookCrudService
         bookToEdit.Pages = bookModel.Pages;
         bookToEdit.Price = bookModel.Price;
         bookToEdit.Used = bookModel.Used;
-        bookToEdit.ImageUrl = bookModel.ImageUrl;
+        bookToEdit.ImageId = bookModel.ImageId;
 
         await this
             ._unitOfWork

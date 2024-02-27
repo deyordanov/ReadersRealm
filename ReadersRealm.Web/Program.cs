@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using ReadersRealm.Common;
 using ReadersRealm.Data;
 using ReadersRealm.Data.Repositories;
@@ -7,7 +8,10 @@ using ReadersRealm.Data.Repositories.Contracts;
 using ReadersRealm.Services.Data.ApplicationUserServices.Contracts;
 using ReadersRealm.Web.Infrastructure.Extensions;
 using ReadersRealm.Web.Infrastructure.ModelBinders;
+using ReadersRealm.Web.Infrastructure.Settings;
+using ReadersRealm.Web.Infrastructure.Settings.Contracts;
 using Stripe;
+using static ReadersRealm.Common.Constants.Constants.Configuration;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -34,8 +38,15 @@ builder.Services.AddDbContext<ReadersRealmDbContext>(options =>
 });
 
 builder.Services.AddApplicationIdentity(builder.Configuration);
+
 builder.Services.AddApplicationServices(typeof(IApplicationUserRetrievalService));
 
+//Configure settings
+builder.Services.Configure<MongoDbSettings>(
+    builder.Configuration.GetSection(MongoDbSettingsKey));
+
+builder.Services.AddSingleton<IMongoDbSettings>(sp => 
+    sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

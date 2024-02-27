@@ -63,13 +63,13 @@
                 <option value="@Model.CategoryId">@Model.Category.Name</option>
             </select>
         </div>
-        @if (Model.ImageUrl != null)
+        @if (Model.ImageId != null)
         {
             <div class="mb-3 row p-1">
-                <label asp-for="ImageUrl" class="row" aria-label="Image URL"></label>
-                <img src=@(Model.ImageUrl) width="100%" class="col-4 mt-3" style="-ms-border-radius: 5px; border-radius: 5px; border: 1px solid #bbb9b9" />
+                <label asp-for="ImageId" class="row" aria-label="Image URL"></label>
+                <img src="@Url.Action("GetImage", "Book", new { id = Model.ImageId })" width="100%" class="col-4 mt-3" style="-ms-border-radius: 5px; border-radius: 5px; border: 1px solid #bbb9b9">
             </div>
-            <input asp-for="ImageUrl" value=@Model.ImageUrl hidden />
+            <input asp-for="ImageId" value=@Model.ImageId hidden />
         }
         <div class="row">
             <div class="col-6">

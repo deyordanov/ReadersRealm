@@ -18,10 +18,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Services.Data.CompanyServices.Contracts;
 using ViewModels.Company;
-using static ReadersRealm.Common.Constants.Constants.Roles;
-using static ReadersRealm.Common.Constants.Constants.SendGridSettings;
-using static ReadersRealm.Common.Constants.Constants.Shared;
-using static ReadersRealm.Common.Constants.Constants.User;
+using static Common.Constants.Constants.Roles;
+using static Common.Constants.Constants.SendGridSettings;
+using static Common.Constants.Constants.Shared;
+using static Common.Constants.Constants.User;
 using static ReadersRealm.Common.Constants.ValidationConstants.RegisterModel;
 using static ReadersRealm.Common.Constants.ValidationMessageConstants.RegisterModel;
 

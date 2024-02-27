@@ -1,9 +1,14 @@
 ﻿namespace ReadersRealm.Web.Areas.Admin.Controllers;
 
 using Common;
+using Common.Exceptions.GeneralExceptions;
 using Data.Models;
+using Infrastructure.Settings.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using ReadersRealm.Services.Data.AuthorServices.Contracts;
 using ReadersRealm.Services.Data.BookServices.Contracts;
 using ReadersRealm.Services.Data.CategoryServices.Contracts;
@@ -11,8 +16,10 @@ using ViewModels.Book;
 using static Common.Constants.Constants.Areas;
 using static Common.Constants.Constants.Book;
 using static Common.Constants.Constants.Error;
+using static Common.Constants.Constants.Image;
 using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.Shared;
+using static Common.Constants.ExceptionMessages.ImageExceptionMessages;
 using static Common.Constants.ValidationMessageConstants.Book;
 
 
@@ -23,20 +30,25 @@ public class BookController : BaseController
     private readonly IBookCrudService _bookCrudService;
     private readonly IAuthorRetrievalService _authorRetrievalService;
     private readonly ICategoryRetrievalService _categoryRetrievalService;
-    private readonly IWebHostEnvironment _webHost;
+    private readonly IMongoDbSettings _mongoDbSettings;
+    private readonly GridFSBucket _gridFsBucket;
 
     public BookController(
-        IWebHostEnvironment webHost, 
         IBookRetrievalService bookRetrievalService, 
         IBookCrudService bookCrudService, 
         IAuthorRetrievalService authorRetrievalService, 
-        ICategoryRetrievalService categoryRetrievalService)
+        ICategoryRetrievalService categoryRetrievalService,
+        IMongoDbSettings mongoDbSettings)
     {
-        this._webHost = webHost;
         this._bookRetrievalService = bookRetrievalService;
         this._bookCrudService = bookCrudService;
         this._authorRetrievalService = authorRetrievalService;
         this._categoryRetrievalService = categoryRetrievalService;
+        this._mongoDbSettings = mongoDbSettings;
+
+        MongoClient client = new MongoClient(_mongoDbSettings.ConnectionString);
+        IMongoDatabase mongoDatabase = client.GetDatabase(_mongoDbSettings.DatabaseName);
+        this._gridFsBucket = new GridFSBucket(mongoDatabase);
     }
 
     [HttpGet]
@@ -95,12 +107,7 @@ public class BookController : BaseController
             return View(bookModel);
         }
 
-        if (file != null)
-        {
-            string fileName = await UploadImageAsync(file, bookModel.ImageUrl);
-
-            bookModel.ImageUrl = PathToSaveImage + fileName;
-        }
+        bookModel.ImageId = await this.UploadImageAsync(file);
 
         await this
                 ._bookCrudService
@@ -147,12 +154,12 @@ public class BookController : BaseController
             return View(bookModel);
         }
 
-        if (file != null)
+        if (bookModel.ImageId != null)
         {
-            string fileName = await UploadImageAsync(file, bookModel.ImageUrl);
-
-            bookModel.ImageUrl = PathToSaveImage + fileName;
+            await this._gridFsBucket.DeleteAsync(ObjectId.Parse(bookModel.ImageId));
         }
+
+        bookModel.ImageId = await this.UploadImageAsync(file);
 
         await this
             ._bookCrudService
@@ -183,7 +190,7 @@ public class BookController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(DeleteBookViewModel bookModel)
     {
-        DeleteImageIfPresent(bookModel.ImageUrl, _webHost.WebRootPath);
+        await this._gridFsBucket.DeleteAsync(ObjectId.Parse(bookModel.ImageId));
 
         await this
             ._bookCrudService
@@ -194,30 +201,38 @@ public class BookController : BaseController
         return RedirectToAction(nameof(Index), nameof(Book));
     }
 
-    private async Task<string> UploadImageAsync(IFormFile file, string? imageUrl)
+    private async Task<string> UploadImageAsync(IFormFile? file)
     {
-        string wwwRootPath = _webHost.WebRootPath;
-        string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-        string bookPath = Path.Combine(wwwRootPath, PathToSaveImage.TrimStart('\\'));
+        ObjectId? imageId;
+        if (file == null || file.Length == 0)
+        {
+            FilterDefinition<GridFSFileInfo> filter = Builders<GridFSFileInfo>.Filter.Eq(info => info.Filename, DefaultImage);
 
-        DeleteImageIfPresent(imageUrl, wwwRootPath);
+            using IAsyncCursor<GridFSFileInfo> cursor = await this._gridFsBucket.FindAsync(filter);
 
-        await using FileStream stream = new FileStream(Path.Combine(bookPath, fileName), FileMode.Create);
-        await file.CopyToAsync(stream);
+            GridFSFileInfo fileInfo = await cursor.FirstOrDefaultAsync();
 
-        return fileName;
+            imageId = fileInfo.Id;
+        }
+        else
+        {
+            await using var stream = file.OpenReadStream();
+
+            imageId = await this._gridFsBucket.UploadFromStreamAsync(file.FileName, stream);
+        }
+
+        return imageId.ToString() ?? string.Empty;
     }
 
-    private void DeleteImageIfPresent(string? imageUrl, string wwwRootPath)
+    public async Task<IActionResult> GetImageAsync(string id)
     {
-        if (!string.IsNullOrWhiteSpace(imageUrl))
+        if (!ObjectId.TryParse(id, out var imageId))
         {
-            string oldImagePath = Path.Combine(wwwRootPath, imageUrl.TrimStart('\\'));
-
-            if (System.IO.File.Exists(oldImagePath))
-            {
-                System.IO.File.Delete(oldImagePath);
-            }
+            throw new InvalidImageIdException(string.Format(InvalidImageIdExceptionMessage, id, nameof(this.GetImageAsync)));
         }
+
+        var bytes = await this._gridFsBucket.DownloadAsBytesAsync(imageId);
+
+        return File(bytes, ContentType);
     }
 }

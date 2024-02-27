@@ -33,7 +33,7 @@ public class CreateBookViewModel
     public decimal Price { get; set; }
 
     [Range(BookPagesMinRange,
-        BookPriceMaxRange,
+        BookPagesMaxRange,
         ErrorMessage = BookPagesRangeMessage)]
     public int? Pages { get; set; }
 
@@ -44,7 +44,7 @@ public class CreateBookViewModel
     public bool Used { get; set; }
 
     [Display(Name = "Image")]
-    public string? ImageUrl { get; set; }
+    public string? ImageId { get; set; }
 
     [Display(Name = "Author")]
     public Guid AuthorId { get; set; }

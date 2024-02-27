@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadersRealm.Data;
 
@@ -11,9 +12,11 @@ using ReadersRealm.Data;
 namespace ReadersRealm.Data.Migrations
 {
     [DbContext(typeof(ReadersRealmDbContext))]
-    partial class ReadersRealmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240302051125_UpdateBookTableSeed")]
+    partial class UpdateBookTableSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -395,13 +398,13 @@ namespace ReadersRealm.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0cfad6f5-60b3-4585-9f42-120a8f81125f"),
+                            Id = new Guid("8fedcbdc-362b-4c89-a596-2ba9b3286125"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
                             Description = "\"Naruto Vol 1\" introduces readers to Naruto Uzumaki, a young ninja with dreams of becoming the strongest ninja and leader of his village, the Hokage. Despite being ostracized by the village for housing a fearsome nine-tailed fox that attacked the village years ago, Naruto is determined to gain the village's recognition through his accomplishments and hard work. The volume covers his struggles in the Ninja Academy, his formation of friendships and rivalries, and the beginning of his journey to becoming a skilled ninja. It sets the stage for an expansive story of growth, battles, and the pursuit of dreams amidst the complexities of the ninja world.",
                             ISBN = "9797415363864",
-                            ImageId = "65e2ce38456d37066e4edf8c",
+                            ImageId = "65e2b4fc0450f7ddc3ba5f3a",
                             Pages = 192,
                             Price = 19.99m,
                             Title = "Naruto Vol 1",
@@ -409,13 +412,13 @@ namespace ReadersRealm.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c15c19cc-9abc-4ad8-94da-9b4955ba908f"),
+                            Id = new Guid("d38963c8-78ee-407b-8644-e39b016d4bcc"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
                             Description = "In \"Naruto Vol 8\" the Chunin Exam's second phase plunges Naruto, Sasuke, and Sakura into the perilous Forest of Death. Amidst treacherous battles and survival challenges, the team confronts formidable rivals and their own fears. As hidden dangers emerge, Naruto's resolve is tested, unveiling new powers and deepening bonds. This volume is a thrilling journey of growth, teamwork, and unyielding spirit against life-and-death stakes.",
                             ISBN = "9785421961182",
-                            ImageId = "65e2ce38456d37066e4edf8e",
+                            ImageId = "65e2b4fc0450f7ddc3ba5f3c",
                             Pages = 192,
                             Price = 19.99m,
                             Title = "Naruto Vol 8",
@@ -423,13 +426,13 @@ namespace ReadersRealm.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("592ce664-cb88-4fde-9092-52318a8c4b03"),
+                            Id = new Guid("b7522a58-f6d0-49d4-adbe-585c0a2808bb"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
                             Description = "\"Naruto Vol 35\" shifts the focus to the aftermath of Naruto's intense training under Jiraiya and the looming threat of the Akatsuki. Naruto returns to Konoha, showcasing newfound strengths and techniques. Meanwhile, the story delves into the formation of new alliances and the preparation for a confrontation that could shake the ninja world to its core. This volume encapsulates themes of evolution and anticipation, setting the stage for epic battles and strategic mind games.",
                             ISBN = "9799667150078",
-                            ImageId = "65e2ce38456d37066e4edf90",
+                            ImageId = "65e2b4fc0450f7ddc3ba5f3e",
                             Pages = 200,
                             Price = 19.99m,
                             Title = "Naruto Vol 35",

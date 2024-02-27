@@ -22,10 +22,10 @@
                 {
                     <article class="col-md-10 offset-md-1">
                         <section class="row border-bottom pb-3">
-                            @if (shoppingCartModel.Book.ImageUrl != null)
+                            @if (shoppingCartModel.Book.ImageId != null)
                             {
                                 <a asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-id="@shoppingCartModel.Book.Id" class="d-none d-lg-block col-lg-1 text-center py-2">
-                                    <img src="@shoppingCartModel.Book.ImageUrl" width="100%" class="rounded" alt="@shoppingCartModel.Book.Title cover image" />
+                                    <img src="@Url.Action("GetImage", "Home", new { id = shoppingCartModel.Book.ImageId })" width="100%" class="rounded" alt="@shoppingCartModel.Book.Title cover image">
                                 </a>
                             }
                             else

@@ -102,7 +102,7 @@ public class ShoppingCartRetrievalService : IShoppingCartRetrievalService
                     Pages = shoppingCart.Book.Pages,
                     Price = shoppingCart.Book.Price,
                     Used = shoppingCart.Book.Used,
-                    ImageUrl = shoppingCart.Book.ImageUrl,
+                    ImageId = shoppingCart.Book.ImageId,
                     AuthorId = shoppingCart.Book.AuthorId,
                     CategoryId = shoppingCart.Book.CategoryId,
                 },

@@ -4,6 +4,7 @@ using Enums;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MongoDB.Bson;
 using static ReadersRealm.Common.Constants.ValidationConstants.Book;
 
 /// <summary>
@@ -93,8 +94,9 @@ public class Book
     [Comment("Book Condition")]
     public bool Used { get; set; }
 
-    [Comment("Book Image Url")]
-    public string? ImageUrl { get; set; }
+    [Comment("Book Image Id")]
+    [StringLength(BookImageIdMaxLength)]
+    public string? ImageId { get; set; }
 
     /// <summary>
     /// Gets or sets the unique identifier for the Author of the Book.

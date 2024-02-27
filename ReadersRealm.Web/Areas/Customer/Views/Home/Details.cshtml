@@ -18,26 +18,13 @@
                 <article>
                     <div class="row">
                         <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                            @if (Model.Book.ImageUrl != null)
-                            {
-                                <figure>
-                                    <img src="@Model.Book.ImageUrl" width="100%" class="rounded" />
-                                    <figcaption class="mt-2">
-                                        <h5 class="card-title h4 text-dark opacity-75 text-uppercase text-center">@Model.Book.Title</h5>
-                                        <p class="card-title text-warning text-center">by <strong>@(Model.Book.Author.FirstName + " " + Model.Book.Author.LastName)</strong></p>
-                                    </figcaption>
-                                </figure>
-                            }
-                            else
-                            {
-                                <figure>
-                                    <img src="https://placehold.co/500x600" width="100%" class="rounded" />
-                                    <figcaption class="mt-2">
-                                        <h5 class="card-title h5 text-dark opacity-75 text-uppercase text-center">@Model.Book.Title</h5>
-                                        <p class="card-title text-warning text-center">by <strong>@(Model.Book.Author.FirstName + " " + Model.Book.Author.LastName)</strong></p>
-                                    </figcaption>
-                                </figure>
-                            }
+                            <figure>
+                                <img src="@Url.Action("GetImage", "Home", new { id = Model.Book.ImageId })" width="100%" class="rounded" alt="@Model.Book.Title cover image">
+                                <figcaption class="mt-2">
+                                    <h5 class="card-title h4 text-dark opacity-75 text-uppercase text-center">@Model.Book.Title</h5>
+                                    <p class="card-title text-warning text-center">by <strong>@(Model.Book.Author.FirstName + " " + Model.Book.Author.LastName)</strong></p>
+                                </figcaption>
+                            </figure>
                             <footer class="col-12">
                                 <div class="pb-1">
                                     <button type="submit" class="btn btn-primary bg-gradient w-100 py-2 text-uppercase fw-semibold">
