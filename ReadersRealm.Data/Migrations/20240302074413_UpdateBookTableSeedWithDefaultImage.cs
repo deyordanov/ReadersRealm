@@ -33,9 +33,9 @@ namespace ReadersRealm.Data.Migrations
                 columns: new[] { "Id", "AuthorId", "BookCover", "CategoryId", "Description", "ISBN", "ImageId", "Pages", "Price", "Title", "Used" },
                 values: new object[,]
                 {
-                    { new Guid("0cfad6f5-60b3-4585-9f42-120a8f81125f"), new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"), 1, 1, "\"Naruto Vol 1\" introduces readers to Naruto Uzumaki, a young ninja with dreams of becoming the strongest ninja and leader of his village, the Hokage. Despite being ostracized by the village for housing a fearsome nine-tailed fox that attacked the village years ago, Naruto is determined to gain the village's recognition through his accomplishments and hard work. The volume covers his struggles in the Ninja Academy, his formation of friendships and rivalries, and the beginning of his journey to becoming a skilled ninja. It sets the stage for an expansive story of growth, battles, and the pursuit of dreams amidst the complexities of the ninja world.", "9797415363864", "65e2ce38456d37066e4edf8c", 192, 19.99m, "Naruto Vol 1", false },
-                    { new Guid("592ce664-cb88-4fde-9092-52318a8c4b03"), new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"), 1, 1, "\"Naruto Vol 35\" shifts the focus to the aftermath of Naruto's intense training under Jiraiya and the looming threat of the Akatsuki. Naruto returns to Konoha, showcasing newfound strengths and techniques. Meanwhile, the story delves into the formation of new alliances and the preparation for a confrontation that could shake the ninja world to its core. This volume encapsulates themes of evolution and anticipation, setting the stage for epic battles and strategic mind games.", "9799667150078", "65e2ce38456d37066e4edf90", 200, 19.99m, "Naruto Vol 35", false },
-                    { new Guid("c15c19cc-9abc-4ad8-94da-9b4955ba908f"), new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"), 1, 1, "In \"Naruto Vol 8\" the Chunin Exam's second phase plunges Naruto, Sasuke, and Sakura into the perilous Forest of Death. Amidst treacherous battles and survival challenges, the team confronts formidable rivals and their own fears. As hidden dangers emerge, Naruto's resolve is tested, unveiling new powers and deepening bonds. This volume is a thrilling journey of growth, teamwork, and unyielding spirit against life-and-death stakes.", "9785421961182", "65e2ce38456d37066e4edf8e", 192, 19.99m, "Naruto Vol 8", false }
+                    { new Guid("5d1cff2d-5535-4b5a-9fdb-c09b1a1bcf9c"), new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"), 1, 1, "\"Naruto Vol 35\" shifts the focus to the aftermath of Naruto's intense training under Jiraiya and the looming threat of the Akatsuki. Naruto returns to Konoha, showcasing newfound strengths and techniques. Meanwhile, the story delves into the formation of new alliances and the preparation for a confrontation that could shake the ninja world to its core. This volume encapsulates themes of evolution and anticipation, setting the stage for epic battles and strategic mind games.", "9799667150078", "65e2d86a7714ad25c89d864a", 200, 19.99m, "Naruto Vol 35", false },
+                    { new Guid("a9136d45-5d15-40a5-aa3b-4541a6d625d3"), new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"), 1, 1, "In \"Naruto Vol 8\" the Chunin Exam's second phase plunges Naruto, Sasuke, and Sakura into the perilous Forest of Death. Amidst treacherous battles and survival challenges, the team confronts formidable rivals and their own fears. As hidden dangers emerge, Naruto's resolve is tested, unveiling new powers and deepening bonds. This volume is a thrilling journey of growth, teamwork, and unyielding spirit against life-and-death stakes.", "9785421961182", "65e2d86a7714ad25c89d8648", 192, 19.99m, "Naruto Vol 8", false },
+                    { new Guid("f8be9acf-bb54-4ce4-9fd0-ad669d39440d"), new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"), 1, 1, "\"Naruto Vol 1\" introduces readers to Naruto Uzumaki, a young ninja with dreams of becoming the strongest ninja and leader of his village, the Hokage. Despite being ostracized by the village for housing a fearsome nine-tailed fox that attacked the village years ago, Naruto is determined to gain the village's recognition through his accomplishments and hard work. The volume covers his struggles in the Ninja Academy, his formation of friendships and rivalries, and the beginning of his journey to becoming a skilled ninja. It sets the stage for an expansive story of growth, battles, and the pursuit of dreams amidst the complexities of the ninja world.", "9797415363864", "65e2d86a7714ad25c89d8646", 192, 19.99m, "Naruto Vol 1", false }
                 });
         }
 
@@ -45,17 +45,17 @@ namespace ReadersRealm.Data.Migrations
             migrationBuilder.DeleteData(
                 table: "Books",
                 keyColumn: "Id",
-                keyValue: new Guid("0cfad6f5-60b3-4585-9f42-120a8f81125f"));
+                keyValue: new Guid("5d1cff2d-5535-4b5a-9fdb-c09b1a1bcf9c"));
 
             migrationBuilder.DeleteData(
                 table: "Books",
                 keyColumn: "Id",
-                keyValue: new Guid("592ce664-cb88-4fde-9092-52318a8c4b03"));
+                keyValue: new Guid("a9136d45-5d15-40a5-aa3b-4541a6d625d3"));
 
             migrationBuilder.DeleteData(
                 table: "Books",
                 keyColumn: "Id",
-                keyValue: new Guid("c15c19cc-9abc-4ad8-94da-9b4955ba908f"));
+                keyValue: new Guid("f8be9acf-bb54-4ce4-9fd0-ad669d39440d"));
 
             migrationBuilder.InsertData(
                 table: "Books",

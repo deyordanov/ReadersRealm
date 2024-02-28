@@ -1,8 +1,15 @@
-﻿@model PaginatedList<AllApplicationUsersViewModel>
+﻿@inject IAntiforgery Antiforgery
+@using Microsoft.AspNetCore.Antiforgery
+@model PaginatedList<AllApplicationUsersViewModel>
+
+@{
+    string? token = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
 
 <partial name="_NotificationPartialView" />
 
 <div class="row mb-2">
+    <input id="__RequestVerificationToken" type="hidden" value="@token" />
     <form asp-controller="User" asp-action="Index" method="get" class="col-8" style="display: flex">
         <div class="col-3 px-0">
             <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="searchTerm" value="@ViewBag.SearchTerm">
@@ -53,7 +60,7 @@
                             <a asp-controller="User" asp-action="ManageRoles" asp-route-applicationUserId="@applicationUserModel.Id" asp-route-pageIndex=@Model.PageIndex asp-route-searchTerm="@ViewBag.SearchTerm" class="btn btn-primary btn-sm" style="font-size: 13px">
                                 <i class="bi bi-person-gear"></i> Manage Roles
                             </a>
-                            <a asp-controller="User" asp-action="@(applicationUserModel.IsLocked ? "Unlock" : "Lock")" asp-route-applicationUserId="@applicationUserModel.Id" class="btn btn-danger btn-sm" style="font-size: 13px">
+                            <a asp-controller="User" asp-action="@(applicationUserModel.IsLocked ? "Unlock" : "Lock")" asp-route-id="@applicationUserModel.Id" class="btn btn-danger btn-sm lock-unlock-action" style="font-size: 13px">
                                 <i class="bi bi-lock"></i> @(applicationUserModel.IsLocked ? "Unlock" : "Lock")
                             </a>
                         </div>

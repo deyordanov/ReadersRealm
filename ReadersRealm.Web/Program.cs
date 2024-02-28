@@ -25,6 +25,13 @@ builder.Services.AddControllersWithViews()
     });
 builder.Services.AddRazorPages();
 
+builder.Services.AddAntiforgery(options =>
+{
+    options.FormFieldName = "__RequestVerificationToken";
+    options.HeaderName = "X-CSRF-VERIFICATION-TOKEN";
+    options.SuppressXFrameOptionsHeader = false;
+});
+
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();

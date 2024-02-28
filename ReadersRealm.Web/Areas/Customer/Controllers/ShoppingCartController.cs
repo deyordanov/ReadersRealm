@@ -19,6 +19,7 @@ using ViewModels.OrderDetails;
 using ViewModels.OrderHeader;
 using ViewModels.ShoppingCart;
 using static Common.Constants.Constants.Areas;
+using static Common.Constants.Constants.Error;
 using static Common.Constants.Constants.OrderHeader;
 using static Common.Constants.Constants.Roles;
 using static Common.Constants.Constants.SendGridSettings;
@@ -26,7 +27,6 @@ using static Common.Constants.Constants.SessionKeys;
 using static Common.Constants.Constants.Shared;
 using static Common.Constants.Constants.ShoppingCart;
 using static Common.Constants.Constants.StripeSettings;
-using static Common.Constants.Constants.Error;
 
 [Area(Customer)]
 public class ShoppingCartController : BaseController
@@ -278,7 +278,7 @@ public class ShoppingCartController : BaseController
         return File(textBytes, "text/plain");
     }
 
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> IncreaseQuantity(Guid? id)
     {
         if (id is not { } shoppingCartId || id == Guid.Empty)
@@ -293,7 +293,7 @@ public class ShoppingCartController : BaseController
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> DecreaseQuantity(Guid? id)
     {
         if (id is not { } shoppingCartId || id == Guid.Empty)

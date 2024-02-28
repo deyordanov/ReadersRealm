@@ -135,6 +135,7 @@ public class HomeController : BaseController
     }
 
     [AllowAnonymous]
+    [HttpGet]
     public async Task<IActionResult> GetImageAsync(string id)
     {
         if (!ObjectId.TryParse(id, out var imageId))
@@ -148,6 +149,7 @@ public class HomeController : BaseController
     }
 
     [AllowAnonymous]
+    [HttpGet]
     public IActionResult Privacy()
     {
         return View();

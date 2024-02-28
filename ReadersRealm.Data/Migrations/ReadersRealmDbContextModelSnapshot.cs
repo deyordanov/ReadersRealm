@@ -395,13 +395,13 @@ namespace ReadersRealm.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0cfad6f5-60b3-4585-9f42-120a8f81125f"),
+                            Id = new Guid("f8be9acf-bb54-4ce4-9fd0-ad669d39440d"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
                             Description = "\"Naruto Vol 1\" introduces readers to Naruto Uzumaki, a young ninja with dreams of becoming the strongest ninja and leader of his village, the Hokage. Despite being ostracized by the village for housing a fearsome nine-tailed fox that attacked the village years ago, Naruto is determined to gain the village's recognition through his accomplishments and hard work. The volume covers his struggles in the Ninja Academy, his formation of friendships and rivalries, and the beginning of his journey to becoming a skilled ninja. It sets the stage for an expansive story of growth, battles, and the pursuit of dreams amidst the complexities of the ninja world.",
                             ISBN = "9797415363864",
-                            ImageId = "65e2ce38456d37066e4edf8c",
+                            ImageId = "65e2d86a7714ad25c89d8646",
                             Pages = 192,
                             Price = 19.99m,
                             Title = "Naruto Vol 1",
@@ -409,13 +409,13 @@ namespace ReadersRealm.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c15c19cc-9abc-4ad8-94da-9b4955ba908f"),
+                            Id = new Guid("a9136d45-5d15-40a5-aa3b-4541a6d625d3"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
                             Description = "In \"Naruto Vol 8\" the Chunin Exam's second phase plunges Naruto, Sasuke, and Sakura into the perilous Forest of Death. Amidst treacherous battles and survival challenges, the team confronts formidable rivals and their own fears. As hidden dangers emerge, Naruto's resolve is tested, unveiling new powers and deepening bonds. This volume is a thrilling journey of growth, teamwork, and unyielding spirit against life-and-death stakes.",
                             ISBN = "9785421961182",
-                            ImageId = "65e2ce38456d37066e4edf8e",
+                            ImageId = "65e2d86a7714ad25c89d8648",
                             Pages = 192,
                             Price = 19.99m,
                             Title = "Naruto Vol 8",
@@ -423,13 +423,13 @@ namespace ReadersRealm.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("592ce664-cb88-4fde-9092-52318a8c4b03"),
+                            Id = new Guid("5d1cff2d-5535-4b5a-9fdb-c09b1a1bcf9c"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
                             Description = "\"Naruto Vol 35\" shifts the focus to the aftermath of Naruto's intense training under Jiraiya and the looming threat of the Akatsuki. Naruto returns to Konoha, showcasing newfound strengths and techniques. Meanwhile, the story delves into the formation of new alliances and the preparation for a confrontation that could shake the ninja world to its core. This volume encapsulates themes of evolution and anticipation, setting the stage for epic battles and strategic mind games.",
                             ISBN = "9799667150078",
-                            ImageId = "65e2ce38456d37066e4edf90",
+                            ImageId = "65e2d86a7714ad25c89d864a",
                             Pages = 200,
                             Price = 19.99m,
                             Title = "Naruto Vol 35",

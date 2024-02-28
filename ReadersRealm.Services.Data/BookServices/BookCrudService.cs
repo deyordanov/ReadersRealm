@@ -1,17 +1,21 @@
 ﻿namespace ReadersRealm.Services.Data.BookServices;
 
+using System.Net;
 using Common.Exceptions.Book;
 using Contracts;
+using Ganss.Xss;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.Book;
 
 public class BookCrudService : IBookCrudService
 {
+    private readonly IHtmlSanitizer _sanitizer;
     private readonly IUnitOfWork _unitOfWork;
 
     public BookCrudService(IUnitOfWork unitOfWork)
     {
+        this._sanitizer = new HtmlSanitizer();
         this._unitOfWork = unitOfWork;
     }
 
@@ -24,7 +28,9 @@ public class BookCrudService : IBookCrudService
             AuthorId = bookModel.AuthorId,
             CategoryId = bookModel.CategoryId,
             BookCover = bookModel.BookCover,
-            Description = bookModel.Description,
+            Description = this
+                ._sanitizer
+                .Sanitize(bookModel.Description ?? string.Empty),
             Pages = bookModel.Pages,
             Price = bookModel.Price,
             Used = bookModel.Used,
@@ -59,7 +65,9 @@ public class BookCrudService : IBookCrudService
         bookToEdit.AuthorId = bookModel.AuthorId;
         bookToEdit.CategoryId = bookModel.CategoryId;
         bookToEdit.BookCover = bookModel.BookCover;
-        bookToEdit.Description = bookModel.Description;
+        bookToEdit.Description = this
+            ._sanitizer
+            .Sanitize(bookModel.Description ?? string.Empty);
         bookToEdit.Pages = bookModel.Pages;
         bookToEdit.Price = bookModel.Price;
         bookToEdit.Used = bookModel.Used;
