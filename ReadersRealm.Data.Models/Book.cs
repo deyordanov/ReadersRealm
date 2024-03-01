@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using MongoDB.Bson;
-using static ReadersRealm.Common.Constants.ValidationConstants.Book;
+using static ReadersRealm.Common.Constants.ValidationConstants.BookValidation;
 
 /// <summary>
 /// Represents a book in Readers Realm.

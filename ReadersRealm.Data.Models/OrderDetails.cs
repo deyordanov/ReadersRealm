@@ -3,7 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using static Common.Constants.ValidationConstants.OrderDetails;
+using static Common.Constants.ValidationConstants.OrderDetailsValidation;
 
 public class OrderDetails
 {

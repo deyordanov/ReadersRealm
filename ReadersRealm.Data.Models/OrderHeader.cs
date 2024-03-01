@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Common.Constants.ValidationConstants.OrderHeader;
+using static Common.Constants.ValidationConstants.OrderHeaderValidation;
 public class OrderHeader
 {
     public OrderHeader()

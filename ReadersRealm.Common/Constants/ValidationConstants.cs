@@ -2,7 +2,7 @@
 
 public static class ValidationConstants
 {
-    public static class Category
+    public static class CategoryValidation
     {
         public const int CategoryNameMaxLength = 50;
         public const int CategoryNameMinLength = 2;
@@ -11,7 +11,7 @@ public static class ValidationConstants
         public const int CategoryDisplayOrderMinRange = 1;
     }
 
-    public static class Book
+    public static class BookValidation
     {
         public const int BookTitleMaxLength = 100;
         public const int BookTitleMinLength = 3;
@@ -32,7 +32,7 @@ public static class ValidationConstants
         public const int BookImageIdMinLength = 24;
     }
 
-    public static class Author
+    public static class AuthorValidation
     {
         public const int AuthorFirstNameMaxLength = 40;
         public const int AuthorFirstNameMinLength = 1;
@@ -53,7 +53,7 @@ public static class ValidationConstants
         public const int AuthorPhoneNumberMinLength = 7;
     }
 
-    public static class ApplicationUser
+    public static class ApplicationUserValidation
     {
         public const int ApplicationUserFirstNameMaxLength = 40;
         public const int ApplicationUserFirstNameMinLength = 1;
@@ -77,7 +77,7 @@ public static class ValidationConstants
         public const int ApplicationUserPhoneNumberMinLength = 7;
     }
 
-    public static class RegisterModel
+    public static class RegisterModelValidation
     {
         public const int RegisterModelFirstNameMaxLength = 40;
         public const int RegisterModelFirstNameMinLength = 1;
@@ -101,7 +101,7 @@ public static class ValidationConstants
         public const int RegisterModelPhoneNumberMinLength = 7;
     }
 
-    public static class Company
+    public static class CompanyValidation
     {
         public const int CompanyNameMaxLength = 255;
         public const int CompanyNameMinLength = 1;
@@ -128,13 +128,13 @@ public static class ValidationConstants
         public const int CompanyPhoneNumberMinLength = 7;
     }
     
-    public static class ShoppingCart
+    public static class ShoppingCartValidation
     {
         public const int ShoppingCartCountMaxRange = 1000;
         public const int ShoppingCartCountMinRange = 1;
     }
 
-    public static class OrderHeader
+    public static class OrderHeaderValidation
     {
         public const string OrderHeaderOrderTotalColumnType = "decimal(18,2)";
 
@@ -157,7 +157,7 @@ public static class ValidationConstants
         public const int OrderHeaderSessionIdMinLength = 16;
     }
 
-    public static class OrderDetails
+    public static class OrderDetailsValidation
     {
         public const string OrderDetailsPriceColumnType = "decimal(18,2)";
     }

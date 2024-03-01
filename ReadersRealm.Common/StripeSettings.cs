@@ -1,7 +1,7 @@
 ﻿namespace ReadersRealm.Common;
 
 using Microsoft.Extensions.Configuration;
-using static Common.Constants.Constants.StripeSettings;
+using static Common.Constants.Constants.StripeSettingsConstants;
 
 public class StripeSettings
 {

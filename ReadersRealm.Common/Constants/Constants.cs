@@ -4,7 +4,7 @@ using System.Text;
 
 public static class Constants
 {
-    public static class Shared
+    public static class SharedConstants
     {
         /// <summary>
         /// Key for temp data. Used when an operation is successful - displayed with toastr.
@@ -16,7 +16,7 @@ public static class Constants
         public const string Error = "Error";
     }
 
-    public static class Category
+    public static class CategoryConstants
     {
         //Display Names
         public const string CategoryName = "Category Name";
@@ -31,7 +31,7 @@ public static class Constants
         public const string Name = "Name";
     }
 
-    public static class Book
+    public static class BookConstants
     {
         //Action Results
         public const string BookHasBeenSuccessfullyCreated = "The book has been created successfully!";
@@ -46,15 +46,18 @@ public static class Constants
         public const string PathToSaveImage = @"\images\book\";
     }
 
-    public static class Company
+    public static class CompanyConstants
     {
         //Action Results
         public const string CompanyHasBeenSuccessfullyCreated = "The company has been created successfully!";
         public const string CompanyHasBeenSuccessfullyEdited = "The company has been edited successfully!";
         public const string CompanyHasBeenSuccessfullyDeleted = "The company has been deleted successfully!";
+
+        //Model Errors
+        public const string Role = "Role";
     }
 
-    public static class ShoppingCart
+    public static class ShoppingCartConstants
     {
         //Action Results
         public const string ShoppingCartItemsHaveBeenAddedSuccessfully =
@@ -63,13 +66,13 @@ public static class Constants
         public const string ShoppingCartItemHasBeenDeletedSuccessfully = "The item has been deleted successfully!";
     }
 
-    public static class Order
+    public static class OrderConstants
     {
         //Action Results
         public const string OrderHasSuccessfullyBeenUpdated = "The order has been updated successfully!";
     }
 
-    public static class OrderHeader
+    public static class OrderHeaderConstants
     {
         //Action Results
         public const string OrderStatusHasSuccessfullyBeenUpdated = "The order status has successfully been updated!";
@@ -93,7 +96,7 @@ public static class Constants
     }
 
     // Used when creating an admin
-    public static class User
+    public static class UserConstants
     {
         //Action Results
         public const string UserHasSuccessfullyBeenCreated = "The user has been created successfully!";
@@ -111,7 +114,7 @@ public static class Constants
         public const bool AdminUserEmailConfirmed = true;
     }
 
-    public static class ApplicationUser
+    public static class ApplicationUserConstants
     {
         //Display Names
         public const string FirstNameDisplay = "First Name";
@@ -120,7 +123,7 @@ public static class Constants
         public const string CompanyIdDisplay = "Company";
     }
 
-    public static class Roles
+    public static class RolesConstants
     {
         public const string CustomerRole = "Customer";
         public const string AdminRole = "Admin";
@@ -128,12 +131,12 @@ public static class Constants
         public const string EmployeeRole = "Employee";
     }
 
-    public static class Areas
+    public static class AreasConstants
     {
         public const string Admin = "Admin";
         public const string Customer = "Customer";
     }
-    public static class Error
+    public static class ErrorConstants
     {
         //Paths
         public const string NotFound404Path = "/Customer/Error/404";
@@ -142,14 +145,14 @@ public static class Constants
         public const string ErrorPageNotFoundAction = "NotFound404";
     }
 
-    public static class Image
+    public static class ImageConstants
     {
         public const string DefaultImage = "DefaultImage";
 
         public const string ContentType = "image/jpeg";
     }
 
-    public static class StripeSettings
+    public static class StripeSettingsConstants
     {
         public const string PublishableKeyAsString = "Stripe:PublishableKey";
         public const string SecretKeyAsString = "Stripe:SecretKey";
@@ -161,7 +164,7 @@ public static class Constants
         public const string FullCancelUrlOrder = "{0}/Admin/Order/Index";
     }
 
-    public static class SendGridSettings
+    public static class SendGridSettingsConstants
     {
         public const string ApiKey = "SendGrid:SecretKey";
 
@@ -183,13 +186,13 @@ public static class Constants
         public const string EmailOrderFooterMessage = "Welcome aboard, and happy shopping! Warmest regards, The Readers Realm Team.";
     }
 
-    public static class Configuration
+    public static class ConfigurationConstants
     {
         //Configuration Section Keys
         public const string MongoDbSettingsKey = "MongoDb";
     }
 
-    public static class SessionKeys
+    public static class SessionKeysConstants
     {
         public const string ShoppingCartSessionKey = "ShoppingCartSession";
     }

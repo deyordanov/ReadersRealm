@@ -2,7 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using static ReadersRealm.Common.Constants.ValidationConstants.Category;
+using static ReadersRealm.Common.Constants.ValidationConstants.CategoryValidation;
 
 /// <summary>
 /// Represents a category in Readers Realm.

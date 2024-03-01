@@ -69,4 +69,12 @@ public class AuthorRetrievalService : IAuthorRetrievalService
 
         return authorsToReturn;
     }
+
+    public async Task<bool> AuthorExistsAsync(Guid authorId)
+    {
+        return await this
+            ._unitOfWork
+            .AuthorRepository
+            .GetFirstOrDefaultWithFilterAsync(author => author.Id.Equals(authorId), false) != null;
+    }
 }

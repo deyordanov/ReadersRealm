@@ -2,7 +2,7 @@
 namespace ReadersRealm.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
-using static Common.Constants.ValidationConstants.Company;
+using static Common.Constants.ValidationConstants.CompanyValidation;
 
 public class Company
 {
