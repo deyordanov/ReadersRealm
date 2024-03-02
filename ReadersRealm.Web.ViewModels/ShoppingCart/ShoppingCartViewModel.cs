@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using ApplicationUser;
 using Book;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using static Common.Constants.ValidationConstants.ShoppingCart;
-using static Common.Constants.ValidationMessageConstants.ShoppingCart;
+using static Common.Constants.ValidationConstants.ShoppingCartValidation;
+using static Common.Constants.ValidationMessageConstants.ShoppingCartValidationMessages;
 
 public class ShoppingCartViewModel
 {

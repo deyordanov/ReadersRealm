@@ -1,11 +1,15 @@
 ﻿$(document).ready(function () {
     $("#companies").hide();
-    $("#roles").change(function () {
+    function toggleCompaniesVisibility() {
         var selection = $("#roles option:selected").text();
         if (selection === "Company") {
             $("#companies").show();
         } else {
             $("#companies").hide();
         }
-    });
+    }
+
+    toggleCompaniesVisibility();
+
+    $("#roles").change(toggleCompaniesVisibility);
 });

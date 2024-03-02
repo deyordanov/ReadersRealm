@@ -2,9 +2,9 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using static Common.Constants.Constants.Category;
-using static Common.Constants.ValidationConstants.Category;
-using static Common.Constants.ValidationMessageConstants.Category;
+using static Common.Constants.Constants.CategoryConstants;
+using static Common.Constants.ValidationConstants.CategoryValidation;
+using static Common.Constants.ValidationMessageConstants.CategoryValidationMessages;
 
 /// <summary>
 /// ViewModel for creating a new category in the Readers Realm application.

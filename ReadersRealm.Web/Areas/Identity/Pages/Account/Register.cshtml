@@ -1,5 +1,5 @@
 ﻿@page
-@using static ReadersRealm.Common.Constants.Constants.Roles;
+@using static ReadersRealm.Common.Constants.Constants.RolesConstants;
 @model ReadersRealm.Web.Areas.Identity.Pages.Account.RegisterModel
 @{
     ViewData["Title"] = "Register";
@@ -77,11 +77,13 @@
                                 <select asp-for="Input.Role" asp-items="@Model.Input.Roles" class="form-select" id="roles">
                                     <option disabled selected>Select a role</option>
                                 </select>
+                                <span asp-validation-for="Input.Role" class="text-danger"></span>
                             </div>
                             <div class="form-floating mb-3">
-                                <select asp-for="Input.Role" asp-items="@Model.Input.Companies" class="form-select" id="companies">
+                                <select asp-for="Input.CompanyId" asp-items="@Model.Input.Companies" class="form-select" id="companies">
                                     <option disabled selected>Select a company</option>
                                 </select>
+                                <span asp-validation-for="Input.CompanyId" class="text-danger"></span>
                             </div>
                         }
                     </div>

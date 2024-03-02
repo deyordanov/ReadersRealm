@@ -40,8 +40,15 @@ public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRep
         return query.FirstOrDefaultAsync(b => b.Id == id);
     }
 
-    public Task<ShoppingCart?> GetFirstOrDefaultWithFilterAsync(Expression<Func<ShoppingCart, bool>> filter)
+    public Task<ShoppingCart?> GetFirstOrDefaultWithFilterAsync(Expression<Func<ShoppingCart, bool>> filter, bool tracking)
     {
+        if (tracking)
+        {
+            return _dbContext
+                .ShoppingCarts
+                .FirstOrDefaultAsync(filter);
+        }
+
         return _dbContext
             .ShoppingCarts
             .AsNoTracking()

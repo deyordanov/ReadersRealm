@@ -13,13 +13,13 @@ using Stripe.Checkout;
 using ViewModels.Order;
 using ViewModels.OrderDetails;
 using ViewModels.OrderHeader;
-using static Common.Constants.Constants.Areas;
-using static Common.Constants.Constants.Order;
-using static Common.Constants.Constants.OrderHeader;
-using static Common.Constants.Constants.Roles;
-using static Common.Constants.Constants.Shared;
-using static Common.Constants.Constants.Error;
-using static Common.Constants.Constants.StripeSettings;
+using static Common.Constants.Constants.AreasConstants;
+using static Common.Constants.Constants.OrderConstants;
+using static Common.Constants.Constants.OrderHeaderConstants;
+using static Common.Constants.Constants.RolesConstants;
+using static Common.Constants.Constants.SharedConstants;
+using static Common.Constants.Constants.ErrorConstants;
+using static Common.Constants.Constants.StripeSettingsConstants;
 
 [Area(Admin)]
 public class OrderController : BaseController

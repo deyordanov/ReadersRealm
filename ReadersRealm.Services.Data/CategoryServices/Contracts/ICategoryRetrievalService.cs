@@ -9,4 +9,5 @@ public interface ICategoryRetrievalService
     CreateCategoryViewModel GetCategoryForCreate();
     Task<EditCategoryViewModel> GetCategoryForEditAsync(int id);
     Task<DeleteCategoryViewModel> GetCategoryForDeleteAsync(int id);
+    Task<bool> CategoryExistsAsync(int categoryId);
 }

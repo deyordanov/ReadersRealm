@@ -6,7 +6,7 @@ using Common.Constants;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using static Common.Constants.Constants.ApplicationUser;
+using static Common.Constants.Constants.ApplicationUserConstants;
 
 public class RolesApplicationUserViewModel
 {

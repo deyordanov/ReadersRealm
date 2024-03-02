@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Data.CategoryServices.Contracts;
 using ViewModels.Category;
-using static Common.Constants.Constants.Areas;
-using static Common.Constants.Constants.Category;
-using static Common.Constants.Constants.Error;
-using static Common.Constants.Constants.Roles;
-using static Common.Constants.Constants.Shared;
-using static Common.Constants.ValidationMessageConstants.Category;
+using static Common.Constants.Constants.AreasConstants;
+using static Common.Constants.Constants.CategoryConstants;
+using static Common.Constants.Constants.ErrorConstants;
+using static Common.Constants.Constants.RolesConstants;
+using static Common.Constants.Constants.SharedConstants;
+using static Common.Constants.ValidationMessageConstants.CategoryValidationMessages;
 
 
 [Area(Admin)]

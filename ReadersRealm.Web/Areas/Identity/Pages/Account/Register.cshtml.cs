@@ -18,12 +18,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Services.Data.CompanyServices.Contracts;
 using ViewModels.Company;
-using static Common.Constants.Constants.Roles;
-using static Common.Constants.Constants.SendGridSettings;
-using static Common.Constants.Constants.Shared;
-using static Common.Constants.Constants.User;
-using static ReadersRealm.Common.Constants.ValidationConstants.RegisterModel;
-using static ReadersRealm.Common.Constants.ValidationMessageConstants.RegisterModel;
+using static Common.Constants.Constants.RolesConstants;
+using static Common.Constants.Constants.SendGridSettingsConstants;
+using static Common.Constants.Constants.SharedConstants;
+using static Common.Constants.Constants.UserConstants;
+using static ReadersRealm.Common.Constants.ValidationConstants.RegisterModelValidation;
+using static ReadersRealm.Common.Constants.ValidationMessageConstants.CompanyValidationMessages;
+using static ReadersRealm.Common.Constants.ValidationMessageConstants.RegisterModelValidationMessages;
 
 public class RegisterModel : PageModel
 {
@@ -167,7 +168,7 @@ public class RegisterModel : PageModel
             .companyRetrievalService
             .GetAllListAsync();
 
-        Input = new()
+        Input = new InputModel()
         {
             FirstName = string.Empty,
             LastName = string.Empty,
@@ -185,86 +186,104 @@ public class RegisterModel : PageModel
 
         ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-        if (ModelState.IsValid)
+        bool companyExists = this.Input.CompanyId == null || 
+                             await this
+            .companyRetrievalService
+            .CompanyExistsAsync((Guid)this.Input.CompanyId);
+
+        if (!companyExists)
         {
-            ApplicationUser user = CreateUser();
+            ModelState.AddModelError(nameof(Input.CompanyId), CompanyDoesNotExistMessage);
+        }
 
-            await userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-            await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+        if (!ModelState.IsValid)
+        {
+            List<AllCompaniesListViewModel> companies = await this
+                .companyRetrievalService
+                .GetAllListAsync();
 
-            user.FirstName = Input.FirstName;
-            user.LastName = Input.LastName;
-            user.StreetAddress = Input.StreetAddress;
-            user.City = Input.City;
-            user.State = Input.State;
-            user.PostalCode = Input.PostalCode;
-            user.PhoneNumber = Input.PhoneNumber;
+            Input.Roles = roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name));
+            Input.Companies = companies.Select(c => new SelectListItem(c.Name, c.Id.ToString()));
 
-            if (Input.Role == CompanyRole)
+            return this.Page();
+        }
+
+        ApplicationUser user = CreateUser();
+
+        await userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+        await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+        user.FirstName = Input.FirstName;
+        user.LastName = Input.LastName;
+        user.StreetAddress = Input.StreetAddress;
+        user.City = Input.City;
+        user.State = Input.State;
+        user.PostalCode = Input.PostalCode;
+        user.PhoneNumber = Input.PhoneNumber;
+
+        if (Input.Role == CompanyRole)
+        {
+            user.CompanyId = Input.CompanyId;
+        }
+
+        var result = await userManager.CreateAsync(user, Input.Password);
+
+        if (result.Succeeded)
+        {
+            logger.LogInformation("User created a new account with password.");
+
+            if (!string.IsNullOrWhiteSpace(Input.Role))
             {
-                user.CompanyId = Input.CompanyId;
+                await userManager.AddToRoleAsync(user, Input.Role);
+            }
+            else
+            {
+                await userManager.AddToRoleAsync(user, CustomerRole);
             }
 
-            var result = await userManager.CreateAsync(user, Input.Password);
+            string userId = await userManager.GetUserIdAsync(user);
+            string code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            string callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                protocol: Request.Scheme);
 
-            if (result.Succeeded)
+            string mainPageUrl = Url.Page(
+                "/Home/Index",
+                pageHandler: null,
+                values: new { area = "Customer" },
+                protocol: Request.Scheme);
+
+            await emailSender.SendEmailAsync(Input.Email,
+                EmailConfirmationSubject,
+                this.BuildEmailMessage(callbackUrl));
+
+            if (userManager.Options.SignIn.RequireConfirmedAccount)
             {
-                logger.LogInformation("User created a new account with password.");
-
-                if (!string.IsNullOrWhiteSpace(Input.Role))
+                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+            }
+            else
+            {
+                if (!User.IsInRole(AdminRole))
                 {
-                    await userManager.AddToRoleAsync(user, Input.Role);
+                    await signInManager.SignInAsync(user, isPersistent: false);
                 }
                 else
                 {
-                    await userManager.AddToRoleAsync(user, CustomerRole);
+                    TempData[Success] = UserHasSuccessfullyBeenCreated;
                 }
 
-                string userId = await userManager.GetUserIdAsync(user);
-                string code = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                string callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                    protocol: Request.Scheme);
-
-                string mainPageUrl = Url.Page(
-                    "/Home/Index",
-                    pageHandler: null,
-                    values: new { area = "Customer" },
-                    protocol: Request.Scheme);
-
-                await emailSender.SendEmailAsync(Input.Email, 
-                    EmailConfirmationSubject, 
-                    this.BuildEmailMessage(callbackUrl));
-
-                if (userManager.Options.SignIn.RequireConfirmedAccount)
-                {
-                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                }
-                else
-                {
-                    if (!User.IsInRole(AdminRole))
-                    {
-                        await signInManager.SignInAsync(user, isPersistent: false);
-                    }
-                    else
-                    {
-                        TempData[Success] = UserHasSuccessfullyBeenCreated;
-                    }
-
-                    return LocalRedirect(returnUrl);
-                }
-            }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
+                return LocalRedirect(returnUrl);
             }
         }
 
-        // If we got this far, something failed, redisplay form
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+
         return Page();
     }
 

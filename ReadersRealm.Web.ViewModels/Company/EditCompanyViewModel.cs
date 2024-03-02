@@ -1,8 +1,8 @@
 ﻿namespace ReadersRealm.Web.ViewModels.Company;
 
 using System.ComponentModel.DataAnnotations;
-using static Common.Constants.ValidationConstants.Company;
-using static Common.Constants.ValidationMessageConstants.Company;
+using static Common.Constants.ValidationConstants.CompanyValidation;
+using static Common.Constants.ValidationMessageConstants.CompanyValidationMessages;
 
 public class EditCompanyViewModel
 {

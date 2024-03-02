@@ -3,8 +3,8 @@
 using System.ComponentModel.DataAnnotations;
 using ApplicationUser;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using static Common.Constants.ValidationConstants.ApplicationUser;
-using static Common.Constants.ValidationMessageConstants.ApplicationUser;
+using static Common.Constants.ValidationConstants.ApplicationUserValidation;
+using static Common.Constants.ValidationMessageConstants.ApplicationUserValidationMessages;
 
 public class OrderHeaderViewModel
 {

@@ -18,15 +18,15 @@ using ViewModels.ApplicationUser;
 using ViewModels.OrderDetails;
 using ViewModels.OrderHeader;
 using ViewModels.ShoppingCart;
-using static Common.Constants.Constants.Areas;
-using static Common.Constants.Constants.Error;
-using static Common.Constants.Constants.OrderHeader;
-using static Common.Constants.Constants.Roles;
-using static Common.Constants.Constants.SendGridSettings;
-using static Common.Constants.Constants.SessionKeys;
-using static Common.Constants.Constants.Shared;
-using static Common.Constants.Constants.ShoppingCart;
-using static Common.Constants.Constants.StripeSettings;
+using static Common.Constants.Constants.AreasConstants;
+using static Common.Constants.Constants.ErrorConstants;
+using static Common.Constants.Constants.OrderHeaderConstants;
+using static Common.Constants.Constants.RolesConstants;
+using static Common.Constants.Constants.SendGridSettingsConstants;
+using static Common.Constants.Constants.SessionKeysConstants;
+using static Common.Constants.Constants.SharedConstants;
+using static Common.Constants.Constants.ShoppingCartConstants;
+using static Common.Constants.Constants.StripeSettingsConstants;
 
 [Area(Customer)]
 public class ShoppingCartController : BaseController

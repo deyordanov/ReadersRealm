@@ -1,7 +1,6 @@
 ﻿$(document).ready(function () {
     $("#companies").hide();
     $("#companies-label").hide();
-
     function toggleCompaniesVisibility() {
         var isCompanySelected = $("#roles option:selected").toArray().some(option => option.text === "Company");
         if (isCompanySelected) {

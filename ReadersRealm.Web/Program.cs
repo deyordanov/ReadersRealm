@@ -11,7 +11,7 @@ using ReadersRealm.Web.Infrastructure.ModelBinders;
 using ReadersRealm.Web.Infrastructure.Settings;
 using ReadersRealm.Web.Infrastructure.Settings.Contracts;
 using Stripe;
-using static ReadersRealm.Common.Constants.Constants.Configuration;
+using static ReadersRealm.Common.Constants.Constants.ConfigurationConstants;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

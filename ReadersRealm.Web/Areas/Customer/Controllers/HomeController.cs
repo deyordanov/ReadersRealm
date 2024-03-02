@@ -16,12 +16,12 @@ using Services.Data.ShoppingCartServices.Contracts;
 using ViewModels;
 using ViewModels.Book;
 using ViewModels.ShoppingCart;
-using static Common.Constants.Constants.Areas;
-using static Common.Constants.Constants.Error;
-using static Common.Constants.Constants.Image;
-using static Common.Constants.Constants.SessionKeys;
-using static Common.Constants.Constants.Shared;
-using static Common.Constants.Constants.ShoppingCart;
+using static Common.Constants.Constants.AreasConstants;
+using static Common.Constants.Constants.ErrorConstants;
+using static Common.Constants.Constants.ImageConstants;
+using static Common.Constants.Constants.SessionKeysConstants;
+using static Common.Constants.Constants.SharedConstants;
+using static Common.Constants.Constants.ShoppingCartConstants;
 using static Common.Constants.ExceptionMessages.ImageExceptionMessages;
 
 [Area(Customer)]

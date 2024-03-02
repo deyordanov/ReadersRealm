@@ -52,7 +52,7 @@ public class ShoppingCartRetrievalService : IShoppingCartRetrievalService
             ._unitOfWork
             .ShoppingCartRepository
             .GetFirstOrDefaultWithFilterAsync(shoppingCart => shoppingCart.ApplicationUserId.Equals(applicationUserId) &&
-                                                              shoppingCart.BookId == bookId) != null;
+                                                              shoppingCart.BookId == bookId, false) != null;
     }
 
     public async Task<AllShoppingCartsListViewModel> GetAllListAsync(Guid applicationUserId)

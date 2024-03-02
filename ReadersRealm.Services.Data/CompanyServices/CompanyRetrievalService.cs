@@ -65,12 +65,12 @@ public class CompanyRetrievalService : ICompanyRetrievalService
         };
     }
 
-    public async Task<EditCompanyViewModel> GetCompanyForEditAsync(Guid id)
+    public async Task<EditCompanyViewModel> GetCompanyForEditAsync(Guid companyId)
     {
         Company? company = await this
             ._unitOfWork
             .CompanyRepository
-            .GetByIdAsync(id);
+            .GetByIdAsync(companyId);
 
         if (company == null)
         {
@@ -93,12 +93,12 @@ public class CompanyRetrievalService : ICompanyRetrievalService
         return companyModel;
     }
 
-    public async Task<DeleteCompanyViewModel> GetCompanyForDeleteAsync(Guid id)
+    public async Task<DeleteCompanyViewModel> GetCompanyForDeleteAsync(Guid companyId)
     {
         Company? company = await this
             ._unitOfWork
             .CompanyRepository
-            .GetByIdAsync(id);
+            .GetByIdAsync(companyId);
 
         if (company == null)
         {
@@ -119,5 +119,13 @@ public class CompanyRetrievalService : ICompanyRetrievalService
         };
 
         return companyModel;
+    }
+
+    public async Task<bool> CompanyExistsAsync(Guid companyId)
+    {
+        return await this
+            ._unitOfWork
+            .CompanyRepository
+            .GetFirstOrDefaultByFilterAsync(company => company.Id.Equals(companyId), false) != null;
     }
 }

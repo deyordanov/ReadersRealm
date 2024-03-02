@@ -6,26 +6,32 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Services.Data.ApplicationUserServices.Contracts;
+using Services.Data.CompanyServices.Contracts;
 using ViewModels.ApplicationUser;
-using static Common.Constants.Constants.Areas;
-using static Common.Constants.Constants.Error;
-using static Common.Constants.Constants.Shared;
+using static Common.Constants.Constants.AreasConstants;
+using static Common.Constants.Constants.ErrorConstants;
+using static Common.Constants.Constants.SharedConstants;
+using static Common.Constants.ValidationMessageConstants.UserValidationMessages;
+using static Common.Constants.ValidationMessageConstants.CompanyValidationMessages;
 
 [Area(Admin)]
 public class UserController : BaseController
 {
     private readonly IApplicationUserRetrievalService _applicationUserRetrievalService;
     private readonly IApplicationUserCrudService _applicationUserCrudService;
+    private readonly ICompanyRetrievalService _companyRetrievalService;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 
     public UserController(
         IApplicationUserRetrievalService applicationUserRetrievalService, 
-        RoleManager<IdentityRole<Guid>> roleManager, 
-        IApplicationUserCrudService applicationUserCrudService)
+        IApplicationUserCrudService applicationUserCrudService,
+        ICompanyRetrievalService companyRetrievalService,
+        RoleManager<IdentityRole<Guid>> roleManager)
     {
         this._applicationUserRetrievalService = applicationUserRetrievalService;
-        this._roleManager = roleManager;
         this._applicationUserCrudService = applicationUserCrudService;
+        this._companyRetrievalService = companyRetrievalService;
+        this._roleManager = roleManager;
     }
 
     [HttpGet]
@@ -73,11 +79,27 @@ public class UserController : BaseController
             .Select(r => r.Name)
             .ToListAsync())!;
 
-        bool areRolesValid = allRoles.Except(applicationUserModel.NewRoles).Count() !=
+        bool areRolesInvalid = allRoles.Except(applicationUserModel.NewRoles).Count() !=
                              allRoles.Count - applicationUserModel.NewRoles.Count;
-        if (areRolesValid)
+        if (areRolesInvalid)
         {
-            ModelState.AddModelError(nameof(applicationUserModel.NewRoles), "Nope.");
+            ModelState.AddModelError(nameof(applicationUserModel.NewRoles), RoleDoesNotExistMessage);
+
+            applicationUserModel = await this
+                ._applicationUserRetrievalService
+                .GetApplicationUserForRolesManagementAsync(applicationUserModel.Id);
+
+            return View(applicationUserModel);
+        }
+
+        bool companyExists = applicationUserModel.CompanyId == null ||
+                             await this
+                                 ._companyRetrievalService
+                                 .CompanyExistsAsync((Guid)applicationUserModel.CompanyId);
+
+        if (!companyExists)
+        {
+            ModelState.AddModelError(nameof(applicationUserModel.CompanyId), CompanyDoesNotExistMessage);
 
             applicationUserModel = await this
                 ._applicationUserRetrievalService

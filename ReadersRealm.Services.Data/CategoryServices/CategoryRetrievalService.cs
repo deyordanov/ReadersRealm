@@ -104,4 +104,12 @@ public class CategoryRetrievalService : ICategoryRetrievalService
 
         return categoryModel;
     }
+
+    public async Task<bool> CategoryExistsAsync(int categoryId)
+    {
+        return await this
+            ._unitOfWork
+            .CategoryRepository
+            .GetFirstOrDefaultByFilterAsync(category => category.Id == categoryId, false) != null;
+    }
 }

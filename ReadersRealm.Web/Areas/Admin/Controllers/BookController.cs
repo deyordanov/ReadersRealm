@@ -1,8 +1,10 @@
 ﻿namespace ReadersRealm.Web.Areas.Admin.Controllers;
 
+using AngleSharp.Css.Dom;
 using Common;
 using Common.Exceptions.GeneralExceptions;
 using Data.Models;
+using Data.Models.Enums;
 using Infrastructure.Settings.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,14 +15,16 @@ using ReadersRealm.Services.Data.AuthorServices.Contracts;
 using ReadersRealm.Services.Data.BookServices.Contracts;
 using ReadersRealm.Services.Data.CategoryServices.Contracts;
 using ViewModels.Book;
-using static Common.Constants.Constants.Areas;
-using static Common.Constants.Constants.Book;
-using static Common.Constants.Constants.Error;
-using static Common.Constants.Constants.Image;
-using static Common.Constants.Constants.Roles;
-using static Common.Constants.Constants.Shared;
+using static Common.Constants.Constants.AreasConstants;
+using static Common.Constants.Constants.BookConstants;
+using static Common.Constants.Constants.ErrorConstants;
+using static Common.Constants.Constants.ImageConstants;
+using static Common.Constants.Constants.RolesConstants;
+using static Common.Constants.Constants.SharedConstants;
 using static Common.Constants.ExceptionMessages.ImageExceptionMessages;
-using static Common.Constants.ValidationMessageConstants.Book;
+using static Common.Constants.ValidationMessageConstants.AuthorValidationMessages;
+using static Common.Constants.ValidationMessageConstants.BookValidationMessages;
+using static Common.Constants.ValidationMessageConstants.CategoryValidationMessages;
 
 
 [Area(Admin)]
@@ -94,6 +98,22 @@ public class BookController : BaseController
             ModelState.AddModelError(CategoryId, BookCategoryRequiredMessage);
         }
 
+        bool authorExists = await this
+            ._authorRetrievalService
+            .AuthorExistsAsync(bookModel.AuthorId);
+        if (!authorExists)
+        {
+            ModelState.AddModelError(AuthorId, AuthorDoesNotExistMessage);
+        }
+
+        bool categoryExists = await this
+            ._categoryRetrievalService
+            .CategoryExistsAsync(bookModel.CategoryId);
+        if (!categoryExists)
+        {
+            ModelState.AddModelError(CategoryId, CategoryDoesNotExistMessage);
+        }
+
         if (!ModelState.IsValid)
         {
             bookModel.AuthorsList = await this
@@ -141,6 +161,22 @@ public class BookController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Edit(EditBookViewModel bookModel, IFormFile? file, int pageIndex, string? searchTerm)
     {
+        bool authorExists = await this
+            ._authorRetrievalService
+            .AuthorExistsAsync(bookModel.AuthorId);
+        if (!authorExists)
+        {
+            ModelState.AddModelError(AuthorId, AuthorDoesNotExistMessage);
+        }
+
+        bool categoryExists = await this
+            ._categoryRetrievalService
+            .CategoryExistsAsync(bookModel.CategoryId);
+        if (!categoryExists)
+        {
+            ModelState.AddModelError(CategoryId, CategoryDoesNotExistMessage);
+        }
+
         if (!ModelState.IsValid)
         {
             bookModel.AuthorsList = await this

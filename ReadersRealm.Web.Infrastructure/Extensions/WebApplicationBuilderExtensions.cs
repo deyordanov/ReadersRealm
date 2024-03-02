@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using static Common.Constants.Constants.Roles;
-using static Common.Constants.Constants.User;
+using static Common.Constants.Constants.RolesConstants;
+using static Common.Constants.Constants.UserConstants;
 using static Common.Constants.ExceptionMessages.ApplicationUserExceptionMessages;
 using static Common.Constants.ExceptionMessages.ServiceExceptionMessages;
 

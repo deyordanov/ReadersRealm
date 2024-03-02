@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using Author;
 using Category;
 using Data.Models.Enums;
-using static Common.Constants.ValidationConstants.Book;
-using static Common.Constants.ValidationMessageConstants.Book;
+using static Common.Constants.ValidationConstants.BookValidation;
+using static Common.Constants.ValidationMessageConstants.BookValidationMessages;
 
 public class CreateBookViewModel
 {

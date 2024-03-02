@@ -6,11 +6,11 @@ using Common;
 using Data.Models;
 using Services.Data.CompanyServices.Contracts;
 using ViewModels.Company;
-using static Common.Constants.Constants.Areas;
-using static Common.Constants.Constants.Company;
-using static Common.Constants.Constants.Roles;
-using static Common.Constants.Constants.Shared;
-using static Common.Constants.Constants.Error;
+using static Common.Constants.Constants.AreasConstants;
+using static Common.Constants.Constants.CompanyConstants;
+using static Common.Constants.Constants.RolesConstants;
+using static Common.Constants.Constants.SharedConstants;
+using static Common.Constants.Constants.ErrorConstants;
 
 [Area(Admin)]
 public class CompanyController : BaseController

@@ -8,7 +8,7 @@ using Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using static Common.Constants.Constants.SessionKeys;
+using static Common.Constants.Constants.SessionKeysConstants;
 
 public class LogoutModel : PageModel
 {
