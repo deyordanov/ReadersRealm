@@ -6,10 +6,10 @@
     </div>
     <div class="row">
         <div class="col-12 col-md-12 pb-1 d-flex justify-content-center align-items-center gap-2">
-            <a asp-area="Customer" asp-controller="Home" asp-action="Index" asp-route-orderHeaderId="@Model" class="btn btn-outline-success bg-gradient mb-5 fw-semibold btn-outline-success text-uppercase">
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index" asp-route-id="@Model" class="btn btn-outline-success bg-gradient mb-5 fw-semibold btn-outline-success text-uppercase">
                 <small>Return To Home Page</small>
             </a>
-            <a asp-area="Customer" asp-controller="ShoppingCart" asp-action="DownloadReceipt" asp-route-orderHeaderId="@Model" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-outline-dark text-uppercase">
+            <a asp-area="Customer" asp-controller="ShoppingCart" asp-action="DownloadReceipt" asp-route-id="@Model" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-outline-dark text-uppercase">
                 <small>Download Receipt</small>
             </a>
         </div>

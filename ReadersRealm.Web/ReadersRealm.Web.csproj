@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.1" />

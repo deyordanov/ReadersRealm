@@ -9,7 +9,7 @@
             <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-pageIndex="0" asp-route-searchTerm="" class="btn btn-outline-success bg-gradient mb-5 fw-semibold btn-outline-success text-uppercase">
                 <small>Return To Home Page</small>
             </a>
-            <a asp-area="Customer" asp-controller="ShoppingCart" asp-action="DownloadReceipt" asp-route-orderHeaderId="@Model" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-outline-dark text-uppercase">
+            <a asp-area="Customer" asp-controller="ShoppingCart" asp-action="DownloadReceipt" asp-route-id="@Model" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-outline-dark text-uppercase">
                 <small>Download Receipt</small>
             </a>
         </div>

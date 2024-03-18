@@ -50,7 +50,7 @@
                             </a>
                             @if (orderModel.OrderHeader.PaymentStatus == PaymentStatusApproved)
                             {
-                                <a asp-area="Customer" asp-controller="ShoppingCart" asp-action="DownloadReceipt" asp-route-orderHeaderId="@orderModel.OrderHeader.Id" class="btn btn-success btn-sm" style="font-size: 13px">
+                                <a asp-area="Customer" asp-controller="ShoppingCart" asp-action="DownloadReceipt" asp-route-id="@orderModel.OrderHeader.Id" class="btn btn-success btn-sm" style="font-size: 13px">
                                     <i class="bi bi-receipt"></i> Download Receipt
                                 </a>
                             }

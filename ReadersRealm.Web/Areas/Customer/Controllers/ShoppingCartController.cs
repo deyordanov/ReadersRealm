@@ -3,6 +3,8 @@
 using System.Text;
 using Data.Models;
 using Infrastructure.Extensions;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -190,7 +192,7 @@ public class ShoppingCartController : BaseController
             return new StatusCodeResult(303);
         }
 
-        return RedirectToAction(nameof(OrderConfirmation), nameof(ShoppingCart), new { orderHeaderId = orderHeaderData.orderHeaderId }); 
+        return RedirectToAction(nameof(OrderConfirmation), nameof(ShoppingCart), new { id = orderHeaderData.orderHeaderId }); 
     }
 
     [HttpGet]
@@ -246,13 +248,13 @@ public class ShoppingCartController : BaseController
         {
             return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
-
+    
         OrderHeaderReceiptDto orderHeaderDto = await this
             ._orderHeaderRetrievalService
             .GetOrderHeaderForReceiptAsync(orderHeaderId);
-
+    
         StringBuilder sb = new StringBuilder();
-
+    
         sb.AppendLine($"Order Id: {orderHeaderId}");
         sb.AppendLine($"Order Payment Id: {orderHeaderDto.PaymentIntentId}");
         sb.AppendLine($"Order Date: {orderHeaderDto.OrderDate.ToString("d")}");
@@ -260,7 +262,7 @@ public class ShoppingCartController : BaseController
         sb.AppendLine($"Payment Status: {orderHeaderDto.PaymentStatus}");
         sb.AppendLine($"Payment Date: {orderHeaderDto.PaymentDate}");
         sb.AppendLine("Items Bought:");
-
+    
         foreach (OrderDetailsReceiptDto orderDetailsDto in orderHeaderDto.OrderDetails)
         {
             sb.AppendLine("--------------------------------------------");
@@ -270,13 +272,53 @@ public class ShoppingCartController : BaseController
             sb.AppendLine($"    Quantity: {orderDetailsDto.Count}");
             sb.AppendLine($"    Total Price: {(orderDetailsDto.Book.Price * orderDetailsDto.Count).ToString("c")}");
         }
-
+    
         this._httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.ContentDisposition, "attachment;filename=receipt.txt");
-
+    
         byte[] textBytes = Encoding.UTF8.GetBytes(sb.ToString().TrimEnd());
-
+    
         return File(textBytes, "text/plain");
     }
+
+    // [HttpGet]
+    // public async Task<IActionResult> DownloadReceipt(Guid? id)
+    // {
+    //     if (id is not { } orderHeaderId || id == Guid.Empty)
+    //     {
+    //         return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
+    //     }
+    //
+    //     OrderHeaderReceiptDto orderHeaderDto = await this
+    //         ._orderHeaderRetrievalService
+    //         .GetOrderHeaderForReceiptAsync(orderHeaderId);
+    //
+    //     using var ms = new MemoryStream();
+    //     using (var writer = PdfWriter.GetInstance(new PdfDocument(), ms))
+    //     {
+    //         writer.Add(new Paragraph($"Order Id: {orderHeaderId}"));
+    //         writer.Add(new Paragraph($"Order Payment Id: {orderHeaderDto.PaymentIntentId}"));
+    //         writer.Add(new Paragraph($"Order Date: {orderHeaderDto.OrderDate.ToString("d")}"));
+    //         writer.Add(new Paragraph($"Total: {orderHeaderDto.OrderTotal.ToString("c")}"));
+    //         writer.Add(new Paragraph($"Payment Status: {orderHeaderDto.PaymentStatus}"));
+    //         writer.Add(new Paragraph($"Payment Date: {orderHeaderDto.PaymentDate}"));
+    //         writer.Add(new Paragraph("Items Bought:"));
+    //
+    //         foreach (OrderDetailsReceiptDto orderDetailsDto in orderHeaderDto.OrderDetails)
+    //         {
+    //             writer.Add(new Paragraph("--------------------------------------------"));
+    //             writer.Add(new Paragraph($"    Book Title: {orderDetailsDto.Book.Title}"));
+    //             writer.Add(new Paragraph($"    Book ISBN: {orderDetailsDto.Book.ISBN}"));
+    //             writer.Add(new Paragraph($"    Book Price: {orderDetailsDto.Book.Price.ToString("c")}"));
+    //             writer.Add(new Paragraph($"    Quantity: {orderDetailsDto.Count}"));
+    //             writer.Add(new Paragraph($"    Total Price: {(orderDetailsDto.Book.Price * orderDetailsDto.Count).ToString("c")}"));
+    //         }
+    //     }
+    //
+    //     ms.Position = 0;
+    //     this._httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.ContentDisposition, "attachment;filename=receipt.pdf");
+    //
+    //     return this.File(ms.ToArray(), "application/pdf");
+    // }
 
     [HttpPost]
     public async Task<IActionResult> IncreaseQuantity(Guid? id)

@@ -157,10 +157,10 @@ public static class Constants
         public const string PublishableKeyAsString = "Stripe:PublishableKey";
         public const string SecretKeyAsString = "Stripe:SecretKey";
 
-        public const string FullSuccessUrlShoppingCart = "{0}/Customer/ShoppingCart/OrderConfirmation?orderHeaderId={1}";
+        public const string FullSuccessUrlShoppingCart = "{0}/Customer/ShoppingCart/OrderConfirmation?id={1}";
         public const string FullCancelUrlShoppingCart = "{0}/Customer/ShoppingCart/Index";
 
-        public const string FullSuccessUrlOrder = "{0}/Admin/Order/OrderConfirmation?orderHeaderId={1}";
+        public const string FullSuccessUrlOrder = "{0}/Admin/Order/OrderConfirmation?id={1}";
         public const string FullCancelUrlOrder = "{0}/Admin/Order/Index";
     }
 
