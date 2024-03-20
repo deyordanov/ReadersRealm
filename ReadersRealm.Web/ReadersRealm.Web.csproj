@@ -47,6 +47,7 @@
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Order\Details.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Order\OrderConfirmation.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\User\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Customer\Views\Error\InternalServerError500.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Customer\Views\Home\Details.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Order\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Customer\Views\ShoppingCart\OrderConfirmation.cshtml" />
@@ -103,6 +104,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Areas\Admin\Views\User\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Customer\Views\Error\InternalServerError500.cshtml" />
   </ItemGroup>
 
 </Project>

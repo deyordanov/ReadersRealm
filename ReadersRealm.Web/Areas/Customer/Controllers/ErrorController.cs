@@ -13,4 +13,11 @@ public class ErrorController : BaseController
     {
         return View();
     }
+
+    [HttpGet]
+    [Route(InternalServerError500Path)]
+    public IActionResult InternalServerError500()
+    {
+        return View();
+    }
 }

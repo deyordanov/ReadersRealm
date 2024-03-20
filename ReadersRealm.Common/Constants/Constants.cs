@@ -140,6 +140,7 @@ public static class Constants
     {
         //Paths
         public const string NotFound404Path = "/Customer/Error/404";
+        public const string InternalServerError500Path = "/Customer/Error/500";
 
         //Action Names
         public const string ErrorPageNotFoundAction = "NotFound404";

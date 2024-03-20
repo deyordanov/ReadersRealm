@@ -1,6 +1,6 @@
 ﻿namespace ReadersRealm.Common.Exceptions.ShoppingCart;
 
-public class ShoppingCartNotFoundException : ApplicationException
+public class ShoppingCartNotFoundException : BaseNotFoundException
 {
     private const string DefaultMessage = "The requested shopping cart was not found.";
 

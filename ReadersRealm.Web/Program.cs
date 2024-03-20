@@ -7,6 +7,7 @@ using ReadersRealm.Data.Repositories;
 using ReadersRealm.Data.Repositories.Contracts;
 using ReadersRealm.Services.Data.ApplicationUserServices.Contracts;
 using ReadersRealm.Web.Infrastructure.Extensions;
+using ReadersRealm.Web.Infrastructure.Middlewares;
 using ReadersRealm.Web.Infrastructure.ModelBinders;
 using ReadersRealm.Web.Infrastructure.Settings;
 using ReadersRealm.Web.Infrastructure.Settings.Contracts;
@@ -31,7 +32,6 @@ builder.Services.AddAntiforgery(options =>
     options.HeaderName = "X-CSRF-VERIFICATION-TOKEN";
     options.SuppressXFrameOptionsHeader = false;
 });
-
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
@@ -80,10 +80,13 @@ WebApplication app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    // app.UseExceptionHandler("/Home/Error");
+    // app.UseStatusCodePagesWithRedirects("/Customer/Error/{0}"); -> the {0} will be replaced with the error status code.
+    app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+// app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

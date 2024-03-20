@@ -1,6 +1,6 @@
 ﻿namespace ReadersRealm.Common.Exceptions.Company;
 
-public class CompanyNotFoundException : ApplicationException
+public class CompanyNotFoundException : BaseNotFoundException
 {
     private const string DefaultMessage = "The requested company was not found.";
 

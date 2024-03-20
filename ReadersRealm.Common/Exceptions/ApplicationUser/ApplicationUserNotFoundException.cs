@@ -1,6 +1,6 @@
 ﻿namespace ReadersRealm.Common.Exceptions.ApplicationUser;
 
-public class ApplicationUserNotFoundException : Exception
+public class ApplicationUserNotFoundException : BaseNotFoundException
 {
     private const string DefaultMessage = "The requested user was not found.";
 

@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middlewares\" />
     <Folder Include="Settings\Contracts\" />
   </ItemGroup>
 

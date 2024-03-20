@@ -1,6 +1,6 @@
 ﻿namespace ReadersRealm.Common.Exceptions.OrderHeader;
 
-public class OrderHeaderNotFoundException : ApplicationException
+public class OrderHeaderNotFoundException : BaseNotFoundException
 {
     private const string DefaultMessage = "The requested order header was not found.";
 
