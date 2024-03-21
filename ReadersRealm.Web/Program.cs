@@ -57,9 +57,9 @@ builder.Services.AddSingleton<IMongoDbSettings>(sp =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Identity/Account/Login";
-    options.LogoutPath = "/Identity/Account/Logout";
-    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.LoginPath = "/Customer/User/Login";
+    options.LogoutPath = "/Customer/User/Logout";
+    options.AccessDeniedPath = "/Customer/User/Register";
 });
 
 /*

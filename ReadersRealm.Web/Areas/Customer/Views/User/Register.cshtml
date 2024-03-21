@@ -1,0 +1,103 @@
+﻿@using static ReadersRealm.Common.Constants.Constants.RolesConstants;
+@model ReadersRealm.Web.ViewModels.Identity.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="card border-0 mt-5 row" style="display: flex; justify-content: center; align-items: center">
+    <div class="card-body p-4 w-50 shadow">
+        <div class="row pt-4" style="display: flex; flex-direction: column">
+            <div class="row">
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <h3 class="border-bottom pb-3 mb-4 text-secondary text-center">Create a new account.</h3>
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                        <label asp-for="Input.Email">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.Password">Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                            <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                            <input asp-for="Input.FirstName" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.FirstName"></label>
+                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                            <input asp-for="Input.LastName" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.LastName"></label>
+                            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                            <input asp-for="Input.StreetAddress" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.StreetAddress"></label>
+                            <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                            <input asp-for="Input.City" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.City"></label>
+                            <span asp-validation-for="Input.City" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                            <input asp-for="Input.State" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.State"></label>
+                            <span asp-validation-for="Input.State" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3 col-6">
+                            <input asp-for="Input.PostalCode" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.PostalCode"></label>
+                            <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating mb-3 col-6">
+                            <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.PhoneNumber"></label>
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                        </div>
+                        @if (User.IsInRole(AdminRole))
+                        {
+                            <div class="form-floating mb-3 col-6">
+                                <select asp-for="Input.Role" asp-items="@Model.Input.Roles" class="form-select" id="roles">
+                                    <option disabled selected>Select a role</option>
+                                </select>
+                                <span asp-validation-for="Input.Role" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select asp-for="Input.CompanyId" asp-items="@Model.Input.Companies" class="form-select" id="companies">
+                                    <option disabled selected>Select a company</option>
+                                </select>
+                                <span asp-validation-for="Input.CompanyId" class="text-danger"></span>
+                            </div>
+                        }
+                    </div>
+                    <div class="row" style="display: flex; justify-content: center">
+                        <button id="registerSubmit" type="submit" class="w-50 btn btn btn-primary rounded-2">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/companiesRegister.js"></script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

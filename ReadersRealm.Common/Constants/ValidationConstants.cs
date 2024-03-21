@@ -79,6 +79,9 @@ public static class ValidationConstants
 
     public static class RegisterModelValidation
     {
+        public const int RegisterModelPasswordMaxLength = 100;
+        public const int RegisterModelPasswordMinLength = 6;
+
         public const int RegisterModelFirstNameMaxLength = 40;
         public const int RegisterModelFirstNameMinLength = 1;
 

@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
 
 namespace ReadersRealm.Web.Areas.Identity.Pages.Account;
 
@@ -22,9 +21,9 @@ using static Common.Constants.Constants.RolesConstants;
 using static Common.Constants.Constants.SendGridSettingsConstants;
 using static Common.Constants.Constants.SharedConstants;
 using static Common.Constants.Constants.UserConstants;
-using static ReadersRealm.Common.Constants.ValidationConstants.RegisterModelValidation;
-using static ReadersRealm.Common.Constants.ValidationMessageConstants.CompanyValidationMessages;
-using static ReadersRealm.Common.Constants.ValidationMessageConstants.RegisterModelValidationMessages;
+using static Common.Constants.ValidationConstants.RegisterModelValidation;
+using static Common.Constants.ValidationMessageConstants.CompanyValidationMessages;
+using static Common.Constants.ValidationMessageConstants.RegisterModelValidationMessages;
 
 public class RegisterModel : PageModel
 {
@@ -88,7 +87,7 @@ public class RegisterModel : PageModel
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -98,7 +97,7 @@ public class RegisterModel : PageModel
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
-        public string Password { get; set; }
+        public required string Password { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -107,7 +106,7 @@ public class RegisterModel : PageModel
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        public required string ConfirmPassword { get; set; }
 
         [Required]
         [Display(Name = "First Name")]
@@ -170,6 +169,9 @@ public class RegisterModel : PageModel
 
         Input = new InputModel()
         {
+            Email = string.Empty,
+            Password = string.Empty,
+            ConfirmPassword = string.Empty,
             FirstName = string.Empty,
             LastName = string.Empty,
             Roles = roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
