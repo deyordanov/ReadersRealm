@@ -3,8 +3,6 @@
 using System.Text;
 using Data.Models;
 using Infrastructure.Extensions;
-using iTextSharp.text.pdf;
-using iTextSharp.text;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
