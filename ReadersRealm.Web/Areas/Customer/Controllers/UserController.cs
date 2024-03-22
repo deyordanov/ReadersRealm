@@ -106,7 +106,7 @@ public class UserController : BaseController
         return View(loginModel);
     }
 
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> Logout(string? returnUrl)
     {
         HttpContext.Session.Remove(ShoppingCartSessionKey);
