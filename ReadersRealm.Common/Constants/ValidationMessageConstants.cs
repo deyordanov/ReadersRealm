@@ -62,6 +62,12 @@ public static class ValidationMessageConstants
 
     public static class RegisterModelValidationMessages
     {
+        public const string RegisterModelPasswordLengthMessage =
+            "The {0} must be at least {2} and at max {1} characters long.";
+
+        public const string RegisterModelPasswordCompareMessage =
+            "The password and confirmation password do not match.";
+
         public const string RegisterModelFirstNameLengthMessage = "{0} must be between {2} and {1} characters!";
 
         public const string RegisterModelLastNameLengthMessage = "{0} must be between {2} and {1} characters!";

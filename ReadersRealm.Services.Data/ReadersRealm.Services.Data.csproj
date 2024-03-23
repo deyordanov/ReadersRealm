@@ -23,6 +23,7 @@
     <Folder Include="BookServices\Contracts\" />
     <Folder Include="CategoryServices\Contracts\" />
     <Folder Include="CompanyServices\Contracts\" />
+    <Folder Include="IdentityServices\Contracts\" />
     <Folder Include="OrderDetailsServices\Contracts\" />
     <Folder Include="OrderHeaderServices\Contracts\" />
     <Folder Include="OrderServices\Contracts\" />

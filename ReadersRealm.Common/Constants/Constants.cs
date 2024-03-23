@@ -133,6 +133,19 @@ public static class Constants
         public const string CompanyIdDisplay = "Company";
     }
 
+    public static class RegisterModelConstants
+    {
+        //Display Names
+        public const string EmailDisplay = "Email";
+        public const string PasswordDisplay = "Password";
+        public const string ConfirmPasswordDisplay = "Confirm Passoword";
+        public const string FirstNameDisplay = "First Name";
+        public const string LastNameDisplay = "Last Name";
+        public const string StreetAddressDisplay = "Street Address";
+        public const string PostalCodeDisplay = "Postal Code";
+        public const string PhoneNumberDisplay = "Phone Number";
+    }
+
     public static class RolesConstants
     {
         public const string CustomerRole = "Customer";
@@ -195,6 +208,15 @@ public static class Constants
         public const string EmailOrderHeaderMessage = "Dear {0},";
         public const string EmailOrderBodyMessage = "A new order has been created, with id: {0}.";
         public const string EmailOrderFooterMessage = "Welcome aboard, and happy shopping! Warmest regards, The Readers Realm Team.";
+    }
+
+    public static class RedirectConstants
+    {
+        //Action Names
+        public const string IndexActionName = "Index";
+
+        //Controller Names
+        public const string HomeControllerName = "Home";
     }
 
     public static class ConfigurationConstants
