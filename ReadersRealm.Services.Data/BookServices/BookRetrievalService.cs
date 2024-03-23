@@ -126,7 +126,7 @@ public class BookRetrievalService : IBookRetrievalService
 
         if (book == null)
         {
-            throw new CategoryNotFoundException();
+            throw new BookNotFoundException();
         }
 
         DeleteBookViewModel bookModel = new DeleteBookViewModel()

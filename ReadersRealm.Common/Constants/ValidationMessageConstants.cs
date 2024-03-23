@@ -28,7 +28,7 @@ public static class ValidationMessageConstants
         public const string BookPriceRequiredMessage = "{0} is required!";
         public const string BookPriceRangeMessage = "{0} must be between {1}$ and {2}$ !";
 
-        public const string BookPagesRangeMessage = "{0} must be between {2} and {1}!";
+        public const string BookPagesRangeMessage = "{0} must be between {1} and {2}!";
 
         public const string BookUsedRequiredMessage = "{0} is required!";
 
@@ -101,6 +101,24 @@ public static class ValidationMessageConstants
 
     public static class AuthorValidationMessages
     {
+        public const string AuthorFirstNameRequiredMessage = "{0} is required!";
+        public const string AuthorFirstNameLengthMessage = "{0} must be between {2} and {1}!";
+
+        public const string AuthorMiddleNameLengthMessage = "{0} must be between {2} and {1}!";
+
+        public const string AuthorLastNameRequiredMessage = "{0} is required!";
+        public const string AuthorLastNameLengthMessage = "{0} must be between {2} and {1}!";
+
+        public const string AuthorAgeRangeMessage = "{0} must be between {1} and {2}!";
+
+        public const string AuthorGenderRequiredMessage = "{0} is required!";
+
+        public const string AuthorEmailRequiredMessage = "{0} is required!";
+        public const string AuthorEmailLengthMessage = "{0} must be between {2} and {1}!";
+
+        public const string AuthorPhoneNumberRequiredMessage = "{0} is required!";
+        public const string AuthorPhoneNumberLengthMessage = "{0} must be between {2} and {1}!";
+
         public const string AuthorDoesNotExistMessage = "The author does not exist.";
     }
 

@@ -4,6 +4,19 @@ using System.Text;
 
 public static class Constants
 {
+    public static class AuthorConstants
+    {
+        //Action Results
+        public const string AuthorHasBeenSuccessfullyCreated = "The author has been created successfully!";
+        public const string AuthorHasBeenSuccessfullyEdited = "The author has been edited successfully!";
+        public const string AuthorHasBeenSuccessfullyDeleted = "The author has been deleted successfully!";
+
+        //Display Names
+        public const string FirstNameDisplay = "First Name";
+        public const string MiddleNameDisplay = "Middle Name";
+        public const string LastNameDisplay = "Last Name";
+        public const string PhoneNumberDisplay = "Phone Number";
+    }
     public static class SharedConstants
     {
         /// <summary>
@@ -41,9 +54,6 @@ public static class Constants
         //Model Errors
         public const string AuthorId = "AuthorId";
         public const string CategoryId = "CategoryId";
-
-        //Path To Save Images
-        public const string PathToSaveImage = @"\images\book\";
     }
 
     public static class CompanyConstants

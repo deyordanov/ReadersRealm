@@ -1,0 +1,67 @@
+﻿@model PaginatedList<AllAuthorsViewModel>
+
+<partial name="_NotificationPartialView" />
+
+<div class="row mb-2">
+    <form asp-controller="Author" asp-action="Index" method="get" class="col-8" style="display: flex">
+        <div class="col-3 px-0">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="searchTerm" value="@ViewBag.SearchTerm">
+        </div>
+        <div class="col-3 px-0">
+            <button class="btn btn-success" type="submit">Search</button>
+        </div>
+    </form>
+    <div class="col-4" style="display: flex; justify-content: end">
+        <a asp-controller="Author" asp-action="Create" class="btn btn-primary">
+            <i class="bi"></i> Create A New Author
+        </a>
+    </div>
+</div>
+@if (Model.Count != 0)
+{
+    <table class="table table-bordered table-striped border-black" style="width: 100%">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (AllAuthorsViewModel authorModel in @Model)
+            {
+                <tr>
+                    <td>
+                        @authorModel.FirstName
+                    </td>
+                    <td>
+                        @authorModel.LastName
+                    </td>
+                    <td>
+                        @authorModel.Email
+                    </td>
+                    <td>
+                        @authorModel.PhoneNumber
+                    </td>
+                    <td>
+                        <div class="w-100">
+                            <a asp-controller="Author" asp-action="Edit" asp-route-id="@authorModel.Id" asp-route-pageIndex=@Model.PageIndex asp-route-searchTerm="@ViewBag.SearchTerm" class="btn btn-primary btn-sm" style="font-size: 13px">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-controller="Author" asp-action="Delete" asp-route-id="@authorModel.Id" class="btn btn-danger btn-sm" style="font-size: 13px">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>No products found!</h1>
+}
+
+<partial name="_PaginationPartialView" />

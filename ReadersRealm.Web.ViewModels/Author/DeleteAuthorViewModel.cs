@@ -5,9 +5,9 @@ using Book;
 using Data.Models.Enums;
 using static Common.Constants.Constants.AuthorConstants;
 
-public class AuthorViewModel
+public class DeleteAuthorViewModel
 {
-    public AuthorViewModel()
+    public DeleteAuthorViewModel()
     {
         Books = new HashSet<BookViewModel>();
     }

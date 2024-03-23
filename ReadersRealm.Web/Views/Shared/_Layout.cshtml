@@ -34,13 +34,13 @@
                                     Content Management
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Author" asp-action="Index">Authors</a>
                                     <a class="dropdown-item" asp-area="Admin" asp-controller="Book" asp-action="Index">Books</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
                                     <a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Companies</a>
                                     <a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
                                     @if (User.IsInRole(AdminRole))
                                     {
-                                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User</a>
                                         <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Users</a>
                                     }
                                 </ul>

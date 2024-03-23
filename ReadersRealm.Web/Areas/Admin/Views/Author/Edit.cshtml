@@ -1,0 +1,63 @@
+﻿@model EditAuthorViewModel
+
+<form method="post" enctype="multipart/form-data" class="w-100" style="display: flex; -o-justify-content: center; -webkit-justify-content: center; justify-content: center">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 mt-4 w-50 px-4 border-black">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Book</h2>
+            <hr />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="FirstName" aria-label="FirstName"></label>
+            <input type="text" class="form-control" asp-for="FirstName" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="MiddleName" aria-label="MiddleName"></label>
+            <input type="text" class="form-control" asp-for="MiddleName" />
+            <span asp-validation-for="MiddleName" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="LastName" aria-label="LastName"></label>
+            <input type="text" class="form-control" asp-for="LastName">
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Age" aria-label="Age"></label>
+            <input type="number" class="form-control" asp-for="Age">
+            <span asp-validation-for="Age" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Email" aria-label="Email"></label>
+            <input type="text" class="form-control" asp-for="Email">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="PhoneNumber" aria-label="PhoneNumber"></label>
+            <input type="text" class="form-control" asp-for="PhoneNumber">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0" asp-for="Gender"></label>
+            <select asp-for="Gender" name="Gender">
+                @foreach (Gender coverType in Enum.GetValues(typeof(Gender)))
+                {
+                    <option value="@coverType"
+                            asp-is-selected="@(Model.Gender == coverType)">
+                        @coverType
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <a asp-controller="Author" asp-action="Index" asp-route-pageIndex="@ViewBag.Index" asp-route-searchTerm="@ViewBag.SearchTerm" class="btn btn-outline-secondary form-control">
+                    Back To List
+                </a>
+            </div>
+            <div class="col-6">
+                <button asp-route-pageIndex="@ViewBag.PageIndex" asp-route-searchTerm="@ViewBag.SearchTerm" type="submit" class="btn btn-outline-primary bg-black text-white form-control">Update</button>
+            </div>
+        </div>
+    </div>
+</form>

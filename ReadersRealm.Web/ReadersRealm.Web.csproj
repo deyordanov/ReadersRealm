@@ -41,6 +41,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Author\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Author\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Delete.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Index.cshtml" />
@@ -51,6 +53,9 @@
     <_ContentIncludedByDefault Remove="Areas\Customer\Views\Home\Details.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Order\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Customer\Views\ShoppingCart\OrderConfirmation.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Customer\Views\User\Login.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Customer\Views\User\Register.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Identity\Views\Login\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\_NotificationPartialView.cshtml" />
     <_ContentIncludedByDefault Remove="Views\Shared\_PaginationPartialView.cshtml" />
   </ItemGroup>
@@ -108,6 +113,26 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Areas\Customer\Views\Error\InternalServerError500.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Identity\Views\Login\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Customer\Views\User\Login.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Customer\Views\User\Register.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Admin\Views\Author\Create.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\Admin\Views\Author\Index.cshtml" />
   </ItemGroup>
 
 </Project>
