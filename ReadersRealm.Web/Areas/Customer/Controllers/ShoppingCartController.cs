@@ -182,7 +182,8 @@ public class ShoppingCartController : BaseController
 
             await this
                 ._orderHeaderCrudService
-                .UpdateOrderHeaderPaymentIntentIdAsync(orderHeaderData.orderHeaderId, 
+                .UpdateOrderHeaderPaymentIntentIdAsync(
+                    orderHeaderData.orderHeaderId, 
                     session.Id, 
                     session.PaymentIntentId);
 
@@ -277,46 +278,6 @@ public class ShoppingCartController : BaseController
     
         return File(textBytes, "text/plain");
     }
-
-    // [HttpGet]
-    // public async Task<IActionResult> DownloadReceipt(Guid? id)
-    // {
-    //     if (id is not { } orderHeaderId || id == Guid.Empty)
-    //     {
-    //         return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
-    //     }
-    //
-    //     OrderHeaderReceiptDto orderHeaderDto = await this
-    //         ._orderHeaderRetrievalService
-    //         .GetOrderHeaderForReceiptAsync(orderHeaderId);
-    //
-    //     using var ms = new MemoryStream();
-    //     using (var writer = PdfWriter.GetInstance(new PdfDocument(), ms))
-    //     {
-    //         writer.Add(new Paragraph($"Order Id: {orderHeaderId}"));
-    //         writer.Add(new Paragraph($"Order Payment Id: {orderHeaderDto.PaymentIntentId}"));
-    //         writer.Add(new Paragraph($"Order Date: {orderHeaderDto.OrderDate.ToString("d")}"));
-    //         writer.Add(new Paragraph($"Total: {orderHeaderDto.OrderTotal.ToString("c")}"));
-    //         writer.Add(new Paragraph($"Payment Status: {orderHeaderDto.PaymentStatus}"));
-    //         writer.Add(new Paragraph($"Payment Date: {orderHeaderDto.PaymentDate}"));
-    //         writer.Add(new Paragraph("Items Bought:"));
-    //
-    //         foreach (OrderDetailsReceiptDto orderDetailsDto in orderHeaderDto.OrderDetails)
-    //         {
-    //             writer.Add(new Paragraph("--------------------------------------------"));
-    //             writer.Add(new Paragraph($"    Book Title: {orderDetailsDto.Book.Title}"));
-    //             writer.Add(new Paragraph($"    Book ISBN: {orderDetailsDto.Book.ISBN}"));
-    //             writer.Add(new Paragraph($"    Book Price: {orderDetailsDto.Book.Price.ToString("c")}"));
-    //             writer.Add(new Paragraph($"    Quantity: {orderDetailsDto.Count}"));
-    //             writer.Add(new Paragraph($"    Total Price: {(orderDetailsDto.Book.Price * orderDetailsDto.Count).ToString("c")}"));
-    //         }
-    //     }
-    //
-    //     ms.Position = 0;
-    //     this._httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.ContentDisposition, "attachment;filename=receipt.pdf");
-    //
-    //     return this.File(ms.ToArray(), "application/pdf");
-    // }
 
     [HttpPost]
     public async Task<IActionResult> IncreaseQuantity(Guid? id)

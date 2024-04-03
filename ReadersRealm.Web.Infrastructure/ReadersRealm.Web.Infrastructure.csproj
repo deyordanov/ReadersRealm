@@ -14,4 +14,9 @@
     <Folder Include="Settings\Contracts\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.6.0" />
+    <PackageReference Include="Stripe.net" Version="43.13.0" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,10 @@
 ﻿namespace ReadersRealm.Web.Infrastructure.Extensions;
 
 using System.Reflection;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Common;
+using Common.Contracts;
 using Common.Exceptions.Services;
 using Common.Exceptions.User;
 using Data;
@@ -9,6 +13,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Stripe;
+using static Common.Constants.Constants.AzureKeyVaultConstants;
 using static Common.Constants.Constants.RolesConstants;
 using static Common.Constants.Constants.UserConstants;
 using static Common.Constants.ExceptionMessages.ApplicationUserExceptionMessages;
@@ -151,5 +157,26 @@ public static class WebApplicationBuilderExtensions
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<ReadersRealmDbContext>()
             .AddDefaultTokenProviders();
+    }
+
+    public static async Task SetConfigurationSettings(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        Uri keyVaultUri = new Uri(configuration[AzureKeyVaultUri]!);
+        SecretClient client = new SecretClient(keyVaultUri, new DefaultAzureCredential());
+        KeyVaultSecret stripeSecretKey = await client.GetSecretAsync(AzureKeyVaultStripeSecretKey);
+        KeyVaultSecret stripePublishableKey = await client.GetSecretAsync(AzureKeyVaultStripePublishableKey);
+
+        StripeConfiguration.ApiKey = stripeSecretKey.Value;
+
+        KeyVaultSecret sendGridSecretKey = await client.GetSecretAsync(AzureKeyVaultSendGridSecretKey);
+
+        ISendGridSettings sendGridSettings = new SendGridSettings()
+        {
+            SecretKey = sendGridSecretKey.Value,
+        };
+
+        services.AddSingleton(sendGridSettings);
     }
 }

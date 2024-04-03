@@ -2,9 +2,7 @@
 
 using Contracts;
 
-public class StripeSettings : IStripeSettings
+public class SendGridSettings : ISendGridSettings
 {
     public required string SecretKey { get; set; }
-
-    public required string PublishableKey { get; set; }
 }

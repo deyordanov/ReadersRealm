@@ -178,9 +178,6 @@ public static class Constants
 
     public static class StripeSettingsConstants
     {
-        public const string PublishableKeyAsString = "Stripe:PublishableKey";
-        public const string SecretKeyAsString = "Stripe:SecretKey";
-
         public const string FullSuccessUrlShoppingCart = "{0}/Customer/ShoppingCart/OrderConfirmation?id={1}";
         public const string FullCancelUrlShoppingCart = "{0}/Customer/ShoppingCart/Index";
 
@@ -190,8 +187,6 @@ public static class Constants
 
     public static class SendGridSettingsConstants
     {
-        public const string ApiKey = "SendGrid:SecretKey";
-
         //Email Configuration
         public const string FromEmail = "deyordanov@students.softuni.bg";
         public const string FromUserName = "Readers Realm";
@@ -228,5 +223,17 @@ public static class Constants
     public static class SessionKeysConstants
     {
         public const string ShoppingCartSessionKey = "ShoppingCartSession";
+    }
+
+    public static class AzureKeyVaultConstants
+    {
+        public const string AzureKeyVaultUri = "AzureKeyVault:VaultUri";
+
+        //Stripe
+        public const string AzureKeyVaultStripeSecretKey = "Stripe-SecretKey";
+        public const string AzureKeyVaultStripePublishableKey = "Stripe-PublishableKey";
+
+        //SendGrid
+        public const string AzureKeyVaultSendGridSecretKey = "SendGrid-SecretKey";
     }
 }

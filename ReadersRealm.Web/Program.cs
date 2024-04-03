@@ -1,3 +1,5 @@
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -17,6 +19,8 @@ using static ReadersRealm.Common.Constants.Constants.ConfigurationConstants;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+await builder.Services.SetConfigurationSettings(builder.Configuration);
+
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
@@ -90,8 +94,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
-StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 app.UseRouting();
 
