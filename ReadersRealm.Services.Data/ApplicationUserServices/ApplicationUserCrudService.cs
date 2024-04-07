@@ -98,10 +98,12 @@ public class ApplicationUserCrudService : IApplicationUserCrudService
         if (status)
         {
             applicationUser.LockoutEnd = DateTime.UtcNow.AddYears(3);
+            applicationUser.LockoutEnabled = true;
         }
         else
         {
             applicationUser.LockoutEnd = null;
+            applicationUser.LockoutEnabled = false;
         }
 
         await this

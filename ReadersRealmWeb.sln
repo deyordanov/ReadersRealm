@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Services.Data.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadersRealm.Services.Mapping", "ReadersRealm.Services.Mapping\ReadersRealm.Services.Mapping.csproj", "{9E7F2049-F624-4FFF-8B9E-C10566BAF68E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1416B6E9-1360-402D-8C62-173CE3C19009}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadersRealm.Services.Tests", "ReadersRealm.Services.Tests\ReadersRealm.Services.Tests.csproj", "{A76E4546-53F8-4E2C-8C8C-195834E340BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,10 @@ Global
 		{9E7F2049-F624-4FFF-8B9E-C10566BAF68E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E7F2049-F624-4FFF-8B9E-C10566BAF68E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E7F2049-F624-4FFF-8B9E-C10566BAF68E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A76E4546-53F8-4E2C-8C8C-195834E340BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A76E4546-53F8-4E2C-8C8C-195834E340BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A76E4546-53F8-4E2C-8C8C-195834E340BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A76E4546-53F8-4E2C-8C8C-195834E340BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +90,7 @@ Global
 		{67E74CF9-3FB6-4FA0-BD7F-1CF528DDD3AE} = {150E573A-1A7F-4621-A310-33998A8F72E6}
 		{9CC6CA8E-78D6-4985-9CB9-CD413385D0DF} = {07305F86-DD32-4DCB-A1DB-1707A41488C1}
 		{9E7F2049-F624-4FFF-8B9E-C10566BAF68E} = {07305F86-DD32-4DCB-A1DB-1707A41488C1}
+		{A76E4546-53F8-4E2C-8C8C-195834E340BF} = {1416B6E9-1360-402D-8C62-173CE3C19009}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5594569F-F3EC-4B4A-9F1F-85431B796F44}
