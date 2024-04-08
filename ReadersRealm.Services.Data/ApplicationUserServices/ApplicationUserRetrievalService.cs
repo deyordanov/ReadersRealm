@@ -15,37 +15,24 @@ using Web.ViewModels.ApplicationUser;
 using Web.ViewModels.Company;
 using static Common.Constants.ExceptionMessages.ApplicationUserExceptionMessages;
 
-public class ApplicationUserRetrievalService : IApplicationUserRetrievalService
+public class ApplicationUserRetrievalService(
+    IUnitOfWork unitOfWork,
+    UserManager<ApplicationUser> userManager,
+    RoleManager<IdentityRole<Guid>> roleManager,
+    ICompanyRetrievalService companyRetrievalService)
+    : IApplicationUserRetrievalService
 {
     private const string PropertiesToInclude = "Company";
 
-    private readonly ICompanyRetrievalService _companyRetrievalService;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public ApplicationUserRetrievalService(
-        IUnitOfWork unitOfWork,
-        UserManager<ApplicationUser> userManager, 
-        RoleManager<IdentityRole<Guid>> roleManager, 
-        ICompanyRetrievalService companyRetrievalService)
-    {
-        this._unitOfWork = unitOfWork;
-        this._userManager = userManager;
-        this._roleManager = roleManager;
-        this._companyRetrievalService = companyRetrievalService;
-    }
-
     public async Task<OrderApplicationUserViewModel> GetApplicationUserForOrderAsync(Guid applicationUserId)
     {
-        ApplicationUser? applicationUser = await this
-            ._unitOfWork
+        ApplicationUser? applicationUser = await unitOfWork
             .ApplicationUserRepository
             .GetByIdAsync(applicationUserId);
 
         if (applicationUser == null)
         {
-            throw new UserNotFoundException();
+            throw new ApplicationUserNotFoundException(string.Format(ApplicationUserNotFoundExceptionMessage, applicationUserId, nameof(this.GetApplicationUserForOrderAsync)));
         }
 
         OrderApplicationUserViewModel applicationUserModel = new OrderApplicationUserViewModel()
@@ -76,8 +63,7 @@ public class ApplicationUserRetrievalService : IApplicationUserRetrievalService
                 .ToLower()
                 .StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty);
 
-        List <ApplicationUser> allApplicationUsers = await this
-            ._unitOfWork
+        List <ApplicationUser> allApplicationUsers = await unitOfWork
             .ApplicationUserRepository
             .GetAsync(filter,
                 null,
@@ -106,8 +92,7 @@ public class ApplicationUserRetrievalService : IApplicationUserRetrievalService
 
     public async Task<RolesApplicationUserViewModel> GetApplicationUserForRolesManagementAsync(Guid applicationUserId)
     {
-        ApplicationUser? applicationUser = await this
-            ._unitOfWork
+        ApplicationUser? applicationUser = await unitOfWork
             .ApplicationUserRepository
             .GetByIdAsync(applicationUserId);
 
@@ -116,7 +101,7 @@ public class ApplicationUserRetrievalService : IApplicationUserRetrievalService
             throw new ApplicationUserNotFoundException(string.Format(ApplicationUserNotFoundExceptionMessage, applicationUserId, nameof(this.GetApplicationUserForRolesManagementAsync)));
         }
 
-        List<AllCompaniesListViewModel> allCompanies = await this._companyRetrievalService.GetAllListAsync();
+        List<AllCompaniesListViewModel> allCompanies = await companyRetrievalService.GetAllListAsync();
 
         return new RolesApplicationUserViewModel()
         {
@@ -137,11 +122,11 @@ public class ApplicationUserRetrievalService : IApplicationUserRetrievalService
 
     private async Task<IList<string>> GetUserRoles(ApplicationUser applicationUser)
     {
-        return await this._userManager.GetRolesAsync(applicationUser);
+        return await userManager.GetRolesAsync(applicationUser);
     }
 
     private async Task<IList<string>> GetAllRoles()
     {
-        return (await this._roleManager.Roles.Select(r => r.Name).ToListAsync())!;
+        return (await roleManager.Roles.Select(r => r.Name).ToListAsync())!;
     }
  }

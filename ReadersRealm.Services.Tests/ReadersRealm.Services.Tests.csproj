@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ApplicationUser\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ReadersRealm.Data\ReadersRealm.Data.csproj" />
     <ProjectReference Include="..\ReadersRealm.Services.Data\ReadersRealm.Services.Data.csproj" />
     <ProjectReference Include="..\ReadersRealm.Web.ViewModels\ReadersRealm.Web.ViewModels.csproj" />
