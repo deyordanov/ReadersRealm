@@ -21,9 +21,9 @@ public class AuthorRetrievalService(IUnitOfWork unitOfWork) : IAuthorRetrievalSe
                 author
                 .LastName
                 .ToLower()
-                .StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty), null, string.Empty);
-
-
+                .StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty), 
+                null, 
+                string.Empty);
 
         return PaginatedList<AllAuthorsViewModel>.Create(allAuthors
             .Select(author => new AllAuthorsViewModel()

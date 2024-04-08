@@ -154,6 +154,7 @@ public class ApplicationUserRetrievalTests
         PaginatedList<AllApplicationUsersViewModel> users 
             = await service.GetAllAsync(pageIndex, pageSize, searchTerm);
 
+        //Assert
         Assert.That(users.Count, Is.EqualTo(pageSize));
         Assert.That(users.Count, Is.EqualTo(this._users!.Count));
 
