@@ -9,25 +9,16 @@ using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.ApplicationUser;
 using Web.ViewModels.OrderHeader;
 
-public class OrderHeaderRetrievalService : IOrderHeaderRetrievalService
+public class OrderHeaderRetrievalService(
+    IUnitOfWork unitOfWork,
+    IOrderDetailsRetrievalService orderDetailsRetrievalService)
+    : IOrderHeaderRetrievalService
 {
     private const string PropertiesToInclude = "ApplicationUser";
 
-    private readonly IOrderDetailsRetrievalService _orderDetailsRetrievalService;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public OrderHeaderRetrievalService(
-        IUnitOfWork unitOfWork, 
-        IOrderDetailsRetrievalService orderDetailsRetrievalService)
-    {
-        this._unitOfWork = unitOfWork;
-        this._orderDetailsRetrievalService = orderDetailsRetrievalService;
-    }
-
     public async Task<OrderHeaderViewModel> GetByIdAsyncWithNavPropertiesAsync(Guid id)
     {
-        OrderHeader? orderHeader = await this
-            ._unitOfWork
+        OrderHeader? orderHeader = await unitOfWork
             .OrderHeaderRepository
             .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
 
@@ -77,8 +68,7 @@ public class OrderHeaderRetrievalService : IOrderHeaderRetrievalService
 
     public async Task<OrderHeaderViewModel?> GetByApplicationUserIdAndOrderStatusAsync(Guid applicationUserId, string orderStatus)
     {
-        IEnumerable<OrderHeader> orderHeaders = await this
-            ._unitOfWork
+        IEnumerable<OrderHeader> orderHeaders = await unitOfWork
             .OrderHeaderRepository
             .GetAsync(orderHeader => orderHeader.ApplicationUserId.Equals(applicationUserId) &&
                                      orderHeader.OrderStatus == orderStatus, null, PropertiesToInclude);
@@ -119,8 +109,7 @@ public class OrderHeaderRetrievalService : IOrderHeaderRetrievalService
 
     public async Task<OrderHeaderReceiptDto> GetOrderHeaderForReceiptAsync(Guid orderHeaderId)
     {
-        OrderHeader? orderHeader = await this
-            ._unitOfWork
+        OrderHeader? orderHeader = await unitOfWork
             .OrderHeaderRepository
             .GetByIdAsync(orderHeaderId);
 
@@ -136,8 +125,7 @@ public class OrderHeaderRetrievalService : IOrderHeaderRetrievalService
             PaymentIntentId = orderHeader.PaymentIntentId!,
             OrderDate = orderHeader.OrderDate,
             PaymentDate = orderHeader.PaymentDate,
-            OrderDetails = await this
-                ._orderDetailsRetrievalService
+            OrderDetails = await orderDetailsRetrievalService
                 .GetAllOrderDetailsForReceiptAsDtosAsync(orderHeaderId),
         };
 

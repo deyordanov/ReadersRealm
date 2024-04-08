@@ -13,25 +13,16 @@ using static Common.Constants.Constants.SharedConstants;
 using static Common.Constants.Constants.ErrorConstants;
 
 [Area(Admin)]
-public class CompanyController : BaseController
+public class CompanyController(
+    ICompanyCrudService companyCrudService,
+    ICompanyRetrievalService companyRetrievalService)
+    : BaseController
 {
-    private readonly ICompanyCrudService _companyCrudService;
-    private readonly ICompanyRetrievalService _companyRetrievalService;
-
-    public CompanyController(
-        ICompanyCrudService companyCrudService, 
-        ICompanyRetrievalService companyRetrievalService)
-    {
-        this._companyCrudService = companyCrudService;
-        this._companyRetrievalService = companyRetrievalService;
-    }
-
     [HttpGet]
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
-        PaginatedList<AllCompaniesViewModel> allCompanies = await this
-            ._companyRetrievalService
+        PaginatedList<AllCompaniesViewModel> allCompanies = await companyRetrievalService
             .GetAllAsync(pageIndex, 5, searchTerm);
 
         ViewBag.PrevDisabled = !allCompanies.HasPreviousPage;
@@ -48,8 +39,7 @@ public class CompanyController : BaseController
     [Authorize(Roles = AdminRole)]
     public IActionResult Create()
     {
-        CreateCompanyViewModel companyModel = this
-            ._companyRetrievalService
+        CreateCompanyViewModel companyModel = companyRetrievalService
             .GetCompanyForCreate();
 
         return View(companyModel);
@@ -64,8 +54,7 @@ public class CompanyController : BaseController
             return View(companyModel);
         }
 
-        await this
-            ._companyCrudService
+        await companyCrudService
             .CreateCompanyAsync(companyModel);
 
         TempData[Success] = CompanyHasBeenSuccessfullyCreated;
@@ -82,8 +71,7 @@ public class CompanyController : BaseController
             return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
-        EditCompanyViewModel companyModel = await this
-            ._companyRetrievalService
+        EditCompanyViewModel companyModel = await companyRetrievalService
             .GetCompanyForEditAsync(companyId);
 
         ViewBag.PageIndex = pageIndex;
@@ -101,8 +89,7 @@ public class CompanyController : BaseController
             return View(companyModel);
         }
 
-        await this
-            ._companyCrudService
+        await companyCrudService
             .EditCompanyAsync(companyModel);
 
         TempData[Success] = CompanyHasBeenSuccessfullyEdited;
@@ -119,8 +106,7 @@ public class CompanyController : BaseController
             return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
-        DeleteCompanyViewModel companyModel = await this
-            ._companyRetrievalService
+        DeleteCompanyViewModel companyModel = await companyRetrievalService
             .GetCompanyForDeleteAsync(companyId);
 
         return View(companyModel);
@@ -130,8 +116,7 @@ public class CompanyController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(DeleteCompanyViewModel companyModel)
     {
-        await this
-            ._companyCrudService
+        await companyCrudService
             .DeleteCompanyAsync(companyModel);
 
         TempData[Success] = CompanyHasBeenSuccessfullyDeleted;

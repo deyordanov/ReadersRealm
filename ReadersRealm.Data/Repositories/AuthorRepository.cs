@@ -5,13 +5,9 @@ using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-public class AuthorRepository : Repository<Author>, IAuthorRepository
+public class AuthorRepository(ReadersRealmDbContext dbContext) : Repository<Author>(dbContext), IAuthorRepository
 {
-    private readonly ReadersRealmDbContext _dbContext;
-    public AuthorRepository(ReadersRealmDbContext dbContext) : base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly ReadersRealmDbContext _dbContext = dbContext;
 
     public async Task<Author?> GetByIdAsync(Guid id)
     {

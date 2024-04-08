@@ -8,19 +8,11 @@ using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.Author;
 using Web.ViewModels.Book;
 
-public class AuthorRetrievalService : IAuthorRetrievalService
+public class AuthorRetrievalService(IUnitOfWork unitOfWork) : IAuthorRetrievalService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public AuthorRetrievalService(IUnitOfWork unitOfWork)
-    {
-        this._unitOfWork = unitOfWork;
-    }
-
     public async Task<PaginatedList<AllAuthorsViewModel>> GetAllAsync(int pageIndex, int pageSize, string? searchTerm)
     {
-        List<Author> allAuthors = await this
-            ._unitOfWork
+        List<Author> allAuthors = await unitOfWork
             .AuthorRepository
             .GetAsync(author => author
                 .FirstName
@@ -65,8 +57,7 @@ public class AuthorRetrievalService : IAuthorRetrievalService
 
     public async Task<List<AllAuthorsListViewModel>> GetAllListAsync()
     {
-        List<Author> allAuthors = await this
-            ._unitOfWork
+        List<Author> allAuthors = await unitOfWork
             .AuthorRepository
             .GetAsync(null, null, string.Empty);
 
@@ -95,8 +86,7 @@ public class AuthorRetrievalService : IAuthorRetrievalService
 
     public async Task<EditAuthorViewModel> GetAuthorForEditAsync(Guid id)
     {
-        Author? author = await this
-            ._unitOfWork
+        Author? author = await unitOfWork
             .AuthorRepository
             .GetByIdAsync(id);
 
@@ -122,8 +112,7 @@ public class AuthorRetrievalService : IAuthorRetrievalService
 
     public async Task<DeleteAuthorViewModel> GetAuthorForDeleteAsync(Guid id)
     {
-        Author? author = await this
-            ._unitOfWork
+        Author? author = await unitOfWork
             .AuthorRepository
             .GetByIdAsync(id);
 
@@ -149,8 +138,7 @@ public class AuthorRetrievalService : IAuthorRetrievalService
 
     public async Task<bool> AuthorExistsAsync(Guid authorId)
     {
-        return await this
-            ._unitOfWork
+        return await unitOfWork
             .AuthorRepository
             .GetFirstOrDefaultWithFilterAsync(author => author.Id.Equals(authorId), false) != null;
     }

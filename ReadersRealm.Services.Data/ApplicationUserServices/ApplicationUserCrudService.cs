@@ -8,26 +8,17 @@ using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.ApplicationUser;
 using static Common.Constants.ExceptionMessages.ApplicationUserExceptionMessages;
 
-public class ApplicationUserCrudService : IApplicationUserCrudService
+public class ApplicationUserCrudService(
+    IUnitOfWork unitOfWork,
+    UserManager<ApplicationUser> userManager,
+    RoleManager<IdentityRole<Guid>> roleManager)
+    : IApplicationUserCrudService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public ApplicationUserCrudService(
-        IUnitOfWork unitOfWork, 
-        UserManager<ApplicationUser> userManager, 
-        RoleManager<IdentityRole<Guid>> roleManager)
-    {
-        this._unitOfWork = unitOfWork;
-        this._userManager = userManager;
-        this._roleManager = roleManager;
-    }
+    private readonly RoleManager<IdentityRole<Guid>> _roleManager = roleManager;
 
     public async Task UpdateApplicationUserAsync(OrderApplicationUserViewModel applicationUserModel)
     {
-        ApplicationUser? applicationUser = await this
-            ._unitOfWork
+        ApplicationUser? applicationUser = await unitOfWork
             .ApplicationUserRepository
             .GetByIdAsync(applicationUserModel.Id);
 
@@ -44,15 +35,13 @@ public class ApplicationUserCrudService : IApplicationUserCrudService
         applicationUser.StreetAddress = applicationUserModel.StreetAddress;
         applicationUser.PhoneNumber = applicationUserModel.PhoneNumber;
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task UpdateApplicationUserRolesAsync(RolesApplicationUserViewModel applicationUserModel)
     {
-        ApplicationUser? applicationUser = await this
-            ._unitOfWork
+        ApplicationUser? applicationUser = await unitOfWork
             .ApplicationUserRepository
             .GetByIdAsync(applicationUserModel.Id);
 
@@ -65,28 +54,26 @@ public class ApplicationUserCrudService : IApplicationUserCrudService
 
         foreach (string oldRole in oldRoles)
         {
-            await _userManager.RemoveFromRoleAsync(applicationUser, oldRole);
+            await userManager.RemoveFromRoleAsync(applicationUser, oldRole);
         }
 
         foreach (string newRole in applicationUserModel.NewRoles)
         {
-            await _userManager.AddToRoleAsync(applicationUser, newRole);
+            await userManager.AddToRoleAsync(applicationUser, newRole);
         }
 
         if (applicationUserModel.CompanyId != null)
         {
             applicationUser.CompanyId = applicationUserModel.CompanyId;
 
-            await this
-                ._unitOfWork
+            await unitOfWork
                 .SaveAsync();
         }
     }
 
     public async Task UpdateApplicationUserLockoutAsync(Guid applicationUserId, bool status)
     {
-        ApplicationUser? applicationUser = await this
-            ._unitOfWork
+        ApplicationUser? applicationUser = await unitOfWork
             .ApplicationUserRepository
             .GetByIdAsync(applicationUserId);
 
@@ -106,13 +93,12 @@ public class ApplicationUserCrudService : IApplicationUserCrudService
             applicationUser.LockoutEnabled = false;
         }
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     private async Task<IList<string>> GetUserRoles(ApplicationUser applicationUser)
     {
-        return await this._userManager.GetRolesAsync(applicationUser);
+        return await userManager.GetRolesAsync(applicationUser);
     }
 }

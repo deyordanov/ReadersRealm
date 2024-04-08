@@ -9,11 +9,6 @@ using static Common.Constants.ValidationMessageConstants.AuthorValidationMessage
 
 public class EditAuthorViewModel
 {
-    public EditAuthorViewModel()
-    {
-        Books = new HashSet<BookViewModel>();
-    }
-
     public Guid Id { get; set; }
 
     [Required(ErrorMessage = AuthorFirstNameRequiredMessage)]
@@ -57,5 +52,5 @@ public class EditAuthorViewModel
     [Display(Name = PhoneNumberDisplay)]
     public required string PhoneNumber { get; set; }
 
-    public HashSet<BookViewModel> Books { get; set; }
+    public HashSet<BookViewModel> Books { get; set; } = new();
 }

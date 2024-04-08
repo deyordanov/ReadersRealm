@@ -7,13 +7,8 @@ using static Common.Constants.ValidationConstants.OrderDetailsValidation;
 
 public class OrderDetails
 {
-    public OrderDetails()
-    {
-        Id = Guid.NewGuid();
-    }
-
     [Key]
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid OrderHeaderId { get; set; }
 

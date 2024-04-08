@@ -22,18 +22,13 @@ using static ReadersRealm.Common.Constants.ValidationConstants.BookValidation;
 [Comment("Readers Realm Book")]
 public class Book
 {
-    public Book()
-    {
-        Id = Guid.NewGuid();
-    }
-
     /// <summary>
     /// Gets or sets the unique identifier for the Book.
     /// </summary>
     /// <value>The Book's unique identifier.</value>
     [Key]
     [Comment("Book Identifier")]
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
     /// Gets or sets the title of the Book.

@@ -5,13 +5,9 @@ using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-public class CompanyRepository : Repository<Company>, ICompanyRepository
+public class CompanyRepository(ReadersRealmDbContext dbContext) : Repository<Company>(dbContext), ICompanyRepository
 {
-    private readonly ReadersRealmDbContext _dbContext;
-    public CompanyRepository(ReadersRealmDbContext dbContext) : base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly ReadersRealmDbContext _dbContext = dbContext;
 
     public async Task<Company?> GetByIdAsync(Guid id)
     {

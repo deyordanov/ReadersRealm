@@ -6,13 +6,8 @@ using static Common.Constants.ValidationConstants.CompanyValidation;
 
 public class Company
 {
-    public Company()
-    {
-        Id = Guid.NewGuid();
-    }
-
     [Key]
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required]
     [StringLength(CompanyNameMaxLength)]

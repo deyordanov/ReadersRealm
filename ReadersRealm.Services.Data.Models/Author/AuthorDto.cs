@@ -5,11 +5,6 @@ using ReadersRealm.Data.Models.Enums;
 
 public class AuthorDto
 {
-    public AuthorDto()
-    {
-        Books = new HashSet<BookDto>();
-    }
-
     public Guid Id { get; set; }
 
     public required string FirstName { get; set; }
@@ -26,5 +21,5 @@ public class AuthorDto
 
     public required string PhoneNumber { get; set; }
 
-    public HashSet<BookDto> Books { get; set; }
+    public HashSet<BookDto> Books { get; set; } = new();
 }

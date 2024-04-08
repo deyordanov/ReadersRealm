@@ -7,19 +7,11 @@ using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.Company;
 
-public class CompanyRetrievalService : ICompanyRetrievalService
+public class CompanyRetrievalService(IUnitOfWork unitOfWork) : ICompanyRetrievalService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CompanyRetrievalService(IUnitOfWork unitOfWork)
-    {
-        this._unitOfWork = unitOfWork;
-    }
-
     public async Task<PaginatedList<AllCompaniesViewModel>> GetAllAsync(int pageIndex, int pageSize, string? searchTerm)
     {
-        IEnumerable<Company> allCompanies = await this
-            ._unitOfWork
+        IEnumerable<Company> allCompanies = await unitOfWork
             .CompanyRepository
             .GetAsync(company => company.Name.ToLower().StartsWith(searchTerm != null ? searchTerm.ToLower() : string.Empty), null, string.Empty);
 
@@ -40,8 +32,7 @@ public class CompanyRetrievalService : ICompanyRetrievalService
 
     public async Task<List<AllCompaniesListViewModel>> GetAllListAsync()
     {
-        IEnumerable<Company> allCompanies = await this
-            ._unitOfWork
+        IEnumerable<Company> allCompanies = await unitOfWork
             .CompanyRepository
             .GetAsync(null, null, string.Empty);
 
@@ -67,8 +58,7 @@ public class CompanyRetrievalService : ICompanyRetrievalService
 
     public async Task<EditCompanyViewModel> GetCompanyForEditAsync(Guid companyId)
     {
-        Company? company = await this
-            ._unitOfWork
+        Company? company = await unitOfWork
             .CompanyRepository
             .GetByIdAsync(companyId);
 
@@ -95,8 +85,7 @@ public class CompanyRetrievalService : ICompanyRetrievalService
 
     public async Task<DeleteCompanyViewModel> GetCompanyForDeleteAsync(Guid companyId)
     {
-        Company? company = await this
-            ._unitOfWork
+        Company? company = await unitOfWork
             .CompanyRepository
             .GetByIdAsync(companyId);
 
@@ -123,8 +112,7 @@ public class CompanyRetrievalService : ICompanyRetrievalService
 
     public async Task<bool> CompanyExistsAsync(Guid companyId)
     {
-        return await this
-            ._unitOfWork
+        return await unitOfWork
             .CompanyRepository
             .GetFirstOrDefaultByFilterAsync(company => company.Id.Equals(companyId), false) != null;
     }

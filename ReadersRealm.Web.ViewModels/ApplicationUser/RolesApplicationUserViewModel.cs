@@ -10,14 +10,6 @@ using static Common.Constants.Constants.ApplicationUserConstants;
 
 public class RolesApplicationUserViewModel
 {
-    public RolesApplicationUserViewModel()
-    {
-        this.OldRoles = new List<string>();
-        this.NewRoles = new List<string>();
-        this.AllRoles = new List<string>();
-        this.Companies = new List<SelectListItem>();
-    }
-
     public required Guid Id { get; set; }
 
     [Display(Name = FirstNameDisplay)]
@@ -29,17 +21,17 @@ public class RolesApplicationUserViewModel
     public required string LastName { get; set; }
 
     [ValidateNever]
-    public IList<string> OldRoles { get; set; }
+    public IList<string> OldRoles { get; set; } = new List<string>();
 
     [Display(Name = UserRolesDisplay)]
     [ValidateNever]
-    public IList<string> NewRoles { get; set; }
+    public IList<string> NewRoles { get; set; } = new List<string>();
 
     [ValidateNever]
-    public IList<string> AllRoles { get; set; }
+    public IList<string> AllRoles { get; set; } = new List<string>();
 
     [ValidateNever]
-    public IList<SelectListItem> Companies { get; set; }
+    public IList<SelectListItem> Companies { get; set; } = new List<SelectListItem>();
 
     [Display(Name = CompanyIdDisplay)]
     public Guid? CompanyId { get; set; }

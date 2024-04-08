@@ -14,25 +14,16 @@ using static Common.Constants.Constants.ErrorConstants;
 using AngleSharp.Css.Dom;
 
 [Area(Admin)]
-public class AuthorController : BaseController
+public class AuthorController(
+    IAuthorRetrievalService authorRetrievalService,
+    IAuthorCrudService authorCrudService)
+    : BaseController
 {
-    private readonly IAuthorRetrievalService _authorRetrievalService;
-    private readonly IAuthorCrudService _authorCrudService;
-
-    public AuthorController(
-        IAuthorRetrievalService authorRetrievalService, 
-        IAuthorCrudService authorCrudService)
-    {
-        this._authorRetrievalService = authorRetrievalService;
-        this._authorCrudService = authorCrudService;
-    }
-
     [HttpGet]
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
-        PaginatedList<AllAuthorsViewModel> allAuthors = await this
-            ._authorRetrievalService
+        PaginatedList<AllAuthorsViewModel> allAuthors = await authorRetrievalService
             .GetAllAsync(pageIndex, 5, searchTerm);
 
         ViewBag.PrevDisabled = !allAuthors.HasPreviousPage;
@@ -49,8 +40,7 @@ public class AuthorController : BaseController
     [Authorize(Roles = AdminRole)]
     public IActionResult Create()
     {
-        CreateAuthorViewModel authorModel = this
-            ._authorRetrievalService
+        CreateAuthorViewModel authorModel = authorRetrievalService
             .GetAuthorForCreate();
 
         return View(authorModel);
@@ -65,8 +55,7 @@ public class AuthorController : BaseController
             return View(authorModel);
         }
 
-        await this
-            ._authorCrudService
+        await authorCrudService
             .CreateAuthorAsync(authorModel);
 
         TempData[Success] = AuthorHasBeenSuccessfullyCreated;
@@ -83,8 +72,7 @@ public class AuthorController : BaseController
             return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
-        EditAuthorViewModel authorModel = await this
-            ._authorRetrievalService
+        EditAuthorViewModel authorModel = await authorRetrievalService
             .GetAuthorForEditAsync(authorId);
         
         ViewBag.PageIndex = pageIndex;
@@ -102,8 +90,7 @@ public class AuthorController : BaseController
             return View(authorModel);
         }
 
-        await this
-            ._authorCrudService
+        await authorCrudService
             .EditAuthorAsync(authorModel);
         
         TempData[Success] = AuthorHasBeenSuccessfullyEdited;
@@ -120,8 +107,7 @@ public class AuthorController : BaseController
             return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
-        DeleteAuthorViewModel authorModel = await this
-            ._authorRetrievalService
+        DeleteAuthorViewModel authorModel = await authorRetrievalService
             .GetAuthorForDeleteAsync(authorId);
 
         return this.View(authorModel);
@@ -131,8 +117,7 @@ public class AuthorController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(DeleteAuthorViewModel authorModel)
     {
-        await this
-            ._authorCrudService
+        await authorCrudService
             .DeleteAuthorAsync(authorModel);
 
         TempData[Success] = AuthorHasBeenSuccessfullyDeleted;

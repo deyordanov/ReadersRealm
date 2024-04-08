@@ -6,11 +6,9 @@ using Models;
 using Extensions;
 using Microsoft.AspNetCore.Identity;
 
-public class ReadersRealmDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+public class ReadersRealmDbContext(DbContextOptions<ReadersRealmDbContext> options)
+    : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options)
 {
-    public ReadersRealmDbContext(DbContextOptions<ReadersRealmDbContext> options)
-        : base(options) { }
-
     public required DbSet<Category> Categories { get; set; }
 
     public required DbSet<Author> Authors { get; set; }

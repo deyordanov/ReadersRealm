@@ -5,19 +5,11 @@ using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.OrderDetails;
 
-public class OrderDetailsCrudService : IOrderDetailsCrudService
+public class OrderDetailsCrudService(
+    IUnitOfWork unitOfWork,
+    IOrderDetailsRetrievalService orderDetailsRetrievalService)
+    : IOrderDetailsCrudService
 {
-    private readonly IOrderDetailsRetrievalService _orderDetailsRetrievalService;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public OrderDetailsCrudService(
-        IUnitOfWork unitOfWork, 
-        IOrderDetailsRetrievalService orderDetailsRetrievalService)
-    {
-        this._unitOfWork = unitOfWork;
-        this._orderDetailsRetrievalService = orderDetailsRetrievalService;
-    }
-
     public async Task CreateOrderDetailsAsync(OrderDetailsViewModel orderDetailsModel)
     {
         OrderDetails orderDetails = new OrderDetails()
@@ -29,20 +21,17 @@ public class OrderDetailsCrudService : IOrderDetailsCrudService
             OrderId = orderDetailsModel.Order!.Id,
         };
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .OrderDetailsRepository
             .AddAsync(orderDetails);
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteOrderDetailsRangeByOrderHeaderIdAsync(Guid orderHeaderId)
     {
-        IEnumerable<OrderDetailsViewModel> orderDetailsModelList = await this
-            ._orderDetailsRetrievalService
+        IEnumerable<OrderDetailsViewModel> orderDetailsModelList = await orderDetailsRetrievalService
             .GetAllByOrderHeaderIdAsync(orderHeaderId);
 
         IEnumerable<OrderDetails> orderDetailsToDelete = orderDetailsModelList
@@ -51,12 +40,11 @@ public class OrderDetailsCrudService : IOrderDetailsCrudService
                 Id = orderDetailsModel.Id,
             });
 
-        this._unitOfWork
+        unitOfWork
             .OrderDetailsRepository
             .DeleteRange(orderDetailsToDelete);
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 }

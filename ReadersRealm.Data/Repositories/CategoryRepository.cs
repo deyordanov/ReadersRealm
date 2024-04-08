@@ -5,15 +5,9 @@ using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-public class CategoryRepository : Repository<Category>, ICategoryRepository
+public class CategoryRepository(ReadersRealmDbContext dbContext) : Repository<Category>(dbContext), ICategoryRepository
 {
-    private readonly ReadersRealmDbContext _dbContext;
-
-    public CategoryRepository(ReadersRealmDbContext dbContext)
-        : base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly ReadersRealmDbContext _dbContext = dbContext;
 
     public async Task<Category?> GetByIdAsync(int id)
     {

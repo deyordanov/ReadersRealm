@@ -5,13 +5,10 @@ using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderRepository
+public class OrderHeaderRepository(ReadersRealmDbContext dbContext)
+    : Repository<OrderHeader>(dbContext), IOrderHeaderRepository
 {
-    private readonly ReadersRealmDbContext _dbContext;
-    public OrderHeaderRepository(ReadersRealmDbContext dbContext) : base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly ReadersRealmDbContext _dbContext = dbContext;
 
     public async Task<OrderHeader?> GetByIdAsync(Guid id)
     {

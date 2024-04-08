@@ -5,11 +5,6 @@ using Data.Models.Enums;
 
 public class AllAuthorsViewModel
 {
-    public AllAuthorsViewModel()
-    {
-        Books = new HashSet<BookViewModel>();
-    }
-
     public Guid Id { get; set; }
 
     public required string FirstName { get; set; }
@@ -26,5 +21,5 @@ public class AllAuthorsViewModel
 
     public required string PhoneNumber { get; set; }
 
-    public IEnumerable<BookViewModel> Books { get; set; }
+    public IEnumerable<BookViewModel> Books { get; set; } = new HashSet<BookViewModel>();
 }

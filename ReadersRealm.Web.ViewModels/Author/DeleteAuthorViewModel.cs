@@ -7,11 +7,6 @@ using static Common.Constants.Constants.AuthorConstants;
 
 public class DeleteAuthorViewModel
 {
-    public DeleteAuthorViewModel()
-    {
-        Books = new HashSet<BookViewModel>();
-    }
-
     public Guid Id { get; set; }
 
     [Display(Name = FirstNameDisplay)]
@@ -32,5 +27,5 @@ public class DeleteAuthorViewModel
     [Display(Name = PhoneNumberDisplay)]
     public required string PhoneNumber { get; set; }
 
-    public HashSet<BookViewModel> Books { get; set; }
+    public HashSet<BookViewModel> Books { get; set; } = new();
 }

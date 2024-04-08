@@ -9,12 +9,6 @@ using static Common.Constants.ValidationMessageConstants.RegisterModelValidation
 
 public class RegisterInputViewModel
 {
-    public RegisterInputViewModel()
-    {
-        Roles = new List<SelectListItem>();
-        Companies = new List<SelectListItem>();
-    }
-
     [Required]
     [EmailAddress]
     [Display(Name = EmailDisplay)]
@@ -80,9 +74,9 @@ public class RegisterInputViewModel
     public string? Role { get; set; }
 
     [ValidateNever]
-    public IEnumerable<SelectListItem> Roles { get; set; }
+    public IEnumerable<SelectListItem> Roles { get; set; } = new List<SelectListItem>();
 
     public Guid? CompanyId { get; set; }
 
-    public IEnumerable<SelectListItem> Companies { get; set; }
+    public IEnumerable<SelectListItem> Companies { get; set; } = new List<SelectListItem>();
 }

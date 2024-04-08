@@ -14,24 +14,16 @@ using static Common.Constants.ValidationMessageConstants.CategoryValidationMessa
 
 
 [Area(Admin)]
-public class CategoryController : BaseController
+public class CategoryController(
+    ICategoryCrudService categoryCrudService,
+    ICategoryRetrievalService categoryRetrievalService)
+    : BaseController
 {
-    private readonly ICategoryCrudService _categoryCrudService;
-    private readonly ICategoryRetrievalService _categoryRetrievalService;
-    public CategoryController(
-        ICategoryCrudService categoryCrudService, 
-        ICategoryRetrievalService categoryRetrievalService)
-    {
-        this._categoryCrudService = categoryCrudService;
-        this._categoryRetrievalService = categoryRetrievalService;
-    }
-
     [HttpGet]
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Index(int pageIndex, string? searchTerm)
     {
-        IEnumerable<AllCategoriesViewModel> allCategories = await this
-            ._categoryRetrievalService
+        IEnumerable<AllCategoriesViewModel> allCategories = await categoryRetrievalService
             .GetAllAsync();
 
         return View(allCategories);
@@ -41,8 +33,7 @@ public class CategoryController : BaseController
     [Authorize(Roles = AdminRole)]
     public IActionResult Create()
     {
-        CreateCategoryViewModel categoryModel = this
-            ._categoryRetrievalService
+        CreateCategoryViewModel categoryModel = categoryRetrievalService
             .GetCategoryForCreate();
 
         return View(categoryModel);
@@ -63,7 +54,7 @@ public class CategoryController : BaseController
         }
 
         await
-            _categoryCrudService
+            categoryCrudService
             .CreateCategoryAsync(categoryModel);
 
         TempData[Success] = CategoryHasBeenSuccessfullyCreated;
@@ -80,8 +71,7 @@ public class CategoryController : BaseController
             return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
-        EditCategoryViewModel categoryModel = await this
-            ._categoryRetrievalService
+        EditCategoryViewModel categoryModel = await categoryRetrievalService
             .GetCategoryForEditAsync(categoryId);
 
         return View(categoryModel);
@@ -101,8 +91,7 @@ public class CategoryController : BaseController
             return View(categoryModel);
         }
 
-        await this
-            ._categoryCrudService
+        await categoryCrudService
             .EditCategoryAsync(categoryModel);
 
         TempData[Success] = CategoryHasBeenSuccessfullyEdited;
@@ -119,8 +108,7 @@ public class CategoryController : BaseController
             return RedirectToAction(ErrorPageNotFoundAction, nameof(Error));
         }
 
-        DeleteCategoryViewModel categoryModel = await this
-            ._categoryRetrievalService
+        DeleteCategoryViewModel categoryModel = await categoryRetrievalService
             .GetCategoryForDeleteAsync(bookId);
 
         return View(categoryModel);
@@ -130,8 +118,7 @@ public class CategoryController : BaseController
     [Authorize(Roles = AdminRole)]
     public async Task<IActionResult> Delete(DeleteCategoryViewModel categoryModel)
     {
-        await this
-            ._categoryCrudService
+        await categoryCrudService
             .DeleteCategoryAsync(categoryModel);
 
         TempData[Success] = CategoryHasBeenSuccessfullyDeleted;

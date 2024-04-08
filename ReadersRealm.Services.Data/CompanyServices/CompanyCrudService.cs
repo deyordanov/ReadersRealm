@@ -6,15 +6,8 @@ using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.Company;
 
-public class CompanyCrudService : ICompanyCrudService
+public class CompanyCrudService(IUnitOfWork unitOfWork) : ICompanyCrudService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CompanyCrudService(IUnitOfWork unitOfWork)
-    {
-        this._unitOfWork = unitOfWork;
-    }
-
     public async Task CreateCompanyAsync(CreateCompanyViewModel bookModel)
     {
         Company companyToAdd = new Company()
@@ -29,20 +22,17 @@ public class CompanyCrudService : ICompanyCrudService
             PhoneNumber = bookModel.PhoneNumber,
         };
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .CompanyRepository
             .AddAsync(companyToAdd);
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task EditCompanyAsync(EditCompanyViewModel bookModel)
     {
-        Company? companyToEdit = await this
-            ._unitOfWork
+        Company? companyToEdit = await unitOfWork
             .CompanyRepository
             .GetByIdAsync(bookModel.Id);
 
@@ -61,15 +51,13 @@ public class CompanyCrudService : ICompanyCrudService
         companyToEdit.State = bookModel.State;
         companyToEdit.PhoneNumber = bookModel.PhoneNumber;
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteCompanyAsync(DeleteCompanyViewModel companyModel)
     {
-        Company? companyToDelete = await this
-            ._unitOfWork
+        Company? companyToDelete = await unitOfWork
             .CompanyRepository
             .GetByIdAsync(companyModel.Id);
 
@@ -78,12 +66,11 @@ public class CompanyCrudService : ICompanyCrudService
             throw new CompanyNotFoundException();
         }
 
-        this._unitOfWork
+        unitOfWork
             .CompanyRepository
             .Delete(companyToDelete);
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 }

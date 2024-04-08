@@ -25,40 +25,21 @@ using static Common.Constants.ValidationMessageConstants.CompanyValidationMessag
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 [Area(Customer)]
-public class UserController : BaseController
+public class UserController(
+    ICompanyRetrievalService companyRetrievalService,
+    IIdentityRetrievalService identityRetrievalService,
+    SignInManager<ApplicationUser> signInManager,
+    RoleManager<IdentityRole<Guid>> roleManager,
+    UserManager<ApplicationUser> userManager,
+    IUserStore<ApplicationUser> userStore,
+    IEmailSender emailSender)
+    : BaseController
 {
-    private readonly ICompanyRetrievalService _companyRetrievalService;
-    private readonly IIdentityRetrievalService _identityRetrievalService;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IUserStore<ApplicationUser> _userStore;
-    private readonly IEmailSender _emailSender;
-
-    public UserController(
-        ICompanyRetrievalService companyRetrievalService,
-        IIdentityRetrievalService identityRetrievalService,
-        SignInManager<ApplicationUser> signInManager,
-        RoleManager<IdentityRole<Guid>> roleManager, 
-        UserManager<ApplicationUser> userManager, 
-        IUserStore<ApplicationUser> userStore,
-        IEmailSender emailSender)
-    {
-        this._companyRetrievalService = companyRetrievalService;
-        this._identityRetrievalService = identityRetrievalService;
-        this._signInManager = signInManager;
-        this._roleManager = roleManager;
-        this._userManager = userManager;
-        this._userStore = userStore;
-        this._emailSender = emailSender;
-    }
-
     [HttpGet]
     [AllowAnonymous]
     public async Task<IActionResult> Login(string? returnUrl)
     {
-        LoginViewModel loginModel = this
-            ._identityRetrievalService
+        LoginViewModel loginModel = identityRetrievalService
             .GetLoginModelForLogin();
 
         if (!string.IsNullOrEmpty(loginModel.ErrorMessage))
@@ -70,7 +51,7 @@ public class UserController : BaseController
 
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-        loginModel.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        loginModel.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
         loginModel.ReturnUrl = returnUrl;
 
@@ -83,13 +64,13 @@ public class UserController : BaseController
     {
         loginModel.ReturnUrl ??= Url.Content("~/");
 
-        loginModel.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        loginModel.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
         if (ModelState.IsValid)
         {
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            SignInResult result = await _signInManager.PasswordSignInAsync(
+            SignInResult result = await signInManager.PasswordSignInAsync(
                 loginModel.Input.Email,
                 loginModel.Input.Password,
                 loginModel.Input.RememberMe,
@@ -111,7 +92,7 @@ public class UserController : BaseController
     {
         HttpContext.Session.Remove(ShoppingCartSessionKey);
 
-        await _signInManager.SignOutAsync();
+        await signInManager.SignOutAsync();
         if (returnUrl != null)
         {
             return Redirect(returnUrl);
@@ -124,12 +105,10 @@ public class UserController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> Register(string? returnUrl)
     {
-        RegisterViewModel registerModel = this
-            ._identityRetrievalService
+        RegisterViewModel registerModel = identityRetrievalService
             .GetRegisterModelForRegister();
 
-        List<AllCompaniesListViewModel> companies = await this
-            ._companyRetrievalService
+        List<AllCompaniesListViewModel> companies = await companyRetrievalService
             .GetAllListAsync();
 
         RegisterInputViewModel registerInputModel = new RegisterInputViewModel()
@@ -139,13 +118,12 @@ public class UserController : BaseController
             ConfirmPassword = string.Empty,
             FirstName = string.Empty,
             LastName = string.Empty,
-            Roles = _roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
+            Roles = roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
             Companies = companies.Select(c => new SelectListItem(c.Name, c.Id.ToString())),
         };
 
         registerModel.ReturnUrl ??= Url.Content("~/");
-        registerModel.ExternalLogins = (await this
-            ._signInManager
+        registerModel.ExternalLogins = (await signInManager
             .GetExternalAuthenticationSchemesAsync())
             .ToList();
 
@@ -158,12 +136,10 @@ public class UserController : BaseController
     {
         registerModel.ReturnUrl ??= Url.Content("~/");
 
-        registerModel.ExternalLogins = (await this
-            ._signInManager
+        registerModel.ExternalLogins = (await signInManager
             .GetExternalAuthenticationSchemesAsync()).ToList();
 
-        bool companyExists = registerModel.Input.CompanyId == null || await this
-            ._companyRetrievalService
+        bool companyExists = registerModel.Input.CompanyId == null || await companyRetrievalService
             .CompanyExistsAsync((Guid)registerModel
                 .Input
                 .CompanyId);
@@ -175,12 +151,10 @@ public class UserController : BaseController
 
         if (!ModelState.IsValid)
         {
-            List<AllCompaniesListViewModel> companies = await this
-                ._companyRetrievalService
+            List<AllCompaniesListViewModel> companies = await companyRetrievalService
                 .GetAllListAsync();
 
-            registerModel.Input.Roles = this
-                ._roleManager
+            registerModel.Input.Roles = roleManager
                 .Roles
                 .Select(r => new SelectListItem(r.Name, r.Name));
             registerModel.Input.Companies = companies
@@ -191,8 +165,7 @@ public class UserController : BaseController
 
         ApplicationUser user = this.CreateUser();
 
-        await this
-            ._userStore
+        await userStore
             .SetUserNameAsync(user, registerModel.Input.Email, CancellationToken.None);
         await this
             .GetEmailStore()
@@ -211,30 +184,25 @@ public class UserController : BaseController
             user.CompanyId = registerModel.Input.CompanyId;
         }
 
-        var result = await this
-            ._userManager
+        var result = await userManager
             .CreateAsync(user, registerModel.Input.Password);
 
         if (result.Succeeded)
         {
             if (!string.IsNullOrWhiteSpace(registerModel.Input.Role))
             {
-                await this
-                    ._userManager
+                await userManager
                     .AddToRoleAsync(user, registerModel.Input.Role);
             }
             else
             {
-                await this
-                    ._userManager
+                await userManager
                     .AddToRoleAsync(user, CustomerRole);
             }
 
-            string userId = await this
-                ._userManager
+            string userId = await userManager
                 .GetUserIdAsync(user);
-            string code = await this
-                ._userManager
+            string code = await userManager
                 .GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             string callbackUrl = Url.Page(
@@ -250,13 +218,12 @@ public class UserController : BaseController
                 values: new { area = "Customer" },
                 protocol: Request.Scheme)!;
 
-            await this
-                ._emailSender
+            await emailSender
                 .SendEmailAsync(registerModel.Input.Email,
                 EmailConfirmationSubject,
                 this.BuildEmailMessage(callbackUrl, registerModel.Input));
 
-            if (this._userManager.Options.SignIn.RequireConfirmedAccount)
+            if (userManager.Options.SignIn.RequireConfirmedAccount)
             {
                 return RedirectToPage("RegisterConfirmation", new { email = registerModel.Input.Email, returnUrl = registerModel.ReturnUrl });
             }
@@ -264,8 +231,7 @@ public class UserController : BaseController
             {
                 if (!User.IsInRole(AdminRole))
                 {
-                    await this
-                        ._signInManager
+                    await signInManager
                         .SignInAsync(user, isPersistent: false);
                 }
                 else
@@ -301,12 +267,12 @@ public class UserController : BaseController
 
     private IUserEmailStore<ApplicationUser> GetEmailStore()
     {
-        if (!this._userManager.SupportsUserEmail)
+        if (!userManager.SupportsUserEmail)
         {
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
 
-        return (IUserEmailStore<ApplicationUser>)this._userStore;
+        return (IUserEmailStore<ApplicationUser>)userStore;
     }
 
     private string BuildEmailMessage(string callbackUrl, RegisterInputViewModel registerInputModel)

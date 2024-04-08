@@ -6,13 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using static Common.Constants.ValidationConstants.OrderHeaderValidation;
 public class OrderHeader
 {
-    public OrderHeader()
-    {
-        Id = Guid.NewGuid();
-    }
-
     [Key]
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid ApplicationUserId { get; set; }
 

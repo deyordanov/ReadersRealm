@@ -10,11 +10,7 @@ using static Common.Constants.ValidationMessageConstants.ShoppingCartValidationM
 
 public class ShoppingCartViewModel
 {
-    public ShoppingCartViewModel()
-    {
-        this.Id = Guid.NewGuid();
-    }
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid BookId { get; set; }
 

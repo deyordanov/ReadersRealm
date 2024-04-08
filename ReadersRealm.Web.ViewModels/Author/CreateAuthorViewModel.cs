@@ -9,11 +9,6 @@ using static Common.Constants.Constants.AuthorConstants;
 
 public class CreateAuthorViewModel
 {
-    public CreateAuthorViewModel()
-    {
-        Books = new HashSet<BookViewModel>();
-    }
-
     [Required(ErrorMessage = AuthorFirstNameRequiredMessage)]
     [StringLength(AuthorFirstNameMaxLength,
         MinimumLength = AuthorFirstNameMinLength,
@@ -55,5 +50,5 @@ public class CreateAuthorViewModel
     [Display(Name = PhoneNumberDisplay)]
     public required string PhoneNumber { get; set; }
 
-    public HashSet<BookViewModel> Books { get; set; }
+    public HashSet<BookViewModel> Books { get; set; } = new();
 }

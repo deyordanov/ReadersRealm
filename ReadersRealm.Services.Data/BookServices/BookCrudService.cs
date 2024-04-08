@@ -8,16 +8,9 @@ using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.Book;
 
-public class BookCrudService : IBookCrudService
+public class BookCrudService(IUnitOfWork unitOfWork) : IBookCrudService
 {
-    private readonly IHtmlSanitizer _sanitizer;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public BookCrudService(IUnitOfWork unitOfWork)
-    {
-        this._sanitizer = new HtmlSanitizer();
-        this._unitOfWork = unitOfWork;
-    }
+    private readonly IHtmlSanitizer _sanitizer = new HtmlSanitizer();
 
     public async Task CreateBookAsync(CreateBookViewModel bookModel)
     {
@@ -37,20 +30,17 @@ public class BookCrudService : IBookCrudService
             ImageId = bookModel.ImageId,
         };
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .BookRepository
             .AddAsync(bookToAdd);
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task EditBookAsync(EditBookViewModel bookModel)
     {
-        Book? bookToEdit = await this
-            ._unitOfWork
+        Book? bookToEdit = await unitOfWork
             .BookRepository
             .GetByIdAsync(bookModel.Id);
 
@@ -73,15 +63,13 @@ public class BookCrudService : IBookCrudService
         bookToEdit.Used = bookModel.Used;
         bookToEdit.ImageId = bookModel.ImageId;
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteBookAsync(DeleteBookViewModel bookModel)
     {
-        Book? bookToDelete = await this
-            ._unitOfWork
+        Book? bookToDelete = await unitOfWork
             .BookRepository
             .GetByIdAsync(bookModel.Id);
 
@@ -90,12 +78,11 @@ public class BookCrudService : IBookCrudService
             throw new BookNotFoundException();
         }
 
-        this._unitOfWork
+        unitOfWork
             .BookRepository
             .Delete(bookToDelete);
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 }

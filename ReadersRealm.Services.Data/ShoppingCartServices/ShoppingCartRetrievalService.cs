@@ -9,20 +9,12 @@ using Web.ViewModels.Book;
 using Web.ViewModels.OrderHeader;
 using Web.ViewModels.ShoppingCart;
 
-public class ShoppingCartRetrievalService : IShoppingCartRetrievalService
+public class ShoppingCartRetrievalService(
+    IUnitOfWork unitOfWork,
+    IApplicationUserRetrievalService applicationUserRetrievalService)
+    : IShoppingCartRetrievalService
 {
     private const string PropertiesToInclude = "Book, ApplicationUser";
-
-    private readonly IApplicationUserRetrievalService _applicationUserRetrievalService;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public ShoppingCartRetrievalService(
-        IUnitOfWork unitOfWork, 
-        IApplicationUserRetrievalService applicationUserRetrievalService)
-    {
-        this._unitOfWork = unitOfWork;
-        this._applicationUserRetrievalService = applicationUserRetrievalService;
-    }
 
     public ShoppingCartViewModel GetShoppingCart(DetailsBookViewModel bookModel)
     {
@@ -36,8 +28,7 @@ public class ShoppingCartRetrievalService : IShoppingCartRetrievalService
 
     public async Task<int> GetShoppingCartCountByApplicationUserIdAsync(Guid applicationUserId)
     {
-        IEnumerable<ShoppingCart> shoppingCarts = await this
-            ._unitOfWork
+        IEnumerable<ShoppingCart> shoppingCarts = await unitOfWork
             .ShoppingCartRepository
             .GetAsync(shoppingCart => shoppingCart.ApplicationUserId.Equals(applicationUserId),
                 null,
@@ -48,8 +39,7 @@ public class ShoppingCartRetrievalService : IShoppingCartRetrievalService
 
     public async Task<bool> ShoppingCartExistsAsync(Guid applicationUserId, Guid bookId)
     {
-        return await this
-            ._unitOfWork
+        return await unitOfWork
             .ShoppingCartRepository
             .GetFirstOrDefaultWithFilterAsync(shoppingCart => shoppingCart.ApplicationUserId.Equals(applicationUserId) &&
                                                               shoppingCart.BookId == bookId, false) != null;
@@ -57,13 +47,11 @@ public class ShoppingCartRetrievalService : IShoppingCartRetrievalService
 
     public async Task<AllShoppingCartsListViewModel> GetAllListAsync(Guid applicationUserId)
     {
-        IEnumerable<ShoppingCart> allShoppingCarts = await this
-            ._unitOfWork
+        IEnumerable<ShoppingCart> allShoppingCarts = await unitOfWork
             .ShoppingCartRepository
         .GetAsync(shoppingCart => shoppingCart.ApplicationUserId.Equals(applicationUserId), null, PropertiesToInclude);
 
-        OrderApplicationUserViewModel applicationUser = await this
-            ._applicationUserRetrievalService
+        OrderApplicationUserViewModel applicationUser = await applicationUserRetrievalService
             .GetApplicationUserForOrderAsync(applicationUserId);
 
         AllShoppingCartsListViewModel shoppingCartModel = new AllShoppingCartsListViewModel()

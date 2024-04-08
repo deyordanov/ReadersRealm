@@ -5,13 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class ShoppingCart
 {
-    public ShoppingCart()
-    {
-        this.Id = Guid.NewGuid();
-    }
-
     [Key]
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required]
     public Guid BookId { get; set; }

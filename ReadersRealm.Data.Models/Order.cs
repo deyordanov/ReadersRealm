@@ -5,13 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class Order
 {
-    public Order()
-    {
-        Id = Guid.NewGuid();
-        OrderDetailsList = new HashSet<OrderDetails>();
-    }
-
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid OrderHeaderId { get; set; }
     
@@ -19,5 +13,5 @@ public class Order
     public OrderHeader OrderHeader { get; set; }
 
     [DeleteBehavior(DeleteBehavior.Restrict)]
-    public IEnumerable<OrderDetails> OrderDetailsList { get; set; }
+    public IEnumerable<OrderDetails> OrderDetailsList { get; set; } = new HashSet<OrderDetails>();
 }

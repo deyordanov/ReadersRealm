@@ -19,11 +19,6 @@ using static ReadersRealm.Common.Constants.ValidationConstants.CategoryValidatio
 [Comment("Readers Realm Category")]
 public class Category
 {
-    public Category()
-    {
-        Books = new HashSet<Book>();
-    }
-
     /// <summary>
     /// Gets or sets the unique identifier for the Category.
     /// </summary>
@@ -58,5 +53,5 @@ public class Category
     /// </summary>
     /// <value>A collection of Books that are classified under this Category.</value>
     [Comment("Associated Books")]
-    public HashSet<Book> Books { get; set; }
+    public HashSet<Book> Books { get; set; } = new();
 }

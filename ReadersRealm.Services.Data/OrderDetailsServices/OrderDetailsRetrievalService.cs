@@ -8,21 +8,13 @@ using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.Book;
 using Web.ViewModels.OrderDetails;
 
-public class OrderDetailsRetrievalService : IOrderDetailsRetrievalService
+public class OrderDetailsRetrievalService(IUnitOfWork unitOfWork) : IOrderDetailsRetrievalService
 {
     private const string PropertiesToInclude = "Book, OrderHeader";
 
-    private readonly IUnitOfWork _unitOfWork;
-
-    public OrderDetailsRetrievalService(IUnitOfWork unitOfWork)
-    {
-        this._unitOfWork = unitOfWork;
-    }
-
     public async Task<IEnumerable<OrderDetailsViewModel>> GetAllByOrderHeaderIdAsync(Guid orderHeaderId)
     {
-        IEnumerable<OrderDetails> orderDetailsList = await this
-            ._unitOfWork
+        IEnumerable<OrderDetails> orderDetailsList = await unitOfWork
             .OrderDetailsRepository
             .GetAsync(orderDetails => orderDetails.OrderHeaderId == orderHeaderId,
                 null,
@@ -57,8 +49,7 @@ public class OrderDetailsRetrievalService : IOrderDetailsRetrievalService
 
     public async Task<IEnumerable<OrderDetailsReceiptDto>> GetAllOrderDetailsForReceiptAsDtosAsync(Guid orderHeaderId)
     {
-        IEnumerable<OrderDetails> orderDetailsList = await this
-            ._unitOfWork
+        IEnumerable<OrderDetails> orderDetailsList = await unitOfWork
             .OrderDetailsRepository
             .GetAsync(orderDetails => orderDetails.OrderHeaderId == orderHeaderId,
                 null,

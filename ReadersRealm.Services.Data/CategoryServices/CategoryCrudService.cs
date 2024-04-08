@@ -6,15 +6,8 @@ using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.Category;
 
-public class CategoryCrudService : ICategoryCrudService
+public class CategoryCrudService(IUnitOfWork unitOfWork) : ICategoryCrudService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CategoryCrudService(IUnitOfWork unitOfWork)
-    {
-        this._unitOfWork = unitOfWork;
-    }
-
     public async Task CreateCategoryAsync(CreateCategoryViewModel categoryModel)
     {
         Category categoryToAdd = new Category()
@@ -23,19 +16,16 @@ public class CategoryCrudService : ICategoryCrudService
             DisplayOrder = categoryModel.DisplayOrder,
         };
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .CategoryRepository
             .AddAsync(categoryToAdd);
 
-        await this
-            ._unitOfWork.SaveAsync();
+        await unitOfWork.SaveAsync();
     }
 
     public async Task EditCategoryAsync(EditCategoryViewModel categoryModel)
     {
-        Category? categoryToEdit = await this
-            ._unitOfWork
+        Category? categoryToEdit = await unitOfWork
             .CategoryRepository
             .GetByIdAsync(categoryModel.Id);
 
@@ -47,15 +37,13 @@ public class CategoryCrudService : ICategoryCrudService
         categoryToEdit.Name = categoryModel.Name;
         categoryToEdit.DisplayOrder = categoryModel.DisplayOrder;
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteCategoryAsync(DeleteCategoryViewModel categoryModel)
     {
-        Category? categoryToDelete = await this
-            ._unitOfWork
+        Category? categoryToDelete = await unitOfWork
             .CategoryRepository
             .GetByIdAsync(categoryModel.Id);
 
@@ -64,12 +52,11 @@ public class CategoryCrudService : ICategoryCrudService
             throw new CategoryNotFoundException();
         }
 
-        this._unitOfWork
+        unitOfWork
             .CategoryRepository
             .Delete(categoryToDelete);
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 }

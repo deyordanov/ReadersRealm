@@ -6,19 +6,11 @@ using OrderHeaderServices.Contracts;
 using Web.ViewModels.ApplicationUser;
 using Web.ViewModels.Order;
 
-public class OrderCrudService : IOrderCrudService
+public class OrderCrudService(
+    IApplicationUserCrudService applicationUserCrudService,
+    IOrderHeaderCrudService orderHeaderCrudService)
+    : IOrderCrudService
 {
-    private readonly IApplicationUserCrudService _applicationUserCrudService;
-    private readonly IOrderHeaderCrudService _orderHeaderCrudService;
-
-    public OrderCrudService(
-        IApplicationUserCrudService applicationUserCrudService, 
-        IOrderHeaderCrudService orderHeaderCrudService)
-    {
-        this._applicationUserCrudService = applicationUserCrudService;
-        this._orderHeaderCrudService = orderHeaderCrudService;
-    }
-
     public async Task UpdateOrderAsync(DetailsOrderViewModel orderModel)
     {
         OrderApplicationUserViewModel applicationUserModel = new OrderApplicationUserViewModel()
@@ -33,12 +25,10 @@ public class OrderCrudService : IOrderCrudService
             StreetAddress = orderModel.OrderHeader.StreetAddress,
         };
 
-        await this
-            ._applicationUserCrudService
+        await applicationUserCrudService
             .UpdateApplicationUserAsync(applicationUserModel);
 
-        await this
-            ._orderHeaderCrudService
+        await orderHeaderCrudService
             .UpdateOrderHeaderAsync(orderModel.OrderHeader);
     }
 }

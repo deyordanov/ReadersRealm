@@ -5,15 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 public class RegisterViewModel
 {
-    public RegisterViewModel()
-    {
-        ExternalLogins = new List<AuthenticationScheme>();
-    }
-
     [BindProperty]
     public RegisterInputViewModel Input { get; set; } = null!;
 
-    public IList<AuthenticationScheme> ExternalLogins { get; set; }
+    public IList<AuthenticationScheme> ExternalLogins { get; set; } = new List<AuthenticationScheme>();
 
     public string? ReturnUrl { get; set; }
 }

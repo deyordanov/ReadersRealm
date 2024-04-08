@@ -6,15 +6,8 @@ using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.Author;
 
-public class AuthorCrudService : IAuthorCrudService
+public class AuthorCrudService(IUnitOfWork unitOfWork) : IAuthorCrudService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public AuthorCrudService(IUnitOfWork unitOfWork)
-    {
-        this._unitOfWork = unitOfWork;
-    }
-
     public async Task CreateAuthorAsync(CreateAuthorViewModel authorModel)
     {
         Author author = new Author()
@@ -28,20 +21,17 @@ public class AuthorCrudService : IAuthorCrudService
             Gender = authorModel.Gender,
         };
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .AuthorRepository
             .AddAsync(author);
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task EditAuthorAsync(EditAuthorViewModel authorModel)
     {
-        Author? author = await this
-            ._unitOfWork
+        Author? author = await unitOfWork
             .AuthorRepository
             .GetByIdAsync(authorModel.Id);
 
@@ -59,15 +49,13 @@ public class AuthorCrudService : IAuthorCrudService
         author.Email = authorModel.Email;
         author.PhoneNumber = authorModel.PhoneNumber;
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteAuthorAsync(DeleteAuthorViewModel authorModel)
     {
-        Author? author = await this
-            ._unitOfWork
+        Author? author = await unitOfWork
             . AuthorRepository
             .GetByIdAsync(authorModel.Id);
 
@@ -76,12 +64,11 @@ public class AuthorCrudService : IAuthorCrudService
             throw new AuthorNotFoundException();
         }
 
-        this._unitOfWork
+        unitOfWork
             .AuthorRepository
             .Delete(author);
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 }

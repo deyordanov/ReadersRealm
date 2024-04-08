@@ -12,28 +12,17 @@ using Web.ViewModels.Author;
 using Web.ViewModels.Book;
 using Web.ViewModels.Category;
 
-public class BookRetrievalService : IBookRetrievalService
+public class BookRetrievalService(
+    IUnitOfWork unitOfWork,
+    IAuthorRetrievalService authorRetrievalService,
+    ICategoryRetrievalService categoryRetrievalService)
+    : IBookRetrievalService
 {
     private const string PropertiesToInclude = "Author, Category";
 
-    private readonly ICategoryRetrievalService _categoryRetrievalService;
-    private readonly IAuthorRetrievalService _authorRetrievalService;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public BookRetrievalService(
-        IUnitOfWork unitOfWork,
-        IAuthorRetrievalService authorRetrievalService, 
-        ICategoryRetrievalService categoryRetrievalService)
-    {
-        this._unitOfWork = unitOfWork;
-        this._authorRetrievalService = authorRetrievalService;
-        this._categoryRetrievalService = categoryRetrievalService;
-    }
-
     public async Task<PaginatedList<AllBooksViewModel>> GetAllAsync(int pageIndex, int pageSize, string? searchTerm)
     {
-        List<Book> allBooks = await this
-            ._unitOfWork
+        List<Book> allBooks = await unitOfWork
             .BookRepository
             .GetAsync(book => book
                 .Title
@@ -79,8 +68,7 @@ public class BookRetrievalService : IBookRetrievalService
 
     public async Task<EditBookViewModel> GetBookForEditAsync(Guid id)
     {
-        Book? book = await this
-            ._unitOfWork
+        Book? book = await unitOfWork
             .BookRepository
             .GetByIdAsync(id);
 
@@ -89,12 +77,10 @@ public class BookRetrievalService : IBookRetrievalService
             throw new BookNotFoundException();
         }
 
-        List<AllAuthorsListViewModel> authorsList = await this
-            ._authorRetrievalService
+        List<AllAuthorsListViewModel> authorsList = await authorRetrievalService
             .GetAllListAsync();
 
-        List<AllCategoriesListViewModel> categoriesList = await this
-            ._categoryRetrievalService
+        List<AllCategoriesListViewModel> categoriesList = await categoryRetrievalService
             .GetAllListAsync();
 
         EditBookViewModel bookModel = new EditBookViewModel()
@@ -119,8 +105,7 @@ public class BookRetrievalService : IBookRetrievalService
 
     public async Task<DeleteBookViewModel> GetBookForDeleteAsync(Guid id)
     {
-        Book? book = await this
-            ._unitOfWork
+        Book? book = await unitOfWork
             .BookRepository
             .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
 
@@ -166,8 +151,7 @@ public class BookRetrievalService : IBookRetrievalService
 
     public async Task<DetailsBookViewModel> GetBookForDetailsAsync(Guid id)
     {
-        Book? book = await this
-            ._unitOfWork
+        Book? book = await unitOfWork
             .BookRepository
             .GetByIdWithNavPropertiesAsync(id, PropertiesToInclude);
 
@@ -212,12 +196,10 @@ public class BookRetrievalService : IBookRetrievalService
 
     public async Task<CreateBookViewModel> GetBookForCreateAsync()
     {
-        List<AllAuthorsListViewModel> authorsList = await this
-            ._authorRetrievalService
+        List<AllAuthorsListViewModel> authorsList = await authorRetrievalService
             .GetAllListAsync();
 
-        List<AllCategoriesListViewModel> categoriesList = await this
-            ._categoryRetrievalService
+        List<AllCategoriesListViewModel> categoriesList = await categoryRetrievalService
             .GetAllListAsync();
 
         CreateBookViewModel bookModel = new CreateBookViewModel()

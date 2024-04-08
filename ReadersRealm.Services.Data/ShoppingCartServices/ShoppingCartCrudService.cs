@@ -6,15 +6,8 @@ using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.ShoppingCart;
 
-public class ShoppingCartCrudService : IShoppingCartCrudService
+public class ShoppingCartCrudService(IUnitOfWork unitOfWork) : IShoppingCartCrudService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public ShoppingCartCrudService(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task CreateShoppingCartAsync(ShoppingCartViewModel shoppingCartModel)
     {
         ShoppingCart shoppingCart = new ShoppingCart()
@@ -25,17 +18,17 @@ public class ShoppingCartCrudService : IShoppingCartCrudService
             Count = shoppingCartModel.Count,
         };
 
-        await _unitOfWork
+        await unitOfWork
             .ShoppingCartRepository
             .AddAsync(shoppingCart);
 
-        await _unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task UpdateShoppingCartCountAsync(ShoppingCartViewModel shoppingCartModel)
     {
-        ShoppingCart? shoppingCart = await _unitOfWork
+        ShoppingCart? shoppingCart = await unitOfWork
             .ShoppingCartRepository
             .GetByApplicationUserIdAndBookIdAsync(shoppingCartModel.ApplicationUserId, shoppingCartModel.BookId);
 
@@ -46,13 +39,13 @@ public class ShoppingCartCrudService : IShoppingCartCrudService
 
         shoppingCart.Count = shoppingCart.Count += shoppingCartModel.Count;
 
-        await _unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteShoppingCartAsync(Guid id)
     {
-        ShoppingCart? shoppingCartToDelete = await _unitOfWork
+        ShoppingCart? shoppingCartToDelete = await unitOfWork
             .ShoppingCartRepository
             .GetByIdAsync(id);
 
@@ -61,25 +54,25 @@ public class ShoppingCartCrudService : IShoppingCartCrudService
             throw new ShoppingCartNotFoundException();
         }
 
-        _unitOfWork
+        unitOfWork
             .ShoppingCartRepository
             .Delete(shoppingCartToDelete);
 
-        await _unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task DeleteAllShoppingCartsApplicationUserIdAsync(Guid applicationUserId)
     {
-        List<ShoppingCart> shoppingCartsToDelete = await _unitOfWork
+        List<ShoppingCart> shoppingCartsToDelete = await unitOfWork
             .ShoppingCartRepository
             .GetAllByApplicationUserIdAsync(applicationUserId);
 
-        _unitOfWork
+        unitOfWork
             .ShoppingCartRepository
             .DeleteRange(shoppingCartsToDelete);
 
-        await _unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 }

@@ -6,11 +6,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 public class AllApplicationUsersViewModel
 {
-    public AllApplicationUsersViewModel()
-    {
-        this.Roles = new List<string>();
-    }
-
     public required Guid Id { get; set; }
 
     public required string FirstName { get; set; }
@@ -23,7 +18,7 @@ public class AllApplicationUsersViewModel
 
     public required bool IsLocked { get; set; }
 
-    public required IList<string> Roles { get; set; }
+    public required IList<string> Roles { get; set; } = new List<string>();
 
     public Guid? CompanyId { get; set; }
 

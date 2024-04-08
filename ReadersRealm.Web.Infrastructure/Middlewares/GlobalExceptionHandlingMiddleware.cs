@@ -4,20 +4,13 @@ using Common.Exceptions;
 using Microsoft.AspNetCore.Http;
 using static Common.Constants.Constants.ErrorConstants;
 
-public class GlobalExceptionHandlingMiddleware 
+public class GlobalExceptionHandlingMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public GlobalExceptionHandlingMiddleware(RequestDelegate next)
-    {
-        this._next = next;
-    }
-
     public async Task Invoke(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
 
         }
         catch (BaseNotFoundException _)

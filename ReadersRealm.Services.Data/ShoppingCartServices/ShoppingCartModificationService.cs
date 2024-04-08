@@ -5,23 +5,14 @@ using Contracts;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 
-public class ShoppingCartModificationService : IShoppingCartModificationService
+public class ShoppingCartModificationService(
+    IUnitOfWork unitOfWork,
+    IShoppingCartCrudService shoppingCartCrudService)
+    : IShoppingCartModificationService
 {
-    private readonly IShoppingCartCrudService _shoppingCartCrudService;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public ShoppingCartModificationService(
-        IUnitOfWork unitOfWork, 
-        IShoppingCartCrudService shoppingCartCrudService)
-    {
-        this._unitOfWork = unitOfWork;
-        _shoppingCartCrudService = shoppingCartCrudService;
-    }
-
     public async Task IncreaseShoppingCartQuantityAsync(Guid shoppingCartId)
     {
-        ShoppingCart? shoppingCart = await this
-            ._unitOfWork
+        ShoppingCart? shoppingCart = await unitOfWork
             .ShoppingCartRepository
             .GetByIdAsync(shoppingCartId);
 
@@ -32,15 +23,13 @@ public class ShoppingCartModificationService : IShoppingCartModificationService
 
         shoppingCart.Count++;
 
-        await this
-            ._unitOfWork
+        await unitOfWork
             .SaveAsync();
     }
 
     public async Task<bool> DecreaseShoppingCartQuantityAsync(Guid shoppingCartId)
     {
-        ShoppingCart? shoppingCart = await this
-            ._unitOfWork
+        ShoppingCart? shoppingCart = await unitOfWork
             .ShoppingCartRepository
             .GetByIdAsync(shoppingCartId);
 
@@ -53,14 +42,12 @@ public class ShoppingCartModificationService : IShoppingCartModificationService
         {
             shoppingCart.Count--;
 
-            await this
-                ._unitOfWork
+            await unitOfWork
                 .SaveAsync();
         }
         else
         {
-            await this
-                ._shoppingCartCrudService
+            await shoppingCartCrudService
                 .DeleteShoppingCartAsync(shoppingCartId);
 
             return true;

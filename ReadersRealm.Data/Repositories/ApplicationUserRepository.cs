@@ -4,13 +4,10 @@ using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicationUserRepository
+public class ApplicationUserRepository(ReadersRealmDbContext dbContext)
+    : Repository<ApplicationUser>(dbContext), IApplicationUserRepository
 {
-    private readonly ReadersRealmDbContext _dbContext;
-    public ApplicationUserRepository(ReadersRealmDbContext dbContext) : base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly ReadersRealmDbContext _dbContext = dbContext;
 
     public async Task<ApplicationUser?> GetByIdAsync(Guid id)
     {

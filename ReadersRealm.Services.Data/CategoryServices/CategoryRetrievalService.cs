@@ -6,19 +6,11 @@ using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.Category;
 
-public class CategoryRetrievalService : ICategoryRetrievalService
+public class CategoryRetrievalService(IUnitOfWork unitOfWork) : ICategoryRetrievalService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CategoryRetrievalService(IUnitOfWork unitOfWork)
-    {
-        this._unitOfWork = unitOfWork;
-    }
-
     public async Task<IEnumerable<AllCategoriesViewModel>> GetAllAsync()
     {
-        List<Category> allCategories = await this
-            ._unitOfWork
+        List<Category> allCategories = await unitOfWork
             .CategoryRepository
             .GetAsync(null, null, string.Empty);
 
@@ -35,8 +27,7 @@ public class CategoryRetrievalService : ICategoryRetrievalService
 
     public async Task<List<AllCategoriesListViewModel>> GetAllListAsync()
     {
-        List<Category> allCategories = await this
-            ._unitOfWork
+        List<Category> allCategories = await unitOfWork
             .CategoryRepository
             .GetAsync(null, null, string.Empty);
 
@@ -53,8 +44,7 @@ public class CategoryRetrievalService : ICategoryRetrievalService
 
     public async Task<EditCategoryViewModel> GetCategoryForEditAsync(int id)
     {
-        Category? category = await this
-            ._unitOfWork
+        Category? category = await unitOfWork
             .CategoryRepository
             .GetByIdAsync(id);
 
@@ -75,8 +65,7 @@ public class CategoryRetrievalService : ICategoryRetrievalService
 
     public async Task<DeleteCategoryViewModel> GetCategoryForDeleteAsync(int id)
     {
-        Category? category = await this
-            ._unitOfWork
+        Category? category = await unitOfWork
             .CategoryRepository
             .GetByIdAsync(id);
 
@@ -107,8 +96,7 @@ public class CategoryRetrievalService : ICategoryRetrievalService
 
     public async Task<bool> CategoryExistsAsync(int categoryId)
     {
-        return await this
-            ._unitOfWork
+        return await unitOfWork
             .CategoryRepository
             .GetFirstOrDefaultByFilterAsync(category => category.Id == categoryId, false) != null;
     }

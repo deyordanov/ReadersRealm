@@ -5,14 +5,9 @@ using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-public class OrderRepository : Repository<Order>, IOrderRepository
+public class OrderRepository(ReadersRealmDbContext dbContext) : Repository<Order>(dbContext), IOrderRepository
 {
-    private readonly ReadersRealmDbContext _dbContext;
-
-    public OrderRepository(ReadersRealmDbContext dbContext) : base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly ReadersRealmDbContext _dbContext = dbContext;
 
     public async Task<Order?> GetByIdAsync(Guid id)
     {

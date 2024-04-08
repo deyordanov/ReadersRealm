@@ -6,13 +6,10 @@ using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
-public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRepository
+public class ShoppingCartRepository(ReadersRealmDbContext dbContext)
+    : Repository<ShoppingCart>(dbContext), IShoppingCartRepository
 {
-    private readonly ReadersRealmDbContext _dbContext;
-    public ShoppingCartRepository(ReadersRealmDbContext dbContext) : base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly ReadersRealmDbContext _dbContext = dbContext;
 
     public async Task<ShoppingCart?> GetByIdAsync(Guid id)
     {

@@ -1,12 +1,9 @@
 ﻿namespace ReadersRealm.Common.Exceptions.Services;
 
-public class ServiceInterfaceNotFound : BaseNotFoundException
+public class ServiceInterfaceNotFound(string message) : BaseNotFoundException(message)
 {
     private const string DefaultMessage = "No interface was found for the provided service.";
 
 	public ServiceInterfaceNotFound() 
-        : base(DefaultMessage) { }
-
-    public ServiceInterfaceNotFound(string message)
-	    : base(message) { }
+        : this(DefaultMessage) { }
 }
