@@ -9,25 +9,25 @@ using Web.ViewModels.Author;
 public class AuthorCrudService(IUnitOfWork unitOfWork) : IAuthorCrudService
 {
     public async Task CreateAuthorAsync(CreateAuthorViewModel authorModel)
-    {
-        Author author = new Author()
         {
-            FirstName = authorModel.FirstName,
-            MiddleName = authorModel.MiddleName,
-            LastName = authorModel.LastName,
-            Email = authorModel.Email,
-            PhoneNumber = authorModel.PhoneNumber,
-            Age = authorModel.Age,
-            Gender = authorModel.Gender,
-        };
+            Author author = new Author()
+            {
+                FirstName = authorModel.FirstName,
+                MiddleName = authorModel.MiddleName,
+                LastName = authorModel.LastName,
+                Email = authorModel.Email,
+                PhoneNumber = authorModel.PhoneNumber,
+                Age = authorModel.Age,
+                Gender = authorModel.Gender,
+            };
 
-        await unitOfWork
-            .AuthorRepository
-            .AddAsync(author);
+            await unitOfWork
+                .AuthorRepository
+                .AddAsync(author);
 
-        await unitOfWork
-            .SaveAsync();
-    }
+            await unitOfWork
+                .SaveAsync();
+        }
 
     public async Task EditAuthorAsync(EditAuthorViewModel authorModel)
     {

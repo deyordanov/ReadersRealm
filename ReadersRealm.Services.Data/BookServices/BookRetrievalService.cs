@@ -4,7 +4,6 @@ using AuthorServices.Contracts;
 using CategoryServices.Contracts;
 using Common;
 using Common.Exceptions.Book;
-using Common.Exceptions.Category;
 using Contracts;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
