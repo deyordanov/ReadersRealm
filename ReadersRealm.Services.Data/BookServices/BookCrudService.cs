@@ -1,6 +1,5 @@
 ﻿namespace ReadersRealm.Services.Data.BookServices;
 
-using System.Net;
 using Common.Exceptions.Book;
 using Contracts;
 using Ganss.Xss;

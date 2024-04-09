@@ -1,4 +1,4 @@
-﻿namespace ReadersRealm.Services.Tests.AuthorTests;
+﻿    namespace ReadersRealm.Services.Tests.AuthorTests;
 
 using Common.Exceptions.Author;
 using Data.AuthorServices;
