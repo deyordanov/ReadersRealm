@@ -28,8 +28,4 @@
     <ProjectReference Include="..\ReadersRealm.Web.ViewModels\ReadersRealm.Web.ViewModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="OrderDetailsTests\" />
-  </ItemGroup>
-
 </Project>
