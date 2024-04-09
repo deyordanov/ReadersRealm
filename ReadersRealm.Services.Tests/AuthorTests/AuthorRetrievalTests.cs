@@ -85,8 +85,8 @@ public class AuthorRetrievalTests
             .AuthorRepository
             .GetAsync(It.IsAny<Expression<Func<Author, bool>>>(),
                 It.IsAny<Func<IQueryable<Author>,
-                    IOrderedQueryable<Author>>>()
-                , It.IsAny<string>()))
+                    IOrderedQueryable<Author>>>(),
+                It.IsAny<string>()))
             .ReturnsAsync(this._allAuthors);
 
         this._mockUnitOfWork.Setup(uow => uow
@@ -130,7 +130,6 @@ public class AuthorRetrievalTests
             Assert.That(firstAuthor.Books.Count(), Is.EqualTo(secondAuthor.Books.Count));
 
             int bookCount = firstAuthor.Books.Count();
-
             foreach (BookViewModel book in firstAuthor.Books)
             {
                 Assert.IsTrue(secondAuthor
