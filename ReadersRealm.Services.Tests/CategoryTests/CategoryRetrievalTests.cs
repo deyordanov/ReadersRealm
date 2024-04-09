@@ -91,7 +91,6 @@ public class CategoryRetrievalTests
         ICategoryRetrievalService service
             = new CategoryRetrievalService(this._mockUnitOfWork!.Object);
 
-        int categoriesCount = this._allCategories!.Count;
         //Act
         IEnumerable<AllCategoriesListViewModel>? categories =
             await service.GetAllListAsync();
