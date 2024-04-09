@@ -13,25 +13,10 @@ public class OrderDetailsRetrievalTests
 {
     private Mock<IUnitOfWork> _mockUnitOfWork;
 
-    private OrderDetails? _existingOrderDetails;
-
     [SetUp]
     public void Setup()
     {
         this._mockUnitOfWork = new Mock<IUnitOfWork>();
-
-        this._existingOrderDetails = new OrderDetails()
-        {
-            Id = Guid.NewGuid(),
-            BookId = Guid.NewGuid(),
-            OrderHeaderId = Guid.NewGuid(),
-            Count = 1,
-            Price = 1,
-            Order = new Order()
-            {
-                Id = Guid.NewGuid(),
-            },
-        };
     }
 
     [Test]
