@@ -1,7 +1,5 @@
 ﻿namespace ReadersRealm.Common.Constants;
 
-using System.Text;
-
 public static class Constants
 {
     public static class AuthorConstants

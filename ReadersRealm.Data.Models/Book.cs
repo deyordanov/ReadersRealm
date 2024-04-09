@@ -4,7 +4,6 @@ using Enums;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using MongoDB.Bson;
 using static ReadersRealm.Common.Constants.ValidationConstants.BookValidation;
 
 /// <summary>

@@ -1,5 +1,3 @@
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -13,7 +11,6 @@ using ReadersRealm.Web.Infrastructure.Middlewares;
 using ReadersRealm.Web.Infrastructure.ModelBinders;
 using ReadersRealm.Web.Infrastructure.Settings;
 using ReadersRealm.Web.Infrastructure.Settings.Contracts;
-using Stripe;
 using static ReadersRealm.Common.Constants.Constants.ConfigurationConstants;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

@@ -6,8 +6,6 @@ using Data.CategoryServices.Contracts;
 using Moq;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
-using Web.ViewModels.Author;
-using Web.ViewModels.Category;
 using Web.ViewModels.Category;
 
 [TestFixture]

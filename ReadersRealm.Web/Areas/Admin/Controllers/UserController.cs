@@ -1,7 +1,6 @@
 ﻿namespace ReadersRealm.Web.Areas.Admin.Controllers;
 
 using Common;
-using Common.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

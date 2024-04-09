@@ -1,7 +1,6 @@
 ﻿namespace ReadersRealm.Services.Tests.BookTests;
 
 using System.Linq.Expressions;
-using AngleSharp.Css.Dom;
 using Common;
 using Common.Exceptions.Book;
 using Data.AuthorServices.Contracts;

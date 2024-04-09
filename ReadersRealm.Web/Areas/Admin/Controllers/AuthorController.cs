@@ -11,7 +11,6 @@ using static Common.Constants.Constants.RolesConstants;
 using static Common.Constants.Constants.SharedConstants;
 using static Common.Constants.Constants.AuthorConstants;
 using static Common.Constants.Constants.ErrorConstants;
-using AngleSharp.Css.Dom;
 
 [Area(Admin)]
 public class AuthorController(

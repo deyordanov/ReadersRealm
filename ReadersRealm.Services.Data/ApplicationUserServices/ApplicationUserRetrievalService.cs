@@ -2,7 +2,6 @@
 
 using System.Linq.Expressions;
 using Common;
-using Common.Exceptions.User;
 using CompanyServices.Contracts;
 using Contracts;
 using Microsoft.AspNetCore.Identity;
