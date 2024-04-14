@@ -151,7 +151,7 @@ public class ShoppingCartController(
                     session.Id, 
                     session.PaymentIntentId);
 
-            Response.Headers.Add("Location", session.Url);
+            Response.Headers.Append("Location", session.Url);
             return new StatusCodeResult(303);
         }
 
@@ -231,7 +231,7 @@ public class ShoppingCartController(
             sb.AppendLine($"    Total Price: {(orderDetailsDto.Book.Price * orderDetailsDto.Count).ToString("c")}");
         }
     
-        httpContextAccessor.HttpContext.Response.Headers.Add(HeaderNames.ContentDisposition, "attachment;filename=receipt.txt");
+        httpContextAccessor.HttpContext!.Response.Headers.Append(HeaderNames.ContentDisposition, "attachment;filename=receipt.txt");
     
         byte[] textBytes = Encoding.UTF8.GetBytes(sb.ToString().TrimEnd());
     

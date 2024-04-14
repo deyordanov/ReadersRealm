@@ -3,7 +3,7 @@
 using Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ReadersRealm.Data.Models;
+using Data.Models;
 using Services.Data.AuthorServices.Contracts;
 using ViewModels.Author;
 using static Common.Constants.Constants.AreasConstants;

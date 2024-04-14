@@ -185,7 +185,7 @@ public class OrderController(
         await orderHeaderCrudService
             .UpdateOrderHeaderPaymentIntentIdAsync(orderModel.OrderHeader.Id, session.Id, session.PaymentIntentId);
 
-        Response.Headers.Add("Location", session.Url);
+        Response.Headers.Append("Location", session.Url);
         return new StatusCodeResult(303);
     }
 

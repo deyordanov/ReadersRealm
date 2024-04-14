@@ -10,7 +10,7 @@ using Data.CategoryServices.Contracts;
 using Moq;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
-using ReadersRealm.Web.ViewModels.Book;
+using Web.ViewModels.Book;
 using Web.ViewModels.Author;
 using Web.ViewModels.Category;
 

@@ -27,14 +27,14 @@ using static Common.Constants.ValidationMessageConstants.RegisterModelValidation
 
 public class RegisterModel : PageModel
 {
-    private readonly SignInManager<ApplicationUser> signInManager;
-    private readonly UserManager<ApplicationUser> userManager;
-    private readonly RoleManager<IdentityRole<Guid>> roleManager;
-    private readonly IUserStore<ApplicationUser> userStore;
-    private readonly IUserEmailStore<ApplicationUser> emailStore;
-    private readonly ILogger<RegisterModel> logger;
-    private readonly IEmailSender emailSender;
-    private readonly ICompanyRetrievalService companyRetrievalService;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+    private readonly IUserStore<ApplicationUser> _userStore;
+    private readonly IUserEmailStore<ApplicationUser> _emailStore;
+    private readonly ILogger<RegisterModel> _logger;
+    private readonly IEmailSender _emailSender;
+    private readonly ICompanyRetrievalService _companyRetrievalService;
 
     public RegisterModel(
         UserManager<ApplicationUser> userManager,
@@ -45,64 +45,36 @@ public class RegisterModel : PageModel
         IEmailSender emailSender, 
         ICompanyRetrievalService companyRetrievalService)
     {
-        this.userManager = userManager;
-        this.userStore = userStore;
-        this.emailStore = GetEmailStore();
-        this.signInManager = signInManager;
-        this.roleManager = roleManager;
-        this.logger = logger;
-        this.emailSender = emailSender;
-        this.companyRetrievalService = companyRetrievalService;
+        this._userManager = userManager;
+        this._userStore = userStore;
+        this._emailStore = GetEmailStore();
+        this._signInManager = signInManager;
+        this._roleManager = roleManager;
+        this._logger = logger;
+        this._emailSender = emailSender;
+        this._companyRetrievalService = companyRetrievalService;
     }   
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
     [BindProperty]
-    public InputModel Input { get; set; }
+    public InputModel Input { get; set; } = null!;
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
     public string ReturnUrl { get; set; }
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
     public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
     public class InputModel
     {
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public required string Email { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public required string Password { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
@@ -164,7 +136,7 @@ public class RegisterModel : PageModel
     public async Task OnGetAsync(string returnUrl = null)
     {
         List<AllCompaniesListViewModel> companies = await this
-            .companyRetrievalService
+            ._companyRetrievalService
             .GetAllListAsync();
 
         Input = new InputModel()
@@ -174,23 +146,23 @@ public class RegisterModel : PageModel
             ConfirmPassword = string.Empty,
             FirstName = string.Empty,
             LastName = string.Empty,
-            Roles = roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
+            Roles = _roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name)),
             Companies = companies.Select(c => new SelectListItem(c.Name, c.Id.ToString())),
         };
 
         ReturnUrl = returnUrl;
-        ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     { 
         returnUrl ??= Url.Content("~/");
 
-        ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
         bool companyExists = this.Input.CompanyId == null || 
                              await this
-            .companyRetrievalService
+            ._companyRetrievalService
             .CompanyExistsAsync((Guid)this.Input.CompanyId);
 
         if (!companyExists)
@@ -201,10 +173,10 @@ public class RegisterModel : PageModel
         if (!ModelState.IsValid)
         {
             List<AllCompaniesListViewModel> companies = await this
-                .companyRetrievalService
+                ._companyRetrievalService
                 .GetAllListAsync();
 
-            Input.Roles = roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name));
+            Input.Roles = _roleManager.Roles.Select(r => new SelectListItem(r.Name, r.Name));
             Input.Companies = companies.Select(c => new SelectListItem(c.Name, c.Id.ToString()));
 
             return this.Page();
@@ -212,8 +184,8 @@ public class RegisterModel : PageModel
 
         ApplicationUser user = CreateUser();
 
-        await userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-        await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+        await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+        await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
         user.FirstName = Input.FirstName;
         user.LastName = Input.LastName;
@@ -228,41 +200,41 @@ public class RegisterModel : PageModel
             user.CompanyId = Input.CompanyId;
         }
 
-        var result = await userManager.CreateAsync(user, Input.Password);
+        var result = await _userManager.CreateAsync(user, Input.Password);
 
         if (result.Succeeded)
         {
-            logger.LogInformation("User created a new account with password.");
+            _logger.LogInformation("User created a new account with password.");
 
             if (!string.IsNullOrWhiteSpace(Input.Role))
             {
-                await userManager.AddToRoleAsync(user, Input.Role);
+                await _userManager.AddToRoleAsync(user, Input.Role);
             }
             else
             {
-                await userManager.AddToRoleAsync(user, CustomerRole);
+                await _userManager.AddToRoleAsync(user, CustomerRole);
             }
 
-            string userId = await userManager.GetUserIdAsync(user);
-            string code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            string userId = await _userManager.GetUserIdAsync(user);
+            string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             string callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
                 values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                protocol: Request.Scheme);
+                protocol: Request.Scheme)!;
 
             string mainPageUrl = Url.Page(
                 "/Home/Index",
                 pageHandler: null,
                 values: new { area = "Customer" },
-                protocol: Request.Scheme);
+                protocol: Request.Scheme)!;
 
-            await emailSender.SendEmailAsync(Input.Email,
+            await _emailSender.SendEmailAsync(Input.Email,
                 EmailConfirmationSubject,
-                this.BuildEmailMessage(callbackUrl));
+                this.BuildEmailMessage(callbackUrl!));
 
-            if (userManager.Options.SignIn.RequireConfirmedAccount)
+            if (_userManager.Options.SignIn.RequireConfirmedAccount)
             {
                 return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
             }
@@ -270,7 +242,7 @@ public class RegisterModel : PageModel
             {
                 if (!User.IsInRole(AdminRole))
                 {
-                    await signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                 }
                 else
                 {
@@ -305,11 +277,11 @@ public class RegisterModel : PageModel
 
     private IUserEmailStore<ApplicationUser> GetEmailStore()
     {
-        if (!userManager.SupportsUserEmail)
+        if (!_userManager.SupportsUserEmail)
         {
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
-        return (IUserEmailStore<ApplicationUser>)userStore;
+        return (IUserEmailStore<ApplicationUser>)_userStore;
     }
 
     private string BuildEmailMessage(string callbackUrl)

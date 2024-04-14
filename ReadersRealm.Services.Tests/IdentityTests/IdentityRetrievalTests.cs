@@ -1,7 +1,7 @@
 ﻿namespace ReadersRealm.Services.Tests.IdentityTests;
 
 using Data.IdentityServices;
-using ReadersRealm.Services.Data.IdentityServices.Contracts;
+using Data.IdentityServices.Contracts;
 using Web.ViewModels.Identity;
 
 [TestFixture]

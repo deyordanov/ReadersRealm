@@ -8,7 +8,7 @@ using Data.CategoryServices.Contracts;
 using Moq;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
-using ReadersRealm.Web.ViewModels.Category;
+using Web.ViewModels.Category;
 
 [TestFixture]
 public class CategoryRetrievalTests

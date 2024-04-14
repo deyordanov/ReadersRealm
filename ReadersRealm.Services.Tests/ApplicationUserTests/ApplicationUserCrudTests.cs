@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Moq;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
-using ReadersRealm.Services.Data.ApplicationUserServices;
+using Data.ApplicationUserServices;
 using ReadersRealm.Web.ViewModels.ApplicationUser;
 
 [TestFixture]
