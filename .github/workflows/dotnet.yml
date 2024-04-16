@@ -7,7 +7,7 @@ on:
     branches: ["main"]
 
 jobs:
-  unit_test:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Clone the github repository
@@ -25,6 +25,7 @@ jobs:
 
   qodana:
     runs-on: ubuntu-latest
+    needs: test
     permissions:
       contents: write
       pull-requests: write
