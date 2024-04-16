@@ -2,8 +2,12 @@
 
 **Readers Realm** is an online bookstore designed to cater to the diverse literary tastes of book enthusiasts. Our platform allows users to effortlessly browse, search, and purchase books across a wide range of genres. At Readers Realm, we are committed to enhancing the user experience with advanced features such as a dynamic shopping cart, secure payment processing, and user-friendly navigation.
 
-## Discplaimer
-**Stripe** works with test data and thus the number of the credit card should be 4242 4242 4242 4242
+## Disclaimer
+**Stripe** works with test data and thus the number of the credit card should be "4242 4242 4242 4242".
+
+**The Seeded Admin User's** login data is:  
+Email: `admin@gmail.com`  
+Password: `Admin123!`
 
 ## Technologies Used
 
