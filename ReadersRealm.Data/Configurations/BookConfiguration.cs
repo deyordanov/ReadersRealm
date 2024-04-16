@@ -94,5 +94,4 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
         ObjectId imageId = gridFsBucket.UploadFromBytes(imageName, image);
         return imageId.ToString()!;
     }
-
 }

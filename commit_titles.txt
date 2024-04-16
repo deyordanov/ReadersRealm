@@ -1,0 +1,132 @@
+Merge branch 'main' of https://github.com/deyordanov/ReadersRealm
+Did some code refactoring.
+Added github actions.
+Added tests for the ShoppingCartModificationService.
+Added tests for the ShoppingCartRetrievalService.
+Added tests for the ShoppingCartCrudService.
+Added tests for the OrderRetrievalService.
+Added tests for the OrderCrudService.
+Added tests for the OrderHeaderRetrievalService.
+Added tests for the OrderHeaderCrudService.
+Added tests for the OrderDetailsRetrievalService.
+Added tests for the OrderDetailsCrudService.
+Added tests for the IdentityRetrievalService.
+Added tests for the CompanyRetrievalService.
+Removed all unused "using" statements.
+Added test for the CompanyCrudService.
+Added tests for the CategoryRetrievalService.
+Added tests for the CategoryCrudService.
+Added tests for the BookRetrievalService.
+Added tests for the BookCrudService.
+Added tests for the AuthorRetrievalService.
+Added tests for the AuthorCrudService.
+Added tests for the ApplicationUserRetrievalService.
+Converted all constructors to primary constructors.
+Added tests for the ApplicationUserCrudService.
+Added Azure Key Vault integration.
+Merge branch 'main' of https://github.com/deyordanov/ReadersRealm
+Created a controller, actions, views, services and and models for the Author entity.
+Configured the links to Login, Register and Logout pages in the Layout view.
+Converted the Identity's Login, Register and Logout Razor Pages to a controller, actions and views.
+Created a new branch for converting the Identity's Razor Pages to controllers and actions
+Added a global exception handling middleware.
+Miscellaneous changes.
+Added Parameter Tampering protection.
+Added Parameter Tampering protection.
+Added XSS and XSRF/CSRF protection.
+Added MongoDb for image storage through GridFS.
+Code quality improvements.
+The admin can now lock/unlock a user's account and select a specific company entity when changing a user's role to 'Company'.
+The admin can now update a user's roles.
+Removed the 'Discriminator' column from the database and made the User's Id to be a GUID, not a string. Removed some of the default identity pages, which were previously generated.
+Added a custom decimal model binder.
+Created a few custom tag helpers.
+Extracted the pagination functionality to a partial view.
+Decomposed services for Interface Segregation compliance.
+Created IoC setup extension method for streamlined identity registration.
+Created IoC setup extension method for streamlined service registration.
+Added the functionality to send an email after a given order has been completed.
+Added email confirmation.
+Updated database seeding and did some minor miscellaneous code refactoring.
+Reset migrations for a clean slate.
+ Corrected a styling issue on the page.
+Made more changes to the file structure.
+Changed file structure.
+Changed the application`s architecture.
+Changed folder structure.
+A user with a specific role can now be created by an admin.
+Merge branch 'main' of https://github.com/deyordanov/ReadersRealm
+The number of items in the shopping cart is now dynamically displayed.
+Delete CNAME
+A given order can now be paid for by a company.
+A given order can now be cancelled.
+A given order can now be shipped.
+A given order can now be processed.
+Fixed a when placing a new order with multiple items.
+Code refactoring.
+Created a controller, actions, views, services and and models for the Order entity.
+Added a new entity - Order.
+The user is now able to download a receipt for their purchase.
+Implemented payment with Stripe.
+Code refactoring.
+Added order confirmation functionality.
+Added order summary functionality.
+Created a controller, actions, views, services and a model for the ShoppingCart entity.
+Implemented the functionality for the shopping cart.
+Created a Claims Principal extension for getting the user id.
+Created models for the shopping cart and application user, as well as their corresponding repositories.
+When registering, only those with a Company role can select a company.
+Created a controller, actions, views, services and models for the Company entity, as well as pagination.
+Created a new entity - Company and its corresponding repository.
+Fixed a bug in the Profile UI.
+Added more fields to the register form.
+Added a FirstName and LastName property for the ApplicationUser and created a new migration to apply the changes to the database.
+Updated the Login and Register UI.
+Added authorization for the book and category controllers, configured login / logout and access denied paths as well.
+Created 4 distinct roles and an email sender.
+Extended the default IdentityUser.
+Identity configuration.
+Scaffolded all identity pages.
+Updated the book home page and added a book details page.
+Implemented search functionality for books.
+Merge branch 'main' of https://github.com/deyordanov/ReadersRealm
+Implemented data pagination for books.
+Moved all constants related classes to a single directory.
+Update CNAME
+Update CNAME
+Update CNAME
+Update CNAME
+Update CNAME
+Made some minor changes to the image upload / delete.
+Book image modification added when editing.
+Deleted two images.
+Merge branch 'main' of https://github.com/deyordanov/ReadersRealm
+Implemented book image upload feature.
+Made some changes to the UI.
+Added a ImageUrl property to the Book entity.
+Create CNAME
+Updated the Book and Category controllers, as well as the corresponding views.
+Recreated the database.
+Created a controller, actions, views, services and models for the Book entity. Did some code quality improvements as well.
+Added a few migrations to apply the previously made changes.
+Added configuration files for database seeding.
+Created a few more repositories and made some changes to the main repository class.
+Created a mapping table for the Author and Book entities, did some minor changes to the view models and database models as well.
+Created and seeded the Author and Book tables.
+Created the Admin and Customer areas.
+Implemented the Unit Of Work pattern.
+Implemented the repository pattern.
+Split the application into different projects.
+Added [Comment()] data annotations and removed the null forgiving operator (replaced it with the 'required' keyword).
+Added documentation for the database models and the view models.
+Added notifications after successfully creating / editing or deleting a category with toastr!
+Added the option to delete a category.
+Added the option to edit a category.
+Added constants, validation constants and validation messages.
+Added the option to create a new category.
+Added the css file for a bootswatch theme, as well as bootstrap icons.
+Added an action to display all categories.
+Seeded the category table.
+Created the database.
+Created the Readers Realm MVC project.
+Initial commit
