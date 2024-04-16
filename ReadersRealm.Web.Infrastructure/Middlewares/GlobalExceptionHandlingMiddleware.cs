@@ -13,11 +13,11 @@ public class GlobalExceptionHandlingMiddleware(RequestDelegate next)
             await next(context);
 
         }
-        catch (BaseNotFoundException _)
+        catch (BaseNotFoundException)
         {
             context.Response.Redirect(NotFound404Path);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             context.Response.Redirect(InternalServerError500Path);
         }

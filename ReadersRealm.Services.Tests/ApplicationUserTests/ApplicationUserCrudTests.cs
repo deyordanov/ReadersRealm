@@ -21,9 +21,9 @@ public class ApplicationUserCrudTests
     {
         this._mockUnitOfWork = new Mock<IUnitOfWork>();
         this._mockUserManager = new Mock<UserManager<ApplicationUser>>(
-            Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
+            Mock.Of<IUserStore<ApplicationUser>>(), null!, null!, null!, null!, null!, null!, null!, null!);
         this._mockRoleManager = new Mock<RoleManager<IdentityRole<Guid>>>(
-            Mock.Of<IRoleStore<IdentityRole<Guid>>>(), null, null, null, null);
+            Mock.Of<IRoleStore<IdentityRole<Guid>>>(), null!, null!, null!, null!);
 
         this._existingUser = new ApplicationUser
         {
@@ -102,7 +102,7 @@ public class ApplicationUserCrudTests
     public async Task UpdateApplicationUserRolesAsync_UpdatesRolesCorrectly()
     {
         ApplicationUserCrudService service = 
-            new ApplicationUserCrudService(this._mockUnitOfWork!.Object, this._mockUserManager!.Object, null);
+            new ApplicationUserCrudService(this._mockUnitOfWork!.Object, this._mockUserManager!.Object, null!);
 
         RolesApplicationUserViewModel applicationUserModel = new RolesApplicationUserViewModel
         {
@@ -132,7 +132,7 @@ public class ApplicationUserCrudTests
     {
         //Arrange
         ApplicationUserCrudService service =
-            new ApplicationUserCrudService(this._mockUnitOfWork!.Object, this._mockUserManager!.Object, null);
+            new ApplicationUserCrudService(this._mockUnitOfWork!.Object, this._mockUserManager!.Object, null!);
 
         RolesApplicationUserViewModel applicationUserModel = new RolesApplicationUserViewModel
         {
@@ -153,7 +153,7 @@ public class ApplicationUserCrudTests
     {
         //Arrange
         ApplicationUserCrudService service =
-            new ApplicationUserCrudService(this._mockUnitOfWork!.Object, this._mockUserManager!.Object, null);
+            new ApplicationUserCrudService(this._mockUnitOfWork!.Object, this._mockUserManager!.Object, null!);
 
         //Act
         await service.UpdateApplicationUserLockoutAsync(this._existingUser!.Id, true);
@@ -168,7 +168,7 @@ public class ApplicationUserCrudTests
     {
         //Arrange
         ApplicationUserCrudService service =
-            new ApplicationUserCrudService(this._mockUnitOfWork!.Object, this._mockUserManager!.Object, null);
+            new ApplicationUserCrudService(this._mockUnitOfWork!.Object, this._mockUserManager!.Object, null!);
 
         //Act
         await service.UpdateApplicationUserLockoutAsync(this._existingUser!.Id, false);
@@ -183,7 +183,7 @@ public class ApplicationUserCrudTests
     {
         //Arrange
         ApplicationUserCrudService service =
-            new ApplicationUserCrudService(this._mockUnitOfWork!.Object, this._mockUserManager!.Object, null);
+            new ApplicationUserCrudService(this._mockUnitOfWork!.Object, this._mockUserManager!.Object, null!);
 
         //Act & Assert
         Assert.ThrowsAsync<ApplicationUserNotFoundException>(async () =>

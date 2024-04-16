@@ -144,7 +144,7 @@ public class ShoppingCartCrudTests
     }
 
     [Test]
-    public async Task DeleteShoppingCartAsync_ShouldThrowShoppingCartNotFoundException()
+    public void DeleteShoppingCartAsync_ShouldThrowShoppingCartNotFoundException()
     {
         //Arrange
         IShoppingCartCrudService service
@@ -164,11 +164,11 @@ public class ShoppingCartCrudTests
 
         List<ShoppingCart> allShoppingCarts = new List<ShoppingCart>()
         {
-            this._existingShoppingCart,
+            this._existingShoppingCart!,
             new ShoppingCart()
             {
                 Id = Guid.NewGuid(),
-                ApplicationUserId = this._existingShoppingCartModel.ApplicationUserId,
+                ApplicationUserId = this._existingShoppingCartModel!.ApplicationUserId,
                 BookId = Guid.NewGuid(),
                 Count = 1,
             },

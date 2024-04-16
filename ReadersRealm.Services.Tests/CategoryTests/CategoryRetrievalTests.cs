@@ -2,7 +2,6 @@
 
 using System.Linq.Expressions;
 using Common.Exceptions.Category;
-using Data.AuthorServices.Contracts;
 using Data.CategoryServices;
 using Data.CategoryServices.Contracts;
 using Moq;
@@ -14,8 +13,6 @@ using Web.ViewModels.Category;
 public class CategoryRetrievalTests
 {
     private Mock<IUnitOfWork>? _mockUnitOfWork;
-    private Mock<IAuthorRetrievalService>? _mockAuthorRetrievalService;
-    private Mock<ICategoryRetrievalService>? _mockCategoryRetrievalService;
 
     private Category? _existingCategory;
     private List<Category>? _allCategories;

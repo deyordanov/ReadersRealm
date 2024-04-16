@@ -5,11 +5,8 @@ using Data.OrderDetailsServices.Contracts;
 using Moq;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
-using Data.OrderDetailsServices.Contracts;
-using Data.OrderDetailsServices;
 using Web.ViewModels.OrderDetails;
 using Web.ViewModels.Order;
-using Web.ViewModels.OrderDetails;
 
 public class OrderDetailsCrudTests
 {

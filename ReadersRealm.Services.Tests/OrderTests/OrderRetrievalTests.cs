@@ -10,8 +10,6 @@ using Moq;
 using Common;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
-using Data.BookServices.Contracts;
-using Data.BookServices;
 using Web.ViewModels.Book;
 using Web.ViewModels.Author;
 using Web.ViewModels.Order;

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 public interface IRepository<TEntity> where TEntity : class
 {
-    Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter,
+    Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? filter,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy,
         string includeProperties);
 

@@ -1,4 +1,5 @@
-﻿namespace ReadersRealm.Services.Data.ApplicationUserServices;
+﻿#pragma warning disable IDE0270
+namespace ReadersRealm.Services.Data.ApplicationUserServices;
 
 using System.Linq.Expressions;
 using Common;
@@ -44,7 +45,7 @@ public class ApplicationUserRetrievalService(
             State = applicationUser.State,
             StreetAddress = applicationUser.StreetAddress,
             PhoneNumber = applicationUser.PhoneNumber,
-            Email = applicationUser.Email,
+            Email = applicationUser.Email!,
         };
 
         return applicationUserModel;

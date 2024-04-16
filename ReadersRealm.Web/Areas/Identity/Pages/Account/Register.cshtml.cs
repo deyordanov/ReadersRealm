@@ -58,9 +58,9 @@ public class RegisterModel : PageModel
     [BindProperty]
     public InputModel Input { get; set; } = null!;
 
-    public string ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 
-    public IList<AuthenticationScheme> ExternalLogins { get; set; }
+    public IList<AuthenticationScheme>? ExternalLogins { get; set; }
 
     public class InputModel
     {
@@ -125,15 +125,15 @@ public class RegisterModel : PageModel
         public string? Role { get; set; }
 
         [ValidateNever]
-        public IEnumerable<SelectListItem> Roles { get; set; }
+        public IEnumerable<SelectListItem>? Roles { get; set; }
 
         public Guid? CompanyId { get; set; }
 
-        public IEnumerable<SelectListItem> Companies { get; set; }
+        public IEnumerable<SelectListItem>? Companies { get; set; }
     }
 
 
-    public async Task OnGetAsync(string returnUrl = null)
+    public async Task OnGetAsync(string? returnUrl = null)
     {
         List<AllCompaniesListViewModel> companies = await this
             ._companyRetrievalService
@@ -150,11 +150,11 @@ public class RegisterModel : PageModel
             Companies = companies.Select(c => new SelectListItem(c.Name, c.Id.ToString())),
         };
 
-        ReturnUrl = returnUrl;
+        ReturnUrl = returnUrl ?? string.Empty;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
 
-    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     { 
         returnUrl ??= Url.Content("~/");
 

@@ -3,19 +3,12 @@
 using System.Linq.Expressions;
 using Common;
 using Common.Exceptions.Company;
-using Data.AuthorServices.Contracts;
 using Data.CompanyServices;
-using Data.CompanyServices.Contracts;
 using Data.CompanyServices.Contracts;
 using Moq;
 using ReadersRealm.Data.Models;
 using ReadersRealm.Data.Repositories.Contracts;
 using Web.ViewModels.Company;
-using Web.ViewModels.Author;
-using Web.ViewModels.Company;
-using Data.CompanyServices;
-using Data.CompanyServices.Contracts;
-using Data.CompanyServices;
 
 [TestFixture]
 public class CompanyRetrievalTests
