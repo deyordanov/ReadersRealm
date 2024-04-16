@@ -325,6 +325,36 @@ namespace ReadersRealm.Data.Migrations
                             Gender = 0,
                             LastName = "Riordan",
                             PhoneNumber = "098-765-4321"
+                        },
+                        new
+                        {
+                            Id = new Guid("2d340d56-2594-4071-8878-019647b45cb4"),
+                            Age = 32,
+                            Email = "gegeakutami@gmail.com",
+                            FirstName = "Gege",
+                            Gender = 0,
+                            LastName = "Akutami",
+                            PhoneNumber = "098-354-4364"
+                        },
+                        new
+                        {
+                            Id = new Guid("4f82ee5a-9a3b-4d00-8027-e677e41e2527"),
+                            Age = 54,
+                            Email = "kentaromiura@gmail.com",
+                            FirstName = "Kentaro",
+                            Gender = 0,
+                            LastName = "Miura",
+                            PhoneNumber = "098-646-4683"
+                        },
+                        new
+                        {
+                            Id = new Guid("99aa315d-72fb-49fe-a18b-fc2b7c84ec51"),
+                            Age = 49,
+                            Email = "eiichirooda@gmail.com",
+                            FirstName = "Eiichiro",
+                            Gender = 0,
+                            LastName = "Oda",
+                            PhoneNumber = "098-742-7674"
                         });
                 });
 
@@ -395,7 +425,7 @@ namespace ReadersRealm.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f8be9acf-bb54-4ce4-9fd0-ad669d39440d"),
+                            Id = new Guid("f86b0d78-66f2-46d4-9cab-d327263d1370"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
@@ -409,7 +439,7 @@ namespace ReadersRealm.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a9136d45-5d15-40a5-aa3b-4541a6d625d3"),
+                            Id = new Guid("943627fb-87e8-4a95-a7db-56097cb7f0f7"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
@@ -423,16 +453,226 @@ namespace ReadersRealm.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5d1cff2d-5535-4b5a-9fdb-c09b1a1bcf9c"),
+                            Id = new Guid("87e614c7-ef21-455e-b1ab-63981f6c1920"),
                             AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
                             BookCover = 1,
                             CategoryId = 1,
                             Description = "\"Naruto Vol 35\" shifts the focus to the aftermath of Naruto's intense training under Jiraiya and the looming threat of the Akatsuki. Naruto returns to Konoha, showcasing newfound strengths and techniques. Meanwhile, the story delves into the formation of new alliances and the preparation for a confrontation that could shake the ninja world to its core. This volume encapsulates themes of evolution and anticipation, setting the stage for epic battles and strategic mind games.",
-                            ISBN = "9799667150078",
+                            ISBN = "9794654155478",
                             ImageId = "65e2d86a7714ad25c89d864a",
                             Pages = 200,
                             Price = 19.99m,
                             Title = "Naruto Vol 35",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("36462fdc-afb3-4d79-9d22-7a477b07555f"),
+                            AuthorId = new Guid("2d340d56-2594-4071-8878-019647b45cb4"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "In 'Jujutsu Kaisen Vol 10', the plot escalates with intense battles and strategic maneuvering among the sorcerers. As the Shibuya Incident unfolds, Yuji Itadori and his allies face unprecedented challenges that test their strength and resolve. This volume delves deeper into the dark pasts of key characters, revealing motives and hidden powers, setting up high stakes for the series' future developments.",
+                            ISBN = "9799667150078",
+                            ImageId = "661e99cbc95aa93eba46d526",
+                            Pages = 200,
+                            Price = 19.99m,
+                            Title = "Jujutsu Kaisen Vol 10",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("0c1aa78c-7610-465f-af48-30f2b9afe436"),
+                            AuthorId = new Guid("2d340d56-2594-4071-8878-019647b45cb4"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "Volume 13 of 'Jujutsu Kaisen' heightens the tension as the battles intensify and new alliances are formed. In this volume, the focus shifts to the fallout of the Shibuya Incident, with Yuji Itadori and the other Jujutsu sorcerers grappling with the aftermath and the moral dilemmas posed by their decisions. The stakes are higher than ever, with new threats emerging that could alter the course of their world.",
+                            ISBN = "9759367153649",
+                            ImageId = "661e9f13ff51d33c794cfe84",
+                            Pages = 200,
+                            Price = 19.99m,
+                            Title = "Jujutsu Kaisen Vol 13",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("ff803925-30f7-4e4c-a6aa-dd9564eb5f96"),
+                            AuthorId = new Guid("2d340d56-2594-4071-8878-019647b45cb4"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "In 'Jujutsu Kaisen Vol 20', the narrative continues to evolve as the characters face new challenges and enemies. This volume sees Yuji Itadori and his comrades confronting the consequences of the Culling Game, with alliances tested and strategies pushed to their limits. The volume delivers thrilling action, deeper explorations into the sorcerers' abilities, and crucial turning points that set the stage for future conflicts.",
+                            ISBN = "9799462150364",
+                            ImageId = "661e9f13ff51d33c794cfe86",
+                            Pages = 200,
+                            Price = 19.99m,
+                            Title = "Jujutsu Kaisen Vol 20",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("6e651ab1-d34a-41ab-b436-f9b4f94641fc"),
+                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "Volume 27 of 'Naruto' marks the end of Part I and sets the stage for the mature themes of Part II. This pivotal volume concludes with Naruto's departure from Konoha to train with Jiraiya, setting up his future return as a more powerful ninja. The volume also explores Sasuke's struggle with his past and the fateful decision that leads him down a darker path, igniting a fierce rivalry that becomes central to the narrative.",
+                            ISBN = "9781421516489",
+                            ImageId = "661e9f13ff51d33c794cfe89",
+                            Pages = 192,
+                            Price = 19.99m,
+                            Title = "Naruto Vol 27",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("8d3fd4f5-50f5-463c-9464-7cdcfc7227c8"),
+                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "In 'Naruto Vol 63', the Fourth Great Ninja War continues to rage, bringing about pivotal confrontations. This volume features intense battles, strategic maneuvers, and deep emotional storylines as Naruto faces some of his most formidable enemies yet. As alliances shift and truths are revealed, Naruto's beliefs and resolve are put to the ultimate test, setting the stage for dramatic developments in the shinobi world.",
+                            ISBN = "9781421516632",
+                            ImageId = "661e9f13ff51d33c794cfe8b",
+                            Pages = 192,
+                            Price = 19.99m,
+                            Title = "Naruto Vol 63",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("3c875621-102a-4795-b1a0-728a69bd247a"),
+                            AuthorId = new Guid("99aa315d-72fb-49fe-a18b-fc2b7c84ec51"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "In 'One Piece Vol 5', the Straw Hat Pirates face new challenges as they search for the elusive treasure, One Piece. This volume captures the excitement of their adventures in the Grand Line, featuring clashes with rival pirates and encounters with bizarre creatures. As Luffy and his crew venture deeper, they learn the complexities of loyalty and the harsh realities of the pirate world, all while pursuing their grand dream.",
+                            ISBN = "9781421516724",
+                            ImageId = "661e9f13ff51d33c794cfe8d",
+                            Pages = 208,
+                            Price = 15.99m,
+                            Title = "One Piece Vol 5",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("9a1309ca-22c3-46f9-b8a5-02203a465c95"),
+                            AuthorId = new Guid("99aa315d-72fb-49fe-a18b-fc2b7c84ec51"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "In 'One Piece Vol 105', the epic journey of Luffy and the Straw Hat Pirates reaches new heights as they encounter formidable foes and uncover secrets that could change the world. This volume dives deeper into the mysteries of the One Piece world, with thrilling battles, strategic alliances, and moments of unexpected bravery that underscore the enduring themes of friendship and the pursuit of dreams.",
+                            ISBN = "9781421516908",
+                            ImageId = "661e9f13ff51d33c794cfe90",
+                            Pages = 192,
+                            Price = 17.99m,
+                            Title = "One Piece Vol 105",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("eeb87926-3145-43df-b182-c4a59171d1d3"),
+                            AuthorId = new Guid("99aa315d-72fb-49fe-a18b-fc2b7c84ec51"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "Volume 77 of 'One Piece' continues the intense Dressrosa Arc, where Luffy and his allies battle against the tyrannical Doflamingo and his powerful crew. This volume highlights the culmination of many long-brewing conflicts and the dramatic transformations of key characters. The stakes are higher than ever as the Straw Hats strive to overthrow Doflamingo and bring freedom to the people of Dressrosa.",
+                            ISBN = "9781421516854",
+                            ImageId = "661e9f13ff51d33c794cfe93",
+                            Pages = 192,
+                            Price = 16.99m,
+                            Title = "One Piece Vol 77",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("2facd184-2f4c-4eec-95f3-348c2e0d98c5"),
+                            AuthorId = new Guid("99aa315d-72fb-49fe-a18b-fc2b7c84ec51"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "In 'One Piece Vol 80', the narrative unfolds further into the intriguing Zou Arc. The Straw Hat Pirates, along with new allies, explore the mysterious and ancient elephant island, Zou. This volume reveals crucial details about the world's geopolitical landscape and the history of the Mink Tribe. The resilience and unity of the crew are tested as they delve deeper into the secrets of the Pirate World and the legendary Void Century.",
+                            ISBN = "9781421516885",
+                            ImageId = "661e9f13ff51d33c794cfe96",
+                            Pages = 192,
+                            Price = 16.49m,
+                            Title = "One Piece Vol 80",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("3c357f2f-ad1e-4f8d-8477-42e00dbbd541"),
+                            AuthorId = new Guid("4f82ee5a-9a3b-4d00-8027-e677e41e2527"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "Volume 1 of 'Berserk' sets the stage for a dark and gripping saga as it introduces Guts, the Black Swordsman. This volume plunges readers into a bleak world of formidable battles and relentless despair, revealing the beginning of Guts' quest for revenge against a cursed fate. The intense narrative and stark, yet detailed artwork lay the groundwork for a profound and challenging series.",
+                            ISBN = "9781421516700",
+                            ImageId = "661e9f13ff51d33c794cfe99",
+                            Pages = 224,
+                            Price = 14.99m,
+                            Title = "Berserk Vol 1",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("2e6a6b62-c01c-479f-97db-62af801ff89c"),
+                            AuthorId = new Guid("4f82ee5a-9a3b-4d00-8027-e677e41e2527"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "In 'Berserk Vol 3', the epic tale continues as Guts, the fearless Black Swordsman, delves deeper into the demonic forces manipulating the earthly world. This volume intensifies the exploration of dark fantasy elements and Guts’ complex relationship with his past. It features brutal conflicts, emotional depth, and expanding lore that enriches the narrative's grim and captivating universe.",
+                            ISBN = "9781421516724",
+                            ImageId = "661e9f13ff51d33c794cfe9c",
+                            Pages = 240,
+                            Price = 14.99m,
+                            Title = "Berserk Vol 3",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("71c75207-a547-4b34-8b6d-3de0f5e80c0e"),
+                            AuthorId = new Guid("4f82ee5a-9a3b-4d00-8027-e677e41e2527"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "Volume 12 of 'Berserk' reaches new heights in storytelling as Guts faces off against supernatural forces that threaten to consume the world. The narrative becomes increasingly intense as it delves into themes of isolation and resilience, showcasing Guts' struggle to maintain his humanity amidst chaos. This volume is a turning point that expands on the series' mythos and sets a new course for the saga's future developments.",
+                            ISBN = "9781421516809",
+                            ImageId = "661e9f13ff51d33c794cfe9f",
+                            Pages = 256,
+                            Price = 14.99m,
+                            Title = "Berserk Vol 12",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("850aecd6-9982-4f20-936f-b9712668dc64"),
+                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "Volume 66 of 'Naruto' further escalates the drama and action of the Fourth Great Ninja War. As the battles intensify, Naruto's leadership and strategic mind are put to the test. This volume features pivotal moments that define the future of the ninja world, including crucial revelations and character developments that add depth to the story's overarching themes.",
+                            ISBN = "9781421516694",
+                            ImageId = "661e9f13ff51d33c794cfea2",
+                            Pages = 192,
+                            Price = 17.99m,
+                            Title = "Naruto Vol 66",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("081beab9-bf93-4270-ac8d-4b659d584153"),
+                            AuthorId = new Guid("a5e87971-53ad-40df-97ff-79dcaef4520a"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "In 'Naruto Vol 64', the Fourth Great Ninja War continues, showcasing intense battles and deepening the bonds between the characters. Naruto and his allies face off against powerful enemies, uncovering new abilities and tactics. This volume highlights the strength and resolve of the Shinobi Alliance as they fight to protect their world from destruction.",
+                            ISBN = "9781421516670",
+                            ImageId = "661e9f13ff51d33c794cfea5",
+                            Pages = 192,
+                            Price = 17.99m,
+                            Title = "Naruto Vol 64",
+                            Used = false
+                        },
+                        new
+                        {
+                            Id = new Guid("b1ba9a0a-13d8-49e3-b42c-9265c4413207"),
+                            AuthorId = new Guid("99aa315d-72fb-49fe-a18b-fc2b7c84ec51"),
+                            BookCover = 1,
+                            CategoryId = 1,
+                            Description = "Volume 98 of 'One Piece' continues the high-stakes adventure in the Land of Wano, as Luffy and the allied forces prepare for the final battle against Kaido and his formidable army. This volume captures the intricate planning and the early clashes that set the stage for one of the most epic confrontations in the series. With alliances tested and strategies unveiled, the resilience and courage of the Straw Hat Pirates are highlighted as they fight for freedom and justice.",
+                            ISBN = "9781421516878",
+                            ImageId = "661e9f13ff51d33c794cfea8",
+                            Pages = 192,
+                            Price = 16.99m,
+                            Title = "One Piece Vol 98",
                             Used = false
                         });
                 });

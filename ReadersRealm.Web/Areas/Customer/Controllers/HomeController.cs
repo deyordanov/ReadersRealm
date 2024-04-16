@@ -148,13 +148,6 @@ public class HomeController : BaseController
         return File(bytes, ContentType);
     }
 
-    [AllowAnonymous]
-    [HttpGet]
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [AllowAnonymous]
     public IActionResult Error()
