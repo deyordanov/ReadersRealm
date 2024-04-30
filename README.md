@@ -1,3 +1,6 @@
+## Ranking 🏆
+<b>The project was ranked in the top 3 of all projects presented in the ASP.NET Advanced course at SoftUni.</b>
+
 ## Overview
 
 **Readers Realm** is an online bookstore designed to cater to the diverse literary tastes of book enthusiasts. Our platform allows users to effortlessly browse, search, and purchase books across a wide range of genres. At Readers Realm, we are committed to enhancing the user experience with advanced features such as a dynamic shopping cart, secure payment processing, and user-friendly navigation.
